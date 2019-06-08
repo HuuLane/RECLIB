@@ -1,11 +1,9 @@
 <template>
   <div id="app">
     <Navbar/>
-    <div class="container">
-      <keep-alive>
-        <router-view/>
-      </keep-alive>
-    </div>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 <script>

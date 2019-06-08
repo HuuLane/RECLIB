@@ -17,8 +17,25 @@ export default new Router({
     },
     {
       path: '/admin',
-      name: 'admin',
-      component: () => import('./views/Admin.vue')
+      component: () => import('./views/Admin.vue'),
+      children: [
+        {
+          path: '/',
+          name: '图书管理',
+          component: () => import('./views/admin_router/Admin_book.vue')
+        },
+        {
+          // 这里不要写 `/`
+          path: 'recommend',
+          name: '今日推荐',
+          component: () => import('./views/admin_router/Admin_recommend.vue')
+        }
+      ]
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: () => import('./views/test.vue')
     }
   ]
 })
