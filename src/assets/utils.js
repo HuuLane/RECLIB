@@ -17,4 +17,11 @@ const myFetch = async (method, url, data) => {
   return response.json()
 }
 
-export { myFetch, log, dir }
+const setClock = (timeout) => {
+  const time = Math.random() * (timeout || 3)
+  return new Promise((resolve) => {
+    setTimeout(resolve, time * 1000)
+  })
+}
+
+export { myFetch, log, dir, setClock }

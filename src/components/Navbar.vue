@@ -4,7 +4,7 @@
       variant="faded"
       toggleable="lg"
       type="light"
-      class="shadow-sm p-3 bg-white rounded"
+      class="shadow-sm p-3 bg-white mb-5 rounded"
     >
       <router-link tag="b-navbar-brand" to="/" class="font-weight-bold">RECLAB</router-link>
       <!-- 小屏幕时出现 toggle -->

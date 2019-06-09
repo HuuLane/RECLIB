@@ -1,0 +1,39 @@
+<template>
+  <b-jumbotron header="抱歉, 找不到该图书">
+    <template slot="lead">{{ countDown }} 秒后, 跳回首页</template>
+    <b-button variant="primary" @click="justGo">立即返回</b-button>
+  </b-jumbotron>
+</template>
+
+<script>
+import { setInterval } from 'timers';
+export default {
+  name: 'PageNotFound',
+  data() {
+    return {
+      countDown: 5,
+    }
+  },
+  methods: {
+    goBack () {
+      setInterval(() => {
+        this.countDown --
+      }, 1000)
+    },
+    justGo () {
+      this.$router.push('/')
+    }
+  },
+  watch: {
+    countDown: function(val) {
+      if (!val) {
+        this.justGo()
+      }
+    }
+  },
+  created() {
+    const vm = this
+    vm.goBack()
+  },
+}
+</script>

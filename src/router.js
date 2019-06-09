@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
+  linkActiveClass: 'active',
   routes: [
     {
       path: '/',
@@ -16,11 +17,17 @@ export default new Router({
       component: () => import('./views/About.vue')
     },
     {
+      path: '/subject/:id',
+      name: 'subject',
+      component: () => import('./views/Subject.vue')
+    },
+    {
+      name: 'admin',
       path: '/admin',
       component: () => import('./views/Admin.vue'),
       children: [
         {
-          path: '/',
+          path: 'book',
           name: '图书管理',
           component: () => import('./views/admin_router/Admin_book.vue')
         },

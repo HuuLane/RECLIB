@@ -3,11 +3,11 @@
     <h1>管理员: 共有{{ documentCount }}条数据</h1>
     <p class="mt-3">Current Page: {{ currentPage }}</p>
     <!-- 展示 table -->
-    <!-- @row-hovered="showCoverImg" -->
     <b-table
       striped
       hover
       bordered
+      @row-clicked="goToSubject"
       :items="showedItems"
       :busy="tableIsBusy"
       large
@@ -30,18 +30,13 @@
 </template>
 
 <script>
-import { myFetch, log, dir } from '@/assets/utils.js'
+// eslint-disable-next-line
+import { myFetch, log, dir, setClock } from '@/assets/utils.js'
 import { setTimeout } from 'timers'
-
-const setClock = (timeout) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout * 1000)
-  })
-}
 
 class FormatedItem {
   constructor (item) {
-    this.id = item["_id"]
+    this.id = item['_id']
     this.title = item.title
     this.imgUrl = item.imgUrl
     this.author = item.info['作者']
@@ -78,11 +73,10 @@ export default {
       api: process.env.VUE_APP_BOOK,
       tableIsBusy: true,
       documentCount: 0,
-      coverUrl: '',
       currentPage: 1,
       tableFields: {
         id: {
-          label: 'ISBM',
+          label: 'ISBM'
         },
         title: {
           label: '标题'
@@ -111,7 +105,7 @@ export default {
         return 'has cache'
       }
       // 模拟延迟吧..
-      await setClock(Math.random() * 3)
+      await setClock()
       const data = await myFetch('GET', `${vm.api}?page=${index}`)
       this.addPageData(index, data)
       return 'save successfully'
@@ -130,11 +124,11 @@ export default {
         log('err', err)
       })
     },
-    showCoverImg (item, index, event) {
+    goToSubject (item, index, event) {
       // const taget = event.target
       // this.$set(this.hoverRow,'target', target)
-      this.coverUrl = item.imgUrl
-    }
+      this.$router.push(`/subject/${item.id}`)
+    },
   },
   computed: {
     showedItems () {
@@ -150,9 +144,6 @@ export default {
       // log('rawPageData is array?', Array.isArray(rawPageData))
       return beautifyRawPageData(rawPageData)
     },
-    coverSrc () {
-      return `http://localhost:3000/images/${this.coverUrl}.jpg`
-    }
   },
   watch: {
   },

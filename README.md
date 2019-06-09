@@ -1,29 +1,16 @@
 # 6-5-reclab
 
-## Project setup
-```
-npm install
-```
+### 开发日志
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+6/9 subject详细页(80%)
+- intro card 采用 collapse, 用 ajax 读数据.
+- 404组件, 5秒倒计时回首页.
+- 指定 router-view keep-alive
 
-### Compiles and minifies for production
-```
-npm run build
-```
+6/10 
+search页.
+主页.
 
-### Run your tests
-```
-npm run test
-```
+### 坑
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+1. 仅指定特定的 router-view keep-alive

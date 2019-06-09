@@ -1,0 +1,144 @@
+<template>
+  <b-container>
+    <div v-if="isBusy">
+      <b-spinner class="absolute-center spinner_big"></b-spinner>
+    </div>
+    <div v-else>
+      <div v-if="book.brief">
+        <!-- 标题 -->
+        <h1 class="row">
+          <span class="col-md-9">{{book.brief.title}}</span>
+          <b-badge
+            id="score"
+            class="d-none d-md-block"
+            :variant="isOkay.color"
+          >评分: {{book.brief.score}} {{isOkay.icon}}</b-badge>
+          <b-tooltip target="score" placement="right">
+            评分人数:
+            <strong>{{book.brief.rating}}</strong>
+          </b-tooltip>
+        </h1>
+        <div>
+            <b class="pr-2">标签:</b>
+            <b-badge
+              v-for="(item, index) in book.brief.tags"
+              :key="index"
+              class="mr-2"
+              :variant="variants[index]"
+            >{{book.brief.tags[index]}}</b-badge>
+        </div>
+        <hr>
+        <!-- 图片 + info -->
+        <div class="row">
+          <b-card no-body class="overflow-hidden" img-fluid>
+            <b-row no-gutters>
+              <b-col md="6">
+                <b-card-img :src="imgSrc" class="rounded-0"></b-card-img>
+              </b-col>
+              <b-col md="6">
+                <b-card-body title="库存">
+                  <b-card-text>
+                    This is a wider card with supporting text as a natural lead-in to additional content.
+                    This content is a little bit longer.
+                    <!-- 简介 -->
+                    <intro-collapse :id="id"></intro-collapse>
+                  </b-card-text>
+                </b-card-body>
+              </b-col>
+            </b-row>
+          </b-card>
+        </div>
+        <pre>{{book.brief}}</pre>
+      </div>
+      <!-- 404 错误显示 -->
+      <div v-else>
+        <page-not-found></page-not-found>
+      </div>
+    </div>
+  </b-container>
+</template>
+
+<script>
+import pageNotFound from '@/components/PageNotFound.vue'
+import { myFetch, log, dir, setClock } from '@/assets/utils.js'
+import { setTimeout } from 'timers'
+import { async } from 'q';
+
+
+export default {
+  name: 'Subject',
+  data() {
+    return {
+      isBusy: true,
+      api: process.env.VUE_APP_BOOK,
+      img: process.env.VUE_APP_IMG,
+      id: null,
+      variants: ['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'dark'],
+      book: {}
+    }
+  },
+  created () {
+    const vm = this
+    vm.id = vm.$route.params.id
+    vm.fetchBook(vm.id).then((response) => {
+      vm.isBusy = false
+      // 伺服器, 找不到数据
+      if (response === null) {
+        this.init(null)
+        return
+      }
+      this.init(response)
+    })
+  },
+  methods: {
+    init (data) {
+      const vm = this
+      vm.$set(vm.book, "brief", data)
+    },
+    async fetchBook (id) {
+      await setClock()
+      return myFetch('GET', `${this.api}?id=${id}`)
+    }
+  },
+  computed: {
+    isOkay () {
+      const score = Number(this.book.brief.score)
+      const o = {}
+      if (score > 9) {
+        o.icon = '👍'
+        o.color = "warning"
+      } else if (score < 7) {
+        o.icon = '👎'
+        o.color = "danger"
+      } else {
+        o.icon = null
+        o.color = "success"
+      }
+      return o
+    },
+    imgSrc () {
+      return `${this.img}/${this.book.brief.imgUrl}.jpg`
+    }
+  },
+  components: {
+    pageNotFound,
+    introCollapse: () => import('@/components/IntroCollapse.vue')
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+.spinner_big {
+  width: 3rem;
+  height: 3rem;
+}
+.absolute-center {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+</style>

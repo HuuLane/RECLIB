@@ -1,18 +1,17 @@
 <template>
   <div id="app">
     <Navbar/>
-    <keep-alive>
+    <keep-alive include="Admin">
       <router-view/>
     </keep-alive>
   </div>
 </template>
 <script>
-import Navbar from '@/components/Navbar.vue'
 
 export default {
   name: 'App',
   components: {
-    Navbar
+    Navbar: () => import('@/components/Navbar.vue')
   }
 }
 </script>
