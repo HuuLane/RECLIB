@@ -22,6 +22,11 @@ export default new Router({
       component: () => import('./views/Subject.vue')
     },
     {
+      path: '/search',
+      name: 'search',
+      component: () => import('./views/Search.vue')
+    },
+    {
       name: 'admin',
       path: '/admin',
       redirect: '/admin/book',

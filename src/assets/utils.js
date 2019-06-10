@@ -18,10 +18,14 @@ const myFetch = async (method, url, data) => {
 }
 
 const setClock = (timeout) => {
-  const time = Math.random() * (timeout || 3)
+  const time = Math.random() * (timeout || 2)
   return new Promise((resolve) => {
     setTimeout(resolve, time * 1000)
   })
 }
 
-export { myFetch, log, dir, setClock }
+const objectIsEmpty = (obj) => {
+  return Object.entries(obj).length === 0 && obj.constructor === Object
+}
+
+export { myFetch, log, dir, setClock, objectIsEmpty }

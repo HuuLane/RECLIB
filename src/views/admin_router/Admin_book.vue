@@ -154,9 +154,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@mixin cant-select {
-  user-select: none;
-}
+@import "@/styles/mixin.scss";
+
 .btn_pagination {
   @include cant-select;
 }

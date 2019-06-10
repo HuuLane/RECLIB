@@ -26,6 +26,7 @@
             :key="index"
             class="mr-2"
             :variant="variants[index]"
+            @click="goToSearch"
           >{{book.brief.tags[index]}}</b-badge>
         </p>
         <hr>
@@ -105,6 +106,10 @@ export default {
     async fetchBook (id) {
       await setClock()
       return myFetch('GET', `${this.api}?id=${id}`)
+    },
+    goToSearch (event) {
+      const content = event.target.innerHTML
+      this.$router.push(`/search?tag=${content}`)
     }
   },
   computed: {

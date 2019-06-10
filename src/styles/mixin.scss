@@ -1,0 +1,27 @@
+// xs
+// sm
+// md
+// lg
+// xl
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+
+@mixin cant-select {
+  user-select: none;
+}
+
+@mixin full-heigt {
+  height: 88vh;
+}
+
+@mixin clear-input-text {
+  outline: none;
+  border:none;
+  background-image:none;
+  background-color:transparent;
+  box-shadow: none;
+}
+
+@mixin bold-outline {
+  outline: 5px solid black;
+}
