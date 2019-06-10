@@ -2,7 +2,7 @@
   <b-container fluid>
     <div class="row">
       <Sidebar/>
-      <div class="col-md-10 ml-sm-auto col-lg-10 px-4 height-fluid">
+      <div class="col-md-10 ml-sm-auto col-lg-10 px-4">
         <keep-alive>
           <router-view></router-view>
         </keep-alive>

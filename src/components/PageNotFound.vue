@@ -6,18 +6,18 @@
 </template>
 
 <script>
-import { setInterval } from 'timers';
+import { setInterval } from 'timers'
 export default {
   name: 'PageNotFound',
-  data() {
+  data () {
     return {
-      countDown: 5,
+      countDown: 5
     }
   },
   methods: {
     goBack () {
       setInterval(() => {
-        this.countDown --
+        this.countDown--
       }, 1000)
     },
     justGo () {
@@ -25,15 +25,15 @@ export default {
     }
   },
   watch: {
-    countDown: function(val) {
+    countDown: function (val) {
       if (!val) {
         this.justGo()
       }
     }
   },
-  created() {
+  created () {
     const vm = this
     vm.goBack()
-  },
+  }
 }
 </script>

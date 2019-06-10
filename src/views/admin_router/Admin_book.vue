@@ -128,7 +128,7 @@ export default {
       // const taget = event.target
       // this.$set(this.hoverRow,'target', target)
       this.$router.push(`/subject/${item.id}`)
-    },
+    }
   },
   computed: {
     showedItems () {
@@ -143,7 +143,7 @@ export default {
       vm.tableIsBusy = false
       // log('rawPageData is array?', Array.isArray(rawPageData))
       return beautifyRawPageData(rawPageData)
-    },
+    }
   },
   watch: {
   },

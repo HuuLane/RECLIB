@@ -18,37 +18,45 @@
             <strong>{{book.brief.rating}}</strong>
           </b-tooltip>
         </h1>
-        <div>
-            <b class="pr-2">标签:</b>
-            <b-badge
-              v-for="(item, index) in book.brief.tags"
-              :key="index"
-              class="mr-2"
-              :variant="variants[index]"
-            >{{book.brief.tags[index]}}</b-badge>
-        </div>
+        <!-- 标签 -->
+        <p>
+          <b class="pr-2">标签:</b>
+          <b-badge
+            v-for="(item, index) in book.brief.tags"
+            :key="index"
+            class="mr-2"
+            :variant="variants[index]"
+          >{{book.brief.tags[index]}}</b-badge>
+        </p>
         <hr>
         <!-- 图片 + info -->
-        <div class="row">
-          <b-card no-body class="overflow-hidden" img-fluid>
-            <b-row no-gutters>
-              <b-col md="6">
-                <b-card-img :src="imgSrc" class="rounded-0"></b-card-img>
-              </b-col>
-              <b-col md="6">
-                <b-card-body title="库存">
-                  <b-card-text>
-                    This is a wider card with supporting text as a natural lead-in to additional content.
-                    This content is a little bit longer.
-                    <!-- 简介 -->
-                    <intro-collapse :id="id"></intro-collapse>
-                  </b-card-text>
-                </b-card-body>
-              </b-col>
-            </b-row>
-          </b-card>
-        </div>
-        <pre>{{book.brief}}</pre>
+        <b-card no-body class="overflow-hidden" img-fluid>
+          <b-row>
+            <b-col md="6">
+              <b-card-img :src="imgSrc" class="rounded-0"></b-card-img>
+            </b-col>
+            <b-col md="6">
+              <b-card-body>
+                <b-card-title>图书信息</b-card-title>
+                <b-card-text>
+                  <!--  -->
+                  <table class="table table-sm">
+                    <tbody>
+                      <tr v-for="(value, name, index) in book.brief.info" :key="index">
+                        <th scope="row">{{index}}</th>
+                        <td>{{name}}</td>
+                        <td>{{value}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <!-- 简介 -->
+                  <intro-collapse :id="id"></intro-collapse>
+                </b-card-text>
+              </b-card-body>
+            </b-col>
+          </b-row>
+        </b-card>
+        <!-- <pre>{{book.brief}}</pre> -->
       </div>
       <!-- 404 错误显示 -->
       <div v-else>
@@ -62,12 +70,11 @@
 import pageNotFound from '@/components/PageNotFound.vue'
 import { myFetch, log, dir, setClock } from '@/assets/utils.js'
 import { setTimeout } from 'timers'
-import { async } from 'q';
-
+import { async } from 'q'
 
 export default {
   name: 'Subject',
-  data() {
+  data () {
     return {
       isBusy: true,
       api: process.env.VUE_APP_BOOK,
@@ -93,7 +100,7 @@ export default {
   methods: {
     init (data) {
       const vm = this
-      vm.$set(vm.book, "brief", data)
+      vm.$set(vm.book, 'brief', data)
     },
     async fetchBook (id) {
       await setClock()
@@ -106,13 +113,13 @@ export default {
       const o = {}
       if (score > 9) {
         o.icon = '👍'
-        o.color = "warning"
+        o.color = 'warning'
       } else if (score < 7) {
         o.icon = '👎'
-        o.color = "danger"
+        o.color = 'danger'
       } else {
         o.icon = null
-        o.color = "success"
+        o.color = 'success'
       }
       return o
     },

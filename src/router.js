@@ -24,6 +24,7 @@ export default new Router({
     {
       name: 'admin',
       path: '/admin',
+      redirect: '/admin/book',
       component: () => import('./views/Admin.vue'),
       children: [
         {

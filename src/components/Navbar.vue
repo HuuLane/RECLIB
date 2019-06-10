@@ -2,7 +2,7 @@
   <div>
     <b-navbar
       variant="faded"
-      toggleable="lg"
+      toggleable="sm"
       type="light"
       class="shadow-sm p-3 bg-white mb-5 rounded"
     >
@@ -18,18 +18,18 @@
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
+        <!-- ml-auto 好神奇 -->
         <b-navbar-nav class="ml-auto">
           <!-- 搜索栏 -->
           <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+            <b-input-group size="sm" class="mr-sm-2" >
+              <b-form-input placeholder="Search"></b-form-input>
+              <b-input-group-append>
+                <b-button><font-awesome-icon icon="search"/></b-button>
+              </b-input-group-append>
+            </b-input-group>
           </b-nav-form>
-
-          <b-nav-item-dropdown text="Lang" right>
-            <b-dropdown-item href="#">EN</b-dropdown-item>
-            <b-dropdown-item href="#">中文</b-dropdown-item>
-          </b-nav-item-dropdown>
-
+          <!-- 用户 -->
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template slot="button-content">

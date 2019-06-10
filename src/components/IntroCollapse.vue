@@ -31,43 +31,43 @@
 </template>
 
 <script>
-  import { myFetch, log, setClock } from '@/assets/utils.js'
-  const beautify = (str) => {
-    return str.split(' ------------------------------------------------------------------------------------------------ ').join('')
-  }
-  export default {
-    name: "IntroCollapse",
-    props: {
-      id: String
-    },
-    data () {
-      return {
-        api: process.env.VUE_APP_BOOK,
-        isBusy: true,
-        intro: []
+import { myFetch, log, setClock } from '@/assets/utils.js'
+const beautify = (str) => {
+  return str.split(' ------------------------------------------------------------------------------------------------ ').join('')
+}
+export default {
+  name: 'IntroCollapse',
+  props: {
+    id: String
+  },
+  data () {
+    return {
+      api: process.env.VUE_APP_BOOK,
+      isBusy: true,
+      intro: []
+    }
+  },
+  methods: {
+    async cacheInfo () {
+      const vm = this
+      if (vm.intro.length) {
+        return
       }
-    },
-    methods: {
-      async cacheInfo () {
-        const vm = this
-        if (vm.intro.length) {
-          return
-        }
-        await setClock(2)
-        const res = await myFetch('GET', `${vm.api}?intro=${vm.id}`)
-        log('res', res)
-        // 取消 busy状态
-        vm.isBusy = false
-        if (!res) {
-          vm.$set(vm.intro, 0, '没有内容')
-          vm.$set(vm.intro, 1, '没有内容')
-          return
-        }
-        vm.$set(vm.intro, 0, beautify(res.intro[0]))
-        vm.$set(vm.intro, 1, beautify(res.intro[1]))
+      await setClock(2)
+      const res = await myFetch('GET', `${vm.api}?intro=${vm.id}`)
+      log('res', res)
+      // 取消 busy状态
+      vm.isBusy = false
+      if (!res) {
+        vm.$set(vm.intro, 0, '没有内容')
+        vm.$set(vm.intro, 1, '没有内容')
+        return
       }
+      vm.$set(vm.intro, 0, beautify(res.intro[0]))
+      vm.$set(vm.intro, 1, beautify(res.intro[1]))
     }
   }
+}
 </script>
 <style lang="scss">
 .text_scroll {
