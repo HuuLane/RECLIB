@@ -15,6 +15,7 @@
         </b-card>
       </div>
     </div>
+    <scroll-to-top></scroll-to-top>
   </b-container>
 </template>
 
@@ -33,8 +34,8 @@ export default {
     }
   },
   methods: {
-    scrollToTop() {
-      window.scrollTo(0,0);
+    scrollToTop () {
+      window.scrollTo(0, 0)
     },
     loadMore () {
       this.busy = true
@@ -46,7 +47,10 @@ export default {
       }, 500)
     }
   },
-  directives: {infiniteScroll}
+  directives: { infiniteScroll },
+  components: {
+    scrollToTop: () => import('@/components/ScrollToTop.vue')
+  }
 }
 </script>
 <style lang="scss" scoped>

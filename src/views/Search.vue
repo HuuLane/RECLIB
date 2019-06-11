@@ -29,6 +29,8 @@
       </div>
       <b-spinner variant="dark" v-else></b-spinner>
     </div>
+    <!-- 辅助组件 -->
+    <scroll-to-top/>
   </b-container>
 </div>
 </template>
@@ -38,7 +40,7 @@
 import { myFetch, log, dir, setClock, objectIsEmpty } from '@/assets/utils.js'
 import infiniteScroll from 'vue-infinite-scroll'
 import { setTimeout } from 'timers'
-import { match } from 'minimatch';
+import { match } from 'minimatch'
 
 const transToUrl = (query) => {
   let str = ''
@@ -121,9 +123,10 @@ export default {
       return Math.ceil(this.documentCount / 10)
     }
   },
-  directives: {infiniteScroll},
+  directives: { infiniteScroll },
   components: {
-    PageNotFound: () => import('@/components/PageNotFound.vue')
+    PageNotFound: () => import('@/components/PageNotFound.vue'),
+    scrollToTop: () => import('@/components/ScrollToTop.vue')
   }
 }
 </script>
