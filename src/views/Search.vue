@@ -1,56 +1,45 @@
 <template>
-  <b-container>
-    <h1>搜寻结果: 共有{{ documentCount }}条数据</h1>
-    
-    <!-- 展示 table -->
-    <b-table
-      striped
-      hover
-      bordered
-      @row-clicked="goToSubject"
-      :items="showedItems"
-      :busy="tableIsBusy"
-      large
-      :fields="tableFields"
+<div>
+  <page-not-found v-if="!documentCount">找不到! 无能为力</page-not-found>
+  <b-container v-else>
+    <h1>共有{{ documentCount }}条数据 (๑¯◡¯๑)~</h1>
+    <div
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="isBusy"
+      infinite-scroll-distance="5"
     >
-      <div slot="table-busy" class="text-center my-4">
-        <b-spinner variant="dark"></b-spinner>
+      <div v-for="(items, index) in pagesRawData" :key="index">
+        <b-card
+          fluid
+          class="mb-2"
+          v-for="(item, index) in items"
+          :key="index"
+          @click="goToSubject(item._id)"
+        >
+          <b-card-title> {{item.title}} </b-card-title>
+          <b-card-text v-if="item.info['副标题']"> {{item.info['副标题']}} </b-card-text>
+          <pre> {{item}} </pre>
+        </b-card>
       </div>
-    </b-table>
-    <!-- 页码控件 -->
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="documentCount"
-      :limit="10"
-      @input="switchPage"
-      align="center"
-      class="btn_pagination"
-    ></b-pagination>
+    </div>
+    <div v-if="isBusy" class="d-flex flex-column flex-wrap justify-content-center align-content-center" style="height: 20vh;">
+      <div v-if="isEnd">
+        <p>那天, 我翻阅字典, 查什么字眼. 形容一件事, 很遥远.</p>
+        <p>天边, 是否在海角对面? 直到九岁, 才知道浪费时间.</p>
+      </div>
+      <b-spinner variant="dark" v-else></b-spinner>
+    </div>
   </b-container>
+</div>
 </template>
 
 <script>
 // eslint-disable-next-line
 import { myFetch, log, dir, setClock, objectIsEmpty } from '@/assets/utils.js'
+import infiniteScroll from 'vue-infinite-scroll'
 import { setTimeout } from 'timers'
+import { match } from 'minimatch';
 
-class FormatedItem {
-  constructor (item) {
-    this.id = item['_id']
-    this.title = item.title
-    this.imgUrl = item.imgUrl
-    this.author = item.info['作者']
-    this.score = item.score
-  }
-}
-const beautifyRawPageData = (rawPageData) => {
-  const o = []
-  for (let i = 0; i < rawPageData.length; i++) {
-    const item = rawPageData[i]
-    o.push(new FormatedItem(item))
-  }
-  return o
-}
 const transToUrl = (query) => {
   let str = ''
   for (const key in query) {
@@ -62,8 +51,9 @@ const transToUrl = (query) => {
   }
   return str.replace('&', '?')
 }
+
 export default {
-  name: 'Admin_book',
+  name: 'Search',
   created () {
     const vm = this
     const query = vm.$route.query
@@ -73,42 +63,19 @@ export default {
       return
     }
     vm.queryUrl = transToUrl(query)
-    // log('queryUrl', queryUrl)
     // 初始化
     myFetch('GET', `${vm.api}${vm.queryUrl}&count`).then(r => {
-      // log('response', response)
       vm.documentCount = Number(r)
-      return myFetch('GET', `${vm.api}${vm.queryUrl}&page=1`)
-    }).then(r => {
-      // 默认便获取第一页数据
-      this.addPageData(1, r)
-    }).catch(err => {
-      log('err', err)
     })
   },
   data () {
     return {
       api: process.env.VUE_APP_BOOK,
-      tableIsBusy: true,
-      documentCount: 0,
-      currentPage: 1,
+      documentCount: 1,
+      currentPage: 0,
+      isBusy: false,
+      isEnd: false,
       queryUrl: '',
-      tableFields: {
-        id: {
-          label: 'ISBM'
-        },
-        title: {
-          label: '标题'
-        },
-        author: {
-          label: '作者'
-        },
-        score: {
-          // key: 'address.city',
-          label: '评分',
-          sortable: true
-        }
-      },
       pagesRawData: []
     }
   },
@@ -129,43 +96,35 @@ export default {
       this.addPageData(index, data)
       return 'save successfully'
     },
-    switchPage () {
+    loadMore () {
       const vm = this
-      vm.tableIsBusy = true
+      vm.isBusy = true
       // log('当前页码', this.currentPage)
-      /**
-       * 1. 设为busy, 取/存数据
-       * 2. 视图切换由count来完成 包括(取消 busy~)
-       */
-      this.cachePageData(this.currentPage).then((response) => {
-        log(response)
+      if (vm.currentPage === vm.maxIndexOfPage) {
+        // log('最大页啦~')
+        vm.isEnd = true
+        return
+      }
+      vm.cachePageData(++vm.currentPage).then((response) => {
+        vm.isBusy = false
       }).catch(err => {
         log('err', err)
+        vm.isBusy = false
       })
     },
-    goToSubject (item, index, event) {
-      // const taget = event.target
-      // this.$set(this.hoverRow,'target', target)
-      this.$router.push(`/subject/${item.id}`)
+    goToSubject (_id) {
+      this.$router.push(`/subject/${_id}`)
     }
   },
   computed: {
-    showedItems () {
-      const vm = this
-      // 这是一个数组, 含有一页raw数据
-      const rawPageData = vm.pagesRawData[this.currentPage - 1]
-      // 数据还没收到是undefine
-      if (!rawPageData) {
-        return
-      }
-      // 收到数据状态取消busy
-      vm.tableIsBusy = false
-      // log('rawPageData is array?', Array.isArray(rawPageData))
-      return beautifyRawPageData(rawPageData)
+    maxIndexOfPage () {
+      return Math.ceil(this.documentCount / 10)
     }
   },
-  watch: {
-  },
+  directives: {infiniteScroll},
+  components: {
+    PageNotFound: () => import('@/components/PageNotFound.vue')
+  }
 }
 </script>
 

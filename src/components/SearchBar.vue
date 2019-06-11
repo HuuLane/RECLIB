@@ -20,7 +20,7 @@ export default {
   props: {
     msg: String
   },
-  data() {
+  data () {
     return {
       placeholder: '搜索书面, 作者, 标签 etc.',
       inputContent: ''
