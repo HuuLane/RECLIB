@@ -56,7 +56,7 @@ export default {
     vm.axios({
       url: `${process.env.VUE_APP_BOOK}`,
       method: 'GET',
-      params: {count: 1, ...vm.queryParams}
+      params: { count: 1, ...vm.queryParams }
     }).then((response) => {
       vm.documentCount = Number(response.data)
     }).catch(err => {

@@ -97,7 +97,7 @@ export default {
       return
     }
     // 从服务器拉取
-    vm.fetchBook().then(({data}) => {
+    vm.fetchBook().then(({ data }) => {
       vm.isBusy = false
       // 伺服器, 找不到数据
       if (data === null) {
@@ -119,9 +119,9 @@ export default {
       const vm = this
       await setClock()
       return vm.axios({
-          url: `${process.env.VUE_APP_BOOK}`,
-          method: 'GET',
-          params: { id: vm.id }
+        url: `${process.env.VUE_APP_BOOK}`,
+        method: 'GET',
+        params: { id: vm.id }
       })
     },
     goToSearch (event) {
