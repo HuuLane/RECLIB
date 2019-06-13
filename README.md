@@ -24,10 +24,11 @@
 - 学习制作用户系统.
 - 休息&考试一天.
 
-6/13
-- 用户系统.
+6/13 **代码结构重构**
 - 将 admin 路由分离出去.
-- 加入 vuex.
+- 将 Fetch 改为 axios.
+- 加入 vuex
+- introCollapse, search, subject, 改为使用 vuex管理资料.
 
 ### 坑
 

@@ -1,28 +1,49 @@
 <template>
-  <div>
-    <b-button v-clipscroll @click="goToTop" squared variant="outline-dark" class="myBtn">
-      <font-awesome-icon icon="angle-up"/>
-    </b-button>
-  </div>
+  <b-button v-scroll @click="goToTop" @dblclick="goToTopInstantly" squared variant="outline-dark" class="myBtn">
+    <slot>↑</slot>
+  </b-button>
 </template>
 
 <script>
+const setClock = (time) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time * 1000)
+  })
+}
+
 export default {
   name: 'ScrollToTop',
+  props: {
+    fps: {
+      type: Number,
+      default: 120
+    },
+    duration: {
+      type: Number,
+      default: 0.5
+    }
+  },
   methods: {
-    goToTop () {
-      document.body.scrollTop = 0
+    async goToTop () {
+      const vm = this
+      const distance = (document.documentElement.scrollTop) / (vm.fps * vm.duration)
+      while (document.documentElement.scrollTop) {
+        document.documentElement.scrollTop -= distance
+        await setClock(1 / vm.fps)
+      }
+    },
+    goToTopInstantly () {
       document.documentElement.scrollTop = 0
     }
   },
   directives: {
-    clipscroll: {
+    scroll: {
       inserted (el) {
         window.addEventListener('scroll', () => {
-          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            el.style.display = "block"
+          if (document.documentElement.scrollTop > 20) {
+            el.style.display = 'block'
           } else {
-            el.style.display = "none"
+            el.style.display = 'none'
           }
         })
       }
@@ -40,5 +61,3 @@ export default {
   z-index: 99;
 }
 </style>
-
-

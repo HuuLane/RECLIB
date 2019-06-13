@@ -9,27 +9,22 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: () => import('./views/Home.vue')
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('./views/About.vue')
+      component: () => import('@/views/Home.vue')
     },
     {
       path: '/subject/:id',
       name: 'subject',
-      component: () => import('./views/Subject.vue')
+      component: () => import('@/views/Subject.vue')
     },
     {
       path: '/search',
       name: 'search',
-      component: () => import('./views/Search.vue')
+      component: () => import('@/views/Search.vue')
     },
     {
       path: '/test',
       name: 'test',
-      component: () => import('./views/test.vue')
+      component: () => import('@/views/test.vue')
     }
   ]
 })

@@ -2,13 +2,13 @@
 <div>
   <page-not-found v-if="!documentCount">找不到! 无能为力</page-not-found>
   <b-container v-else>
-    <h1>共有{{ documentCount }}条数据 (๑¯◡¯๑)~</h1>
+    <h1>搜寻结果: 共有{{ documentCount }}条</h1>
     <div
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="isBusy"
       infinite-scroll-distance="5"
     >
-      <div v-for="(items, index) in pagesRawData" :key="index">
+      <div v-for="(items, tensIndex) in pagesRawData" :key="tensIndex">
         <b-card
           fluid
           class="mb-2"
@@ -16,68 +16,61 @@
           :key="index"
           @click="goToSubject(item._id)"
         >
-          <b-card-title> {{item.title}} </b-card-title>
+          <b-card-title> {{tensIndex * 10 + index + 1}} {{item.title}} </b-card-title>
           <b-card-text v-if="item.info['副标题']"> {{item.info['副标题']}} </b-card-text>
           <pre> {{item}} </pre>
         </b-card>
       </div>
     </div>
-    <div v-if="isBusy" class="d-flex flex-column flex-wrap justify-content-center align-content-center" style="height: 20vh;">
-      <div v-if="isEnd">
+    <!-- 辅助组件 -->
+    <div v-show="isBusy" class="d-flex flex-column flex-wrap justify-content-center align-content-center" style="height: 20vh;">
+      <div v-show="isEnd">
         <p>那天, 我翻阅字典, 查什么字眼. 形容一件事, 很遥远.</p>
         <p>天边, 是否在海角对面? 直到九岁, 才知道浪费时间.</p>
       </div>
-      <b-spinner variant="dark" v-else></b-spinner>
+      <b-spinner variant="dark" v-show="!isEnd"></b-spinner>
     </div>
-    <!-- 辅助组件 -->
-    <scroll-to-top/>
+    <scroll-to-top :duration="0.5"><font-awesome-icon icon="angle-up"/></scroll-to-top>
   </b-container>
 </div>
 </template>
 
 <script>
 // eslint-disable-next-line
-import { myFetch, log, dir, setClock, objectIsEmpty } from '@/assets/utils.js'
+import { log, dir, setClock, objectIsEmpty } from '@/assets/utils.js'
 import infiniteScroll from 'vue-infinite-scroll'
 import { setTimeout } from 'timers'
 import { match } from 'minimatch'
-
-const transToUrl = (query) => {
-  let str = ''
-  for (const key in query) {
-    if (query[key]) {
-      str += `&${key}=${query[key]}`
-    } else {
-      str += `&${key}`
-    }
-  }
-  return str.replace('&', '?')
-}
 
 export default {
   name: 'Search',
   created () {
     const vm = this
-    const query = vm.$route.query
+    vm.queryParams = Object.assign({}, vm.$route.query)
     // 如果没有参数, 回到首页~
-    if (objectIsEmpty(query)) {
+    if (objectIsEmpty(vm.queryParams)) {
       vm.$router.push('/')
       return
     }
-    vm.queryUrl = transToUrl(query)
     // 初始化
-    myFetch('GET', `${vm.api}${vm.queryUrl}&count`).then(r => {
-      vm.documentCount = Number(r)
+    vm.axios({
+      url: `${process.env.VUE_APP_BOOK}`,
+      method: 'GET',
+      params: Object.assign({}, { count: 1 }, vm.queryParams)
+    }).then((response) => {
+      vm.documentCount = Number(response.data)
+    }).catch(err => {
+      log('err', err)
     })
   },
   data () {
     return {
       api: process.env.VUE_APP_BOOK,
-      documentCount: 1,
+      documentCount: 'loading...',
       currentPage: 0,
       isBusy: false,
       isEnd: false,
-      queryUrl: '',
+      queryParams: {},
       pagesRawData: []
     }
   },
@@ -94,9 +87,21 @@ export default {
       }
       // 模拟延迟吧..
       await setClock()
-      const data = await myFetch('GET', `${vm.api}${vm.queryUrl}&page=${index}`)
-      this.addPageData(index, data)
-      return 'save successfully'
+      try {
+        const { data } = await vm.axios({
+          url: `${process.env.VUE_APP_BOOK}`,
+          method: 'GET',
+          params: Object.assign({}, { page: index }, vm.queryParams)
+        })
+        // log('data', data)
+        this.addPageData(index, data)
+        // log('save successfully')
+        return true
+      } catch (error) {
+        console.error(error)
+        // log('unsave successfully')
+        return false
+      }
     },
     loadMore () {
       const vm = this
@@ -107,11 +112,8 @@ export default {
         vm.isEnd = true
         return
       }
-      vm.cachePageData(++vm.currentPage).then((response) => {
-        vm.isBusy = false
-      }).catch(err => {
-        log('err', err)
-        vm.isBusy = false
+      vm.cachePageData(++vm.currentPage).then((isSuccess) => {
+        vm.isBusy = !isSuccess
       })
     },
     goToSubject (_id) {
@@ -131,7 +133,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @mixin cant-select {
   user-select: none;
