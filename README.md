@@ -20,6 +20,15 @@
 - 使用vue-infinite-scroll, 将 search页修改. 并添加一个 scroll to top.
 - 复习概率论准备考试.
 
+6/12
+- 学习制作用户系统.
+- 休息&考试一天.
+
+6/13
+- 用户系统.
+- 将 admin 路由分离出去.
+- 加入 vuex.
+
 ### 坑
 
 1. 仅指定特定的 router-view keep-alive 的话, 是用模块名而不是 router name.

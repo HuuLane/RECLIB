@@ -27,25 +27,6 @@ export default new Router({
       component: () => import('./views/Search.vue')
     },
     {
-      name: 'admin',
-      path: '/admin',
-      redirect: '/admin/book',
-      component: () => import('./views/Admin.vue'),
-      children: [
-        {
-          path: 'book',
-          name: '图书管理',
-          component: () => import('./views/admin_router/Admin_book.vue')
-        },
-        {
-          // 这里不要写 `/`
-          path: 'recommend',
-          name: '今日推荐',
-          component: () => import('./views/admin_router/Admin_recommend.vue')
-        }
-      ]
-    },
-    {
       path: '/test',
       name: 'test',
       component: () => import('./views/test.vue')
