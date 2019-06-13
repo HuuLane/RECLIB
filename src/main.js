@@ -7,7 +7,7 @@ import App from '@/App.vue'
 import router from '@/views/router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import store from '@/store/store'
+import store from '@/store/'
 
 // 全局使用axios
 Vue.use(VueAxios, axios)

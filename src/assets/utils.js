@@ -17,10 +17,10 @@ const myFetch = async (method, url, data) => {
   return response.json()
 }
 
-const setClock = (timeout) => {
-  const time = Math.random() * (timeout || 2)
+const setClock = (timeout = 2) => {
+  const time = Math.random() * timeout
   return new Promise((resolve) => {
-    setTimeout(resolve, time * 1000)
+    setTimeout(resolve, time * 1000, 'finish')
   })
 }
 

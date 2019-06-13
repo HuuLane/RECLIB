@@ -46,7 +46,7 @@ export default {
   name: 'Search',
   created () {
     const vm = this
-    vm.queryParams = Object.assign({}, vm.$route.query)
+    vm.queryParams = { ...vm.$route.query }
     // 如果没有参数, 回到首页~
     if (objectIsEmpty(vm.queryParams)) {
       vm.$router.push('/')
@@ -56,7 +56,7 @@ export default {
     vm.axios({
       url: `${process.env.VUE_APP_BOOK}`,
       method: 'GET',
-      params: Object.assign({}, { count: 1 }, vm.queryParams)
+      params: {count: 1, ...vm.queryParams}
     }).then((response) => {
       vm.documentCount = Number(response.data)
     }).catch(err => {
@@ -78,12 +78,15 @@ export default {
     addPageData (pageIndex, data) {
       const vm = this
       vm.$set(vm.pagesRawData, pageIndex - 1, data)
+      // 并且送入 store
+      vm.$store.commit('saveRowDataIntoItems', data)
     },
     async cachePageData (index) {
       const vm = this
       // 如果已经缓存, 则返回
       if (vm.pagesRawData[index - 1]) {
-        return 'has cache'
+        // log('has cache')
+        return true
       }
       // 模拟延迟吧..
       await setClock()
@@ -91,9 +94,8 @@ export default {
         const { data } = await vm.axios({
           url: `${process.env.VUE_APP_BOOK}`,
           method: 'GET',
-          params: Object.assign({}, { page: index }, vm.queryParams)
+          params: { page: index, ...vm.queryParams }
         })
-        // log('data', data)
         this.addPageData(index, data)
         // log('save successfully')
         return true

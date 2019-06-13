@@ -69,7 +69,7 @@
 
 <script>
 import pageNotFound from '@/components/PageNotFound.vue'
-import { myFetch, log, dir, setClock } from '@/assets/utils.js'
+import { log, dir, setClock } from '@/assets/utils.js'
 import { setTimeout } from 'timers'
 import { async } from 'q'
 
@@ -88,14 +88,26 @@ export default {
   created () {
     const vm = this
     vm.id = vm.$route.params.id
-    vm.fetchBook(vm.id).then((response) => {
+    // 尝试从 store 读取
+    const readDataFromStore = vm.$store.state.items[vm.id]
+    if (readDataFromStore) {
+      // 读取成功
+      vm.isBusy = false
+      this.init(readDataFromStore)
+      return
+    }
+    // 从服务器拉取
+    vm.fetchBook().then(({data}) => {
       vm.isBusy = false
       // 伺服器, 找不到数据
-      if (response === null) {
-        this.init(null)
+      if (data === null) {
+        vm.init(null)
         return
       }
-      this.init(response)
+      vm.init(data)
+      vm.$store.commit('saveRowDataIntoItems', data)
+    }).catch(err => {
+      console.error(err)
     })
   },
   methods: {
@@ -103,9 +115,14 @@ export default {
       const vm = this
       vm.$set(vm.book, 'brief', data)
     },
-    async fetchBook (id) {
+    async fetchBook () {
+      const vm = this
       await setClock()
-      return myFetch('GET', `${this.api}?id=${id}`)
+      return vm.axios({
+          url: `${process.env.VUE_APP_BOOK}`,
+          method: 'GET',
+          params: { id: vm.id }
+      })
     },
     goToSearch (event) {
       const content = event.target.innerHTML
