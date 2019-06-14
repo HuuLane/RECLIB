@@ -2,8 +2,8 @@
   <div class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt">
     <!-- <img src="@/assets/rec.png" fluid> -->
     <h1 class="home-title mb-5">RECLIB</h1>
-    <h1 class="home-title mb-5">矩阵图书馆</h1>
-    <search-bar/>
+    <search-bar class="mb-5"/>
+    <h1 class="home-title">矩阵图书馆</h1>
   </div>
 </template>
 
