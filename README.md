@@ -28,10 +28,11 @@
 - 将 admin 路由分离出去.
 - 将 Fetch 改为 axios.
 - 加入 vuex
-- search, subject, 改为使用 vuex管理资料.
+- <del>search, subject, 改为使用 vuex管理资料.</del>
 
 6/14 
-- 设计一个更好的 api, 配合 vuex.
+- 设计一个更合理的 api 省流量.
+- 决定只使用 vuex 管理用户状态.
 
 ### 坑
 

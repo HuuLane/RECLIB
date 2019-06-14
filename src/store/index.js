@@ -4,24 +4,12 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  strict: true,
   state: {
-    user: [],
-    items: {}
+    user: []
   },
   mutations: {
     loading (state, payload) {
       state.user.push(...payload)
-    },
-    saveRowDataIntoItems (state, payload) {
-      if (Array.isArray(payload)) {
-        for (let i = 0; i < payload.length; i++) {
-          const item = payload[i]
-          state.items[item._id] = item
-        }
-      } else {
-        state[payload._id] = payload
-      }
     }
   },
   actions: {

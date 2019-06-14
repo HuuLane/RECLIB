@@ -1,46 +1,52 @@
 <template>
-<div>
-  <page-not-found v-if="!documentCount">找不到! 无能为力</page-not-found>
-  <b-container v-else>
-    <h1>搜寻结果: 共有{{ documentCount }}条</h1>
-    <div
-      v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="isBusy"
-      infinite-scroll-distance="5"
-    >
-      <div v-for="(items, tensIndex) in pagesRawData" :key="tensIndex">
-        <b-card
-          fluid
-          class="mb-2"
-          v-for="(item, index) in items"
-          :key="index"
-          @click="goToSubject(item._id)"
-        >
-          <b-card-title> {{tensIndex * 10 + index + 1}} {{item.title}} </b-card-title>
-          <b-card-text v-if="item.info['副标题']"> {{item.info['副标题']}} </b-card-text>
-          <pre> {{item}} </pre>
-        </b-card>
+  <div>
+    <page-not-found v-if="!documentCount">找不到! 无能为力</page-not-found>
+    <b-container v-else>
+      <h1>搜寻结果: 共有{{ documentCount }}条</h1>
+      <div
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="isBusy"
+        infinite-scroll-distance="3"
+      >
+        <div v-for="(items, tensIndex) in pagesRawData" :key="tensIndex">
+          <b-card
+            fluid
+            class="mb-3 card_border"
+            v-for="(item, index) in items"
+            :key="index"
+            @click="goToSubject(item._id)"
+          >
+            <b-card-body>
+              <b-card-title>{{tensIndex * 10 + index + 1}} {{item.title}}</b-card-title>
+              <b-card-sub-title v-if="item.info" class="mb-2">作者: {{ item.info['作者'] }} </b-card-sub-title>
+              <b-card-sub-title v-if="item.score && item.rating">评分: {{item.score}} {{item.rating}}人读过</b-card-sub-title>
+            </b-card-body>
+          </b-card>
+        </div>
       </div>
-    </div>
-    <!-- 辅助组件 -->
-    <div v-show="isBusy" class="d-flex flex-column flex-wrap justify-content-center align-content-center" style="height: 20vh;">
-      <div v-show="isEnd">
-        <p>那天, 我翻阅字典, 查什么字眼. 形容一件事, 很遥远.</p>
-        <p>天边, 是否在海角对面? 直到九岁, 才知道浪费时间.</p>
+      <!-- 辅助组件 -->
+      <div
+        v-show="isBusy"
+        class="d-flex flex-column flex-wrap justify-content-center align-content-center"
+        style="height: 20vh;"
+      >
+        <div v-show="isEnd">
+          <p>那天, 我翻阅字典, 查什么字眼. 形容一件事, 很遥远.</p>
+          <p>天边, 是否在海角对面? 直到九岁, 才知道浪费时间.</p>
+        </div>
+        <b-spinner variant="dark" v-show="!isEnd"></b-spinner>
       </div>
-      <b-spinner variant="dark" v-show="!isEnd"></b-spinner>
-    </div>
-    <scroll-to-top :duration="0.5"><font-awesome-icon icon="angle-up"/></scroll-to-top>
-  </b-container>
-</div>
+      <scroll-to-top :duration="0.5">
+        <font-awesome-icon icon="angle-up"/>
+      </scroll-to-top>
+    </b-container>
+  </div>
 </template>
 
 <script>
 // eslint-disable-next-line
 import { log, dir, setClock, objectIsEmpty } from '@/assets/utils.js'
 import infiniteScroll from 'vue-infinite-scroll'
-import { setTimeout } from 'timers'
-import { match } from 'minimatch'
 
 export default {
   name: 'Search',
@@ -57,10 +63,10 @@ export default {
       url: `${process.env.VUE_APP_BOOK}`,
       method: 'GET',
       params: { count: 1, ...vm.queryParams }
-    }).then((response) => {
-      vm.documentCount = Number(response.data)
+    }).then(({ data }) => {
+      vm.documentCount = Number(data)
     }).catch(err => {
-      log('err', err)
+      console.error(err)
     })
   },
   data () {
@@ -79,7 +85,7 @@ export default {
       const vm = this
       vm.$set(vm.pagesRawData, pageIndex - 1, data)
       // 并且送入 store
-      vm.$store.commit('saveRowDataIntoItems', data)
+      // vm.$store.commit('saveRowDataIntoItems', data)
     },
     async cachePageData (index) {
       const vm = this
@@ -136,10 +142,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/mixin.scss';
 @mixin cant-select {
   user-select: none;
 }
 .btn_pagination {
   @include cant-select;
+}
+.card_border {
+  @include bold-outline;
 }
 </style>

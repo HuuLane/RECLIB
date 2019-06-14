@@ -68,10 +68,9 @@
 </template>
 
 <script>
-import pageNotFound from '@/components/PageNotFound.vue'
+// eslint-disable-next-line
 import { log, dir, setClock } from '@/assets/utils.js'
-import { setTimeout } from 'timers'
-import { async } from 'q'
+import pageNotFound from '@/components/PageNotFound.vue'
 
 export default {
   name: 'Subject',
@@ -88,14 +87,14 @@ export default {
   created () {
     const vm = this
     vm.id = vm.$route.params.id
-    // 尝试从 store 读取
-    const readDataFromStore = vm.$store.state.items[vm.id]
-    if (readDataFromStore) {
-      // 读取成功
-      vm.isBusy = false
-      this.init(readDataFromStore)
-      return
-    }
+    // // 尝试从 store 读取
+    // const readDataFromStore = vm.$store.state.items[vm.id]
+    // if (readDataFromStore) {
+    //   // 读取成功
+    //   vm.isBusy = false
+    //   this.init(readDataFromStore)
+    //   return
+    // }
     // 从服务器拉取
     vm.fetchBook().then(({ data }) => {
       vm.isBusy = false
