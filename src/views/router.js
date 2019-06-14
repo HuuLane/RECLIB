@@ -22,6 +22,11 @@ export default new Router({
       component: () => import('@/views/Search.vue')
     },
     {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('@/views/Signup.vue')
+    },
+    {
       path: '/test',
       name: 'test',
       component: () => import('@/views/test.vue')
