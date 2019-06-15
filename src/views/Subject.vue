@@ -87,14 +87,6 @@ export default {
   created () {
     const vm = this
     vm.id = vm.$route.params.id
-    // // 尝试从 store 读取
-    // const readDataFromStore = vm.$store.state.items[vm.id]
-    // if (readDataFromStore) {
-    //   // 读取成功
-    //   vm.isBusy = false
-    //   this.init(readDataFromStore)
-    //   return
-    // }
     // 从服务器拉取
     vm.fetchBook().then(({ data }) => {
       vm.isBusy = false
@@ -104,7 +96,6 @@ export default {
         return
       }
       vm.init(data)
-      vm.$store.commit('saveRowDataIntoItems', data)
     }).catch(err => {
       console.error(err)
     })

@@ -107,11 +107,14 @@ export default {
       vm.$refs['bv-modal-msg'].hide()
       const code = Number(vm.resInfo.code)
       if (code === 1) {
-
+        vm.$store.dispatch('login', {
+          email: vm.email,
+          password: vm.password
+        })
       } else if (code === 0) {
-
+        // 奇怪的错误, 请联系管理员
       } else if (code === 2) {
-
+        // 用户名 || 邮箱已有人先
       }
     }
   },

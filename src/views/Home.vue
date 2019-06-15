@@ -4,17 +4,25 @@
     <h1 class="home-title mb-5">RECLIB</h1>
     <search-bar class="mb-5"/>
     <h1 class="home-title">矩阵图书馆</h1>
+    <h1 v-if="userName"> {{userName}} </h1>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import searchBar from '@/components/SearchBar.vue'
-
+// eslint-disable-next-line
+const { log } = console
 export default {
   name: 'home',
   components: {
     searchBar
+  },
+  computed: {
+    userName () {
+      const vm = this
+      return vm.$store.state.userName
+    }
   }
 }
 </script>
