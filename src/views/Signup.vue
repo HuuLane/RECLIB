@@ -126,7 +126,7 @@ export default {
   computed: {
     nameState () {
       const l = this.name.length
-      return l >= 6 && l <= 18
+      return l >= 2 && l <= 18
     },
     passwordState () {
       const l = this.password.length
