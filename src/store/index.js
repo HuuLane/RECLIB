@@ -6,8 +6,8 @@ Vue.use(Vuex)
 const { log } = console
 export default new Vuex.Store({
   state: {
-    userName: null
-    // isLogin: false
+    userName: null,
+    convenientRecordEmail: null
   },
   mutations: {
     checkResponse (state, payload) {
@@ -21,6 +21,10 @@ export default new Vuex.Store({
       if (payload) {
         state.userName = payload
       }
+    },
+    comfortUser (state, payload) {
+      log('payload', payload)
+      state.convenientRecordEmail = payload
     }
   },
   actions: {
@@ -40,6 +44,7 @@ export default new Vuex.Store({
         data: payload
       })
       commit('checkResponse', data)
+      return data
     }
   }
 })

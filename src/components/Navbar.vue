@@ -31,13 +31,14 @@
           </b-input-group>
         </b-nav-form> -->
         <!-- 用户 -->
-        <b-nav-item-dropdown right>
+        <router-link to="/login" is="b-nav-item" v-if="!userName">登录</router-link>
+        <b-nav-item-dropdown v-else right>
           <!-- Using 'button-content' slot -->
           <template slot="button-content">
-            <em>User</em>
+            {{userName}}
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item @click="signOut">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -46,7 +47,18 @@
 
 <script>
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  methods: {
+    signOut () {
+      //
+    }
+  },
+  computed: {
+    userName () {
+      const vm = this
+      return vm.$store.state.userName
+    }
+  }
 }
 </script>
 
