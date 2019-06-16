@@ -38,26 +38,29 @@
             </b-col>
             <b-col md="6">
               <b-card-body>
+                <!-- 信息cell -->
                 <b-card-title>图书信息</b-card-title>
-                <b-card-text>
-                  <!--  -->
-                  <table class="table table-sm">
-                    <tbody>
-                      <tr v-for="(value, name, index) in book.brief.info" :key="index">
-                        <th scope="row">{{index}}</th>
-                        <td>{{name}}</td>
-                        <td>{{value}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <!-- 简介 -->
-                  <intro-collapse :id="id"></intro-collapse>
-                </b-card-text>
+                <table class="table table-sm">
+                  <tbody>
+                    <tr v-for="(value, name, index) in book.brief.info" :key="index">
+                      <th scope="row">{{index}}</th>
+                      <td>{{name}}</td>
+                      <td>{{value}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <hr>
+                <!-- 库存情况 -->
+                <b-card-title>库存信息</b-card-title>
+                <book-stock :id="id"></book-stock>
+                <!-- 简介 -->
+                <hr>
+                <b-card-title>无聊简介</b-card-title>
+                <intro-collapse :id="id"></intro-collapse>
               </b-card-body>
             </b-col>
           </b-row>
         </b-card>
-        <!-- <pre>{{book.brief}}</pre> -->
       </div>
       <!-- 404 错误显示 -->
       <div v-else>
@@ -141,13 +144,25 @@ export default {
   },
   components: {
     pageNotFound,
-    introCollapse: () => import('@/components/IntroCollapse.vue')
+    introCollapse: () => import('@/components/IntroCollapse.vue'),
+    bookStock: () => import('@/components/BookStock.vue')
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "@/styles/mixin.scss";
+.container_full-heigt {
+  @include full-heigt;
+}
+.home-title {
+  text-align: center;
+  @include bold-outline;
+}
+.div-border {
+  @include bold-outline;
+}
 .spinner_big {
   width: 3rem;
   height: 3rem;

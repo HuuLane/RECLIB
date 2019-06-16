@@ -1,9 +1,6 @@
 <template>
   <div role="tablist">
-    <b-card no-body class="mb-1">
-      <b-card-header header-tag="header" class="p-1" role="tab">
-        <b-button @click="cacheInfo" block v-b-toggle.accordion-1 variant="outline-dark">内容简介</b-button>
-      </b-card-header>
+      <b-button @click="cacheInfo" squared  block v-b-toggle.accordion-1 variant="outline-dark">内容简介</b-button>
       <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
         <b-card-body>
           <div class="text-center my-4" v-if="isBusy">
@@ -12,12 +9,8 @@
           <b-card-text class="text_scroll" v-else> {{ intro[0] }} </b-card-text>
         </b-card-body>
       </b-collapse>
-    </b-card>
 
-    <b-card no-body class="mb-1">
-      <b-card-header header-tag="header" class="p-1" role="tab">
-        <b-button @click="cacheInfo" block href="#" v-b-toggle.accordion-2 variant="outline-dark">作者简介</b-button>
-      </b-card-header>
+      <b-button @click="cacheInfo" squared  block href="#" v-b-toggle.accordion-2 variant="outline-dark">作者简介</b-button>
       <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
         <b-card-body>
           <div class="text-center my-4" v-if="isBusy">
@@ -26,7 +19,6 @@
           <b-card-text class="text_scroll" v-else>{{ intro[1] }}</b-card-text>
         </b-card-body>
       </b-collapse>
-    </b-card>
   </div>
 </template>
 
