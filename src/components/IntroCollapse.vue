@@ -23,7 +23,8 @@
 </template>
 
 <script>
-import { myFetch, log, setClock } from '@/assets/utils.js'
+// eslint-disable-next-line
+import { log, setClock } from '@/assets/utils.js'
 const beautify = (str) => {
   return str.split(' ------------------------------------------------------------------------------------------------ ').join('')
 }
@@ -46,8 +47,11 @@ export default {
         return
       }
       await setClock(2)
-      const res = await myFetch('GET', `${vm.api}?intro=${vm.id}`)
-      log('res', res)
+      const { data: res } = await vm.axios({
+        method: 'GET',
+        url: `${vm.api}?intro=${vm.id}`
+      })
+      // log('res', res)
       // 取消 busy状态
       vm.isBusy = false
       if (!res) {

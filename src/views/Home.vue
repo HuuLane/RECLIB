@@ -3,8 +3,8 @@
     <!-- <img src="@/assets/rec.png" fluid> -->
     <h1 class="home-title mb-5">RECLIB</h1>
     <search-bar class="mb-5"/>
-    <h1 class="home-title">矩阵图书馆</h1>
-    <h1 v-if="userName"> {{userName}} </h1>
+    <h1 v-if="userName" class="home-title"> {{userName}} </h1>
+    <h1 v-else class="home-title">矩阵图书馆</h1>
   </div>
 </template>
 

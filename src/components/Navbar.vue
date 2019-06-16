@@ -12,7 +12,6 @@
     <!-- toggle 内容 -->
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <router-link tag="b-nav-item" to="/about">about</router-link>
         <router-link tag="b-nav-item" to="/test">test</router-link>
       </b-navbar-nav>
 

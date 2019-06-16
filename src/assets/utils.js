@@ -1,21 +1,5 @@
 // console
 const { log, dir } = console
-// postData
-const myFetch = async (method, url, data) => {
-  // Default options are marked with *
-  const options = {
-    headers: {
-      'content-type': 'application/json'
-    },
-    method,
-    mode: 'cors'
-  }
-  if (method === 'POST') {
-    options.body = JSON.stringify(data)
-  }
-  const response = await fetch(url, options)
-  return response.json()
-}
 
 const setClock = (timeout = 2) => {
   const time = Math.random() * timeout
@@ -41,4 +25,4 @@ const timeConverter = (timestamp) => {
   return time
 }
 
-export { myFetch, log, dir, setClock, objectIsEmpty, timeConverter }
+export { log, dir, setClock, objectIsEmpty, timeConverter }
