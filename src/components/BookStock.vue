@@ -12,13 +12,20 @@
         </tr>
       </tbody>
     </table>
-    <b-btn
-      variant="outline-dark"
-      squared
-      class="ml-auto"
-      block
-      @click="borrowBooks"
-    >剩余: {{stockNum}} 想借</b-btn>
+    <!-- 借书按钮 -->
+    <div id="btn-borrow-book">
+      <b-btn
+        variant="outline-dark"
+        squared
+        class="ml-auto"
+        block
+        @click="borrowBooks"
+        :disabled="!isLogin"
+      >剩余: {{stockNum}} 我想借</b-btn>
+      <b-tooltip v-if="!isLogin" target="btn-borrow-book" placement="right">
+        <strong>登录可借</strong>
+      </b-tooltip>
+    </div>
     <!-- 模块消息 -->
     <b-modal ref="bv-modal-msg" centered hide-footer>
       <template slot="modal-title">RECLAB</template>
@@ -31,11 +38,13 @@
 </template>
 
 <script>
+// eslint-disable-line
 import { timeConverter, log } from '@/assets/utils'
 export default {
   name: 'BookStock',
   created () {
     const vm = this
+    log('vm.id', vm.id)
     vm.getStock()
   },
   props: {
@@ -55,6 +64,13 @@ export default {
         return 'Loading..'
       }
       return vm.data.count - vm.data.rentOut.length
+    },
+    userName () {
+      const vm = this
+      return vm.$store.state.userName
+    },
+    isLogin () {
+      return Boolean(this.userName)
     }
   },
   methods: {

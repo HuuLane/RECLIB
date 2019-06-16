@@ -52,15 +52,17 @@
                 <hr>
                 <!-- 库存情况 -->
                 <b-card-title>库存信息</b-card-title>
-                <book-stock :id="id"></book-stock>
+                <book-stock :id="id"/>
                 <!-- 简介 -->
                 <hr>
                 <b-card-title>无聊简介</b-card-title>
-                <intro-collapse :id="id"></intro-collapse>
+                <intro-collapse :id="id" />
               </b-card-body>
             </b-col>
           </b-row>
         </b-card>
+        <!-- 评论 -->
+        <comment-board class="mt-5" :id="id" />
       </div>
       <!-- 404 错误显示 -->
       <div v-else>
@@ -145,7 +147,8 @@ export default {
   components: {
     pageNotFound,
     introCollapse: () => import('@/components/IntroCollapse.vue'),
-    bookStock: () => import('@/components/BookStock.vue')
+    bookStock: () => import('@/components/BookStock.vue'),
+    commentBoard: () => import('@/components/Comment.vue')
   }
 }
 </script>
