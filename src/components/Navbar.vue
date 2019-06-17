@@ -37,7 +37,7 @@
             {{userName}}
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item @click="signOut">Sign Out</b-dropdown-item>
+          <b-dropdown-item @click="logOut">退出</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -48,8 +48,10 @@
 export default {
   name: 'Navbar',
   methods: {
-    signOut () {
-      //
+    logOut () {
+      // 退出登录
+      const vm = this
+      vm.$store.dispatch('logOut')
     }
   },
   computed: {

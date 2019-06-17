@@ -7,7 +7,7 @@ const { log } = console
 export default new Vuex.Store({
   state: {
     userName: null,
-    convenientRecordEmail: null
+    convenientRecord: null
   },
   mutations: {
     checkResponse (state, payload) {
@@ -24,7 +24,7 @@ export default new Vuex.Store({
     },
     comfortUser (state, payload) {
       log('payload', payload)
-      state.convenientRecordEmail = payload
+      state.convenientRecord = { ...payload }
     }
   },
   actions: {
@@ -45,6 +45,16 @@ export default new Vuex.Store({
       })
       commit('checkResponse', data)
       return data
+    },
+    async logOut ({ commit, state }) {
+      log('**louOut')
+      const { data } = await Vue.axios({
+        url: process.env.VUE_APP_LOGOUT,
+        method: 'GET'
+      })
+      if (data.code === 1) {
+        state.userName = null
+      }
     }
   }
 })
