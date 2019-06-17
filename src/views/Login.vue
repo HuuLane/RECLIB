@@ -83,7 +83,7 @@ export default {
       } else if (code === 2) {
         // 未注册
         vm.$router.push('/signup')
-        vm.$store.commit('comfortUser', vm.email)
+        vm.$store.commit('comfortUser', { email: vm.email, password: vm.password })
       }
     }
   },
