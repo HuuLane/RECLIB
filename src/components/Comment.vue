@@ -46,7 +46,7 @@
 
 <script>
 // eslint-disable-next-line
-import { timeConverter, log, objectIsEmpty } from '@/assets/utils'
+import { timeConverter, log, objectIsEmpty } from '@/utils.js'
 export default {
   name: 'Comment',
   created () {

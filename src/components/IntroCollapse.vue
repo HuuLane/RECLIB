@@ -24,7 +24,7 @@
 
 <script>
 // eslint-disable-next-line
-import { log, setClock } from '@/assets/utils.js'
+import { log, setClock } from '@/utils.js'
 const beautify = (str) => {
   return str.split(' ------------------------------------------------------------------------------------------------ ').join('')
 }
@@ -46,7 +46,7 @@ export default {
       if (vm.intro.length) {
         return
       }
-      await setClock(2)
+      await setClock(1)
       const { data: res } = await vm.axios({
         method: 'GET',
         url: `${vm.api}?intro=${vm.id}`

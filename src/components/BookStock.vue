@@ -39,7 +39,7 @@
 
 <script>
 // eslint-disable-line
-import { timeConverter, log } from '@/assets/utils'
+import { timeConverter, log } from '@/utils.js'
 export default {
   name: 'BookStock',
   created () {

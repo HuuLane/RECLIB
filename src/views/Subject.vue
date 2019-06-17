@@ -74,7 +74,7 @@
 
 <script>
 // eslint-disable-next-line
-import { log, dir, setClock } from '@/assets/utils.js'
+import { log, dir, setClock } from '@/utils.js'
 import pageNotFound from '@/components/PageNotFound.vue'
 
 export default {

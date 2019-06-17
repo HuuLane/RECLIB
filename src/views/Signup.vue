@@ -80,13 +80,18 @@
 </template>
 
 <script>
-const { log } = console
+// eslint-disable-next-line
+import { log, objectIsEmpty } from '@/utils.js'
 export default {
   name: 'Signup',
   created () {
     const vm = this
     // 试试看, store 有没有
-    vm.email = vm.$store.state.convenientRecordEmail
+    const { convenientRecord } = vm.$store.state
+    if (!objectIsEmpty(convenientRecord)) {
+      vm.email = convenientRecord.email
+      vm.password = convenientRecord.password
+    }
   },
   methods: {
     signUp () {
