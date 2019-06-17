@@ -1,18 +1,29 @@
 <template>
   <div>
     <h1>评论板</h1>
-    <!-- 评论框 -->
-    <b-input type="text" :disabled="!isLogin" placeholder="输入内容" v-model="commentContent"/>
     <!-- 提交按钮 -->
     <div id="btn-submit-comment">
-      <b-btn
-        variant="outline-dark"
-        squared
-        block
-        @click="submitComment"
-        :disabled="!isLogin"
-      >搞个大新闻</b-btn>
-      <b-tooltip v-if="!isLogin" target="btn-submit-comment" placement="right">
+      <b-input-group size="lg" class="mr-sm-2">
+        <!-- 评论框 -->
+        <b-form-input
+          type="text"
+          trim
+          :disabled="!isLogin"
+          placeholder="输入内容"
+          v-model="commentContent"
+          @keyup.enter="submitComment"
+        />
+        <!-- 按钮 -->
+        <b-input-group-append>
+          <b-button
+            variant="outline-dark"
+            block
+            @click="submitComment"
+            :disabled="!isLogin"
+          >搞个大新闻</b-button>
+        </b-input-group-append>
+      </b-input-group>
+      <b-tooltip v-if="!isLogin" target="btn-submit-comment" placement="top">
         <strong>登录即可歌颂党国</strong>
       </b-tooltip>
     </div>
@@ -24,7 +35,9 @@
           <td>
             <code>{{item.name}}</code> 说:
           </td>
-          <td><b> {{item.content}}</b></td>
+          <td>
+            <b>{{item.content}}</b>
+          </td>
           <td>
             <code>{{transDate(item.date)}}</code>
           </td>
@@ -79,6 +92,9 @@ export default {
     },
     async submitComment () {
       const vm = this
+      if (!vm.commentContent) {
+        return
+      }
       const { data } = await vm.axios({
         method: 'PUT',
         url: vm.api,
