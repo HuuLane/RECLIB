@@ -1,7 +1,7 @@
 // console
 const { log, dir } = console
 
-const setClock = (timeout = 2) => {
+const setClock = (timeout = 0.5) => {
   const time = Math.random() * timeout
   return new Promise((resolve) => {
     setTimeout(resolve, time * 1000, 'finish')

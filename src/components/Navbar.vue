@@ -36,7 +36,7 @@
           <template slot="button-content">
             {{userName}}
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
+          <b-dropdown-item @click="goToProfile">个人资料</b-dropdown-item>
           <b-dropdown-item @click="logOut">退出</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -52,6 +52,10 @@ export default {
       // 退出登录
       const vm = this
       vm.$store.dispatch('logOut')
+    },
+    goToProfile () {
+      const vm = this
+      vm.$router.push('/profile')
     }
   },
   computed: {
