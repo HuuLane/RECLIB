@@ -1,5 +1,5 @@
 <template>
-  <b-button v-scroll @click="goToTop" @dblclick="goToTopInstantly" squared variant="outline-dark" class="myBtn">
+  <b-button v-scroll @click="goToTop" @dblclick="goToTopInstantly" squared variant="outline-dark" class="myBtn border-0">
     <slot>↑</slot>
   </b-button>
 </template>

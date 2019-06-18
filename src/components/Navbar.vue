@@ -1,14 +1,15 @@
 <template>
-    <!-- class="shadow-sm p-3 bg-white mb-5 rounded navbar_cant-select navbar_fixed-height" -->
   <b-navbar
     variant="faded"
     toggleable="sm"
     type="light"
-    class="shadow-sm bg-white mb-5 rounded navbar_cant-select"
+    class="bg-white mb-3 rounded navbar_cant-select"
   >
     <router-link tag="b-navbar-brand" to="/" class="font-weight-bold">RECLAB</router-link>
     <!-- 小屏幕时出现 toggle -->
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <b-navbar-toggle target="nav-collapse" class="border-0">
+      <span class="navbar-toggler-icon navbar-toggle-button_small"></span>
+    </b-navbar-toggle>
     <!-- toggle 内容 -->
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
@@ -79,5 +80,8 @@ export default {
 }
 .navbar_fixed-height {
   height: 6vh;
+}
+.navbar-toggle-button_small {
+  font-size: 2vh;
 }
 </style>

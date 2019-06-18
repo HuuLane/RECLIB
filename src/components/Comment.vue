@@ -43,7 +43,9 @@
           </td>
         </tr>
       </tbody>
-      <div v-else class="text-center my-5">{{res.msg}}</div>
+      <div v-else class="text-center my-5">
+        <b>{{res.msg}}</b>
+      </div>
     </table>
 
     <!-- 模块消息 -->

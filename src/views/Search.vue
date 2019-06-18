@@ -2,7 +2,7 @@
   <div>
     <page-not-found v-if="!documentCount">找不到! 无能为力</page-not-found>
     <b-container v-else>
-      <h1>搜寻结果: 共有{{ documentCount }}条</h1>
+      <h2>搜寻结果: 找到 <code>{{ documentCount }}</code> 本</h2>
       <div
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="isBusy"
