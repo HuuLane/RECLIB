@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-not-found v-if="!documentCount">找不到! 无能为力</page-not-found>
+    <page-not-found v-if="!documentCount">没有找到你想要的书诶!</page-not-found>
     <b-container v-else>
       <h2>搜寻结果: 找到 <code>{{ documentCount }}</code> 本</h2>
       <div
@@ -114,6 +114,10 @@ export default {
     loadMore () {
       const vm = this
       vm.isBusy = true
+      // !防止无限请求
+      if (vm.documentCount === 0) {
+        return
+      }
       // log('当前页码', this.currentPage)
       if (vm.currentPage === vm.maxIndexOfPage) {
         // log('最大页啦~')
