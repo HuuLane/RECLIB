@@ -54,6 +54,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line
 const { log } = console
 export default {
   name: 'Signup',
@@ -64,7 +65,7 @@ export default {
         email: vm.email,
         password: vm.password
       }).then(data => {
-        log('data', data)
+        // log('data', data)
         vm.resInfo = { ...data }
         vm.$refs['bv-modal-msg'].show()
       }).catch(err => {

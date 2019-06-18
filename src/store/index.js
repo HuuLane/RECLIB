@@ -23,7 +23,7 @@ export default new Vuex.Store({
       }
     },
     comfortUser (state, payload) {
-      log('payload', payload)
+      // log('payload', payload)
       state.convenientRecord = { ...payload }
     }
   },
@@ -37,7 +37,7 @@ export default new Vuex.Store({
       commit('readUserState', data)
     },
     async login ({ commit, state }, payload) {
-      log('**login')
+      // log('**login')
       const { data } = await Vue.axios({
         url: process.env.VUE_APP_LOGIN,
         method: 'PUT',
@@ -47,7 +47,7 @@ export default new Vuex.Store({
       return data
     },
     async logOut ({ commit, state }) {
-      log('**louOut')
+      // log('**louOut')
       const { data } = await Vue.axios({
         url: process.env.VUE_APP_LOGOUT,
         method: 'GET'

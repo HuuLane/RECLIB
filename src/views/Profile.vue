@@ -83,7 +83,7 @@ export default {
   name: 'Profile',
   created () {
     const vm = this
-    log('进入 Profile')
+    // log('进入 Profile')
     // 防止未登录就过来啦
     if (!vm.userName) {
       vm.$router.push('/login')
@@ -93,7 +93,7 @@ export default {
       method: 'GET',
       url: `${process.env.VUE_APP_PROFILE}`
     }).then(({ data: res }) => {
-      log('profile res', res)
+      // log('profile res', res)
       if (res.code === 1) {
         vm.userData = { ...res.data }
       }
