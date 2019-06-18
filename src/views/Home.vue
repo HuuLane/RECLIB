@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt">
-    <!-- <img src="@/assets/rec.png" fluid> -->
     <h1 class="home-title mb-5">RECLIB</h1>
     <search-bar class="mb-5"/>
     <h1 v-if="userName" class="home-title"> {{userName}} </h1>

@@ -12,7 +12,7 @@
     <!-- toggle 内容 -->
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <router-link tag="b-nav-item" to="/test">test</router-link>
+        <!-- <router-link tag="b-nav-item" to="/test">test</router-link> -->
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -30,7 +30,12 @@
           </b-input-group>
         </b-nav-form> -->
         <!-- 用户 -->
-        <router-link to="/login" is="b-nav-item" v-if="!userName">登录</router-link>
+        <b-nav-item v-if="!userName">
+          <router-link class="text-muted" to="/login">登录</router-link>
+          <b> / </b>
+          <router-link class="text-muted" to="/signup">注册</router-link>
+        </b-nav-item>
+        <!-- <router-link to="/login" is="b-nav-item" v-if="!userName">登录 <b> / </b> 注册</router-link> -->
         <b-nav-item-dropdown v-else right>
           <!-- Using 'button-content' slot -->
           <template slot="button-content">
