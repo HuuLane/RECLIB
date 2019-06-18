@@ -44,6 +44,7 @@
           placeholder="Please enter your password again"
           id="PasswordAgain"
           v-model="passwordAgain"
+          ref="input-password-again"
         ></b-form-input>
       </b-form-group>
       <!-- 用户名称 -->
@@ -63,7 +64,7 @@
           :disabled="!canSignUp"
           @click="signUp"
           variant="outline-dark"
-        >注册并登录</b-button>
+        >开始谈笑风生</b-button>
       </b-form-group>
     </b-form-group>
     <!-- 模块消息 -->
@@ -85,12 +86,15 @@ import { log, objectIsEmpty } from '@/utils.js'
 export default {
   name: 'Signup',
   created () {
+  },
+  mounted () {
     const vm = this
     // 试试看, store 有没有
     const { convenientRecord } = vm.$store.state
     if (!objectIsEmpty(convenientRecord)) {
       vm.email = convenientRecord.email
       vm.password = convenientRecord.password
+      vm.$refs['input-password-again'].focus()
     }
   },
   methods: {
@@ -121,6 +125,7 @@ export default {
           email: vm.email,
           password: vm.password
         })
+        vm.$router.push('/')
       } else if (code === 0) {
         // 奇怪的错误, 请联系管理员
       } else if (code === 2) {

@@ -7,7 +7,7 @@ const { log } = console
 export default new Vuex.Store({
   state: {
     userName: null,
-    convenientRecord: null
+    convenientRecord: {}
   },
   mutations: {
     checkResponse (state, payload) {

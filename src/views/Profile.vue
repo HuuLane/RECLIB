@@ -14,26 +14,54 @@
       </ul>
       <div v-if="userData.activity">
         <div v-if="userData.activity.comments">
-          <h1>你说的: </h1>
-          <ul>
-            <li v-for="(item, index) in userData.activity.comments" :key="index">
-              <a @click.prevent="goToSubject(item.bookID)"> {{item.bookName}} </a>
-              <b>时间: </b>
-              <code> {{getReturnTime(item.date)}} </code>
-              <b>说: </b>
-              <mark> {{item.content}} </mark>
-            </li>
-          </ul>
+          <h1>你说的:</h1>
+          <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">书名</th>
+                <th scope="col">评论</th>
+                <th scope="col">日期</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in userData.activity.comments" :key="index">
+                <th scope="row">{{index}}</th>
+                <td>
+                  <a @click.prevent="goToSubject(item.bookID)">{{item.bookName}}</a>
+                </td>
+                <td>
+                  {{item.content}}
+                </td>
+                <td>
+                  <code>{{getReturnTime(item.date)}}</code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <div v-if="userData.activity.rentBook">
-          <h1>你借的: </h1>
-          <ul>
-            <li v-for="(item, index) in userData.activity.rentBook" :key="index">
-              <a @click.prevent="goToSubject(item.bookID)"> {{item.bookName}} </a>
-              <b>归还日期: </b>
-              <code> {{getReturnTime(item.date  + (30 * 24 * 3600) * 1000)}} </code>
-            </li>
-          </ul>
+          <h1>你借的:</h1>
+          <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">书名</th>
+                <th scope="col">归还日期</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in userData.activity.rentBook" :key="index">
+                <th scope="row">{{index}}</th>
+                <td>
+                  <a @click.prevent="goToSubject(item.bookID)">{{item.bookName}}</a>
+                </td>
+                <td>
+                  <code>{{getReturnTime(item.date + (30 * 24 * 3600) * 1000)}}</code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div v-else>
