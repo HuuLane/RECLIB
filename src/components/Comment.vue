@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>评论板</h1>
+    <h3>评论板</h3>
     <!-- 提交按钮 -->
     <div id="btn-submit-comment">
       <b-input-group size="lg" class="mr-sm-2">

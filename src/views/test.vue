@@ -1,10 +1,13 @@
 <template>
   <b-container>
-    <h1 @click="hi">hello</h1>
+    <h1>测试专用</h1>
+    <pre>
+    </pre>
   </b-container>
 </template>
 
 <script>
+// eslint-disable-next-line
 const { log } = console
 export default {
   name: 'test',
@@ -15,18 +18,8 @@ export default {
     }
   },
   methods: {
-    hi () {
-      this.axios({
-        method: 'GET',
-        url: `${process.env.VUE_APP_BOOK}?all=周杰伦`
-      }).then((response) => {
-        log('response', response.data)
-      }).catch(err => {
-        log('err', err)
-      })
-    }
   },
-  components: {
+  computed: {
   }
 }
 </script>

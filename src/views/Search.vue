@@ -11,7 +11,7 @@
         <div v-for="(items, tensIndex) in pagesRawData" :key="tensIndex">
           <b-card
             fluid
-            class="mb-3 card_border"
+            class="mb-3 card_border border-0"
             v-for="(item, index) in items"
             :key="index"
             @click="goToSubject(item._id)"
@@ -149,7 +149,11 @@ export default {
 .btn_pagination {
   @include cant-select;
 }
+
 .card_border {
+  transition: all 0.1s ease-out 0.2s;
+}
+.card_border:hover {
   @include bold-outline;
 }
 </style>

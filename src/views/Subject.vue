@@ -31,7 +31,7 @@
         </p>
         <hr>
         <!-- 图片 + info -->
-        <b-card no-body class="overflow-hidden" img-fluid>
+        <b-card no-body class="overflow-hidden border-0" img-fluid>
           <b-row>
             <b-col md="6">
               <b-card-img :src="imgSrc" class="rounded-0"></b-card-img>
@@ -40,7 +40,7 @@
               <b-card-body>
                 <!-- 信息cell -->
                 <b-card-title>图书信息</b-card-title>
-                <table class="table table-sm">
+                <table class="table table-sm table-borderless">
                   <tbody>
                     <tr v-for="(value, name, index) in book.brief.info" :key="index">
                       <th scope="row">{{index}}</th>

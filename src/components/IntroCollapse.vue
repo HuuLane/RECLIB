@@ -1,6 +1,6 @@
 <template>
   <div role="tablist">
-      <b-button @click="cacheInfo" squared  block v-b-toggle.accordion-1 variant="outline-dark">内容简介</b-button>
+      <b-button @click="cacheInfo" squared class="border-0" block v-b-toggle.accordion-1 variant="outline-dark">内容简介</b-button>
       <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
         <b-card-body>
           <div class="text-center my-4" v-if="isBusy">
@@ -10,7 +10,7 @@
         </b-card-body>
       </b-collapse>
 
-      <b-button @click="cacheInfo" squared  block href="#" v-b-toggle.accordion-2 variant="outline-dark">作者简介</b-button>
+      <b-button @click="cacheInfo" squared class="border-0" block href="#" v-b-toggle.accordion-2 variant="outline-dark">作者简介</b-button>
       <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
         <b-card-body>
           <div class="text-center my-4" v-if="isBusy">

@@ -1,5 +1,5 @@
 <template>
-  <div class="div-border">
+  <div>
      <!-- fa-1x -->
     <font-awesome-icon icon="search" @click="goToSearch" class="mx-3"/>
     <input

@@ -17,8 +17,9 @@
       <b-btn
         variant="outline-dark"
         squared
-        class="ml-auto"
+        class="border-0"
         block
+
         @click="borrowBooks"
         :disabled="!isLogin"
       >剩余: {{stockNum}} 我想借</b-btn>
