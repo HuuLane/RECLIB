@@ -5,8 +5,6 @@
     <div class="div-border">
       <h1 class=" mb-5">矩形图书馆</h1>
       <search-bar class="mb-5"/>
-      <h1 v-if="userName" class="home-title">{{userName}}</h1>
-      <!-- <h1 v-else class="">矩形图书馆</h1> -->
     </div>
   </div>
 </template>

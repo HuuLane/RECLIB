@@ -28,7 +28,7 @@
       </b-tooltip>
     </div>
     <!-- 展示板 -->
-    <table class="table table-sm" v-if="getCommentsIsOkay">
+    <table class="table table-borderless my-3" v-if="getCommentsIsOkay">
       <tbody v-if="res.code === 1">
         <tr v-for="(item, index) in res.comments" :key="index">
           <th scope="row">{{index}}L</th>
@@ -43,7 +43,7 @@
           </td>
         </tr>
       </tbody>
-      <div v-else class="text-center my-4">{{res.msg}}</div>
+      <div v-else class="text-center my-5">{{res.msg}}</div>
     </table>
 
     <!-- 模块消息 -->
