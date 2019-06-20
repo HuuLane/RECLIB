@@ -7,14 +7,12 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import pageNotFound from '@/components/PageNotFound.vue'
 // eslint-disable-next-line
 const { log } = console
 export default {
   name: 'notfound',
   components: {
-    pageNotFound
+    pageNotFound: () => import('@/components/PageNotFound.vue')
   }
 }
 </script>

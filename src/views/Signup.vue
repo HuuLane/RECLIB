@@ -109,7 +109,7 @@ export default {
           name: vm.name
         }
       }).then(({ data }) => {
-        log('data', data)
+        // log('data', data)
         vm.resInfo = { ...data }
         vm.$refs['bv-modal-msg'].show()
       }).catch(err => {

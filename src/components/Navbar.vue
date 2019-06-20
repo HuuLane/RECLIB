@@ -12,36 +12,19 @@
     </b-navbar-toggle>
     <!-- toggle 内容 -->
     <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <!-- <router-link tag="b-nav-item" to="/test">test</router-link> -->
-      </b-navbar-nav>
-
       <!-- Right aligned nav items -->
       <!-- ml-auto 好神奇 -->
       <b-navbar-nav class="ml-auto">
-        <!-- 搜索栏 -->
-        <!-- <b-nav-form class="form-inline">
-          <b-input-group size="sm" class="mr-sm-2">
-            <b-form-input placeholder="Search"></b-form-input>
-            <b-input-group-append>
-              <b-button>
-                <font-awesome-icon icon="search"/>
-              </b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-nav-form> -->
         <!-- 用户 -->
         <b-nav-item v-if="!userName">
           <router-link class="text-muted" to="/login">登录</router-link>
-          <b> / </b>
+          <b>/</b>
           <router-link class="text-muted" to="/signup">注册</router-link>
         </b-nav-item>
         <!-- <router-link to="/login" is="b-nav-item" v-if="!userName">登录 <b> / </b> 注册</router-link> -->
         <b-nav-item-dropdown v-else right>
           <!-- Using 'button-content' slot -->
-          <template slot="button-content">
-            {{userName}}
-          </template>
+          <template slot="button-content">{{userName}}</template>
           <b-dropdown-item @click="goToProfile">个人资料</b-dropdown-item>
           <b-dropdown-item @click="logOut">退出</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -76,7 +59,7 @@ export default {
 <style scoped lang="scss">
 @import "@/styles/mixin.scss";
 .navbar_cant-select {
-  @include cant-select
+  @include cant-select;
 }
 .navbar_fixed-height {
   height: 6vh;

@@ -10,7 +10,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import searchBar from '@/components/SearchBar.vue'
 // eslint-disable-next-line
 const { log } = console

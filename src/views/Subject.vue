@@ -75,7 +75,6 @@
 <script>
 // eslint-disable-next-line
 import { log, dir, setClock } from '@/utils.js'
-import pageNotFound from '@/components/PageNotFound.vue'
 
 export default {
   name: 'Subject',
@@ -145,7 +144,7 @@ export default {
     }
   },
   components: {
-    pageNotFound,
+    pageNotFound: () => import('@/components/PageNotFound.vue'),
     introCollapse: () => import('@/components/IntroCollapse.vue'),
     bookStock: () => import('@/components/BookStock.vue'),
     commentBoard: () => import('@/components/Comment.vue')

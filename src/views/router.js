@@ -36,11 +36,6 @@ export default new Router({
       name: 'profile',
       component: () => import('@/views/Profile.vue')
     },
-    // {
-    //   path: '/test',
-    //   name: 'test',
-    //   component: () => import('@/views/test.vue')
-    // }
     {
       path: '/404',
       name: 'notFound',

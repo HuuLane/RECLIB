@@ -139,7 +139,7 @@ export default {
   },
   directives: { infiniteScroll },
   components: {
-    PageNotFound: () => import('@/components/PageNotFound.vue'),
+    pageNotFound: () => import('@/components/PageNotFound.vue'),
     scrollToTop: () => import('@/components/ScrollToTop.vue')
   }
 }
