@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <page-not-found v-if="!documentCount">没有找到你想要的书诶!</page-not-found>
-    <b-container v-else>
+  <b-container>
+    <div v-if="!documentCount" class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt">
+      <page-not-found>没有找到你想要的书诶!</page-not-found>
+    </div>
+    <div v-else>
       <h2>搜寻结果: 找到 <code>{{ documentCount }}</code> 本</h2>
       <div
         v-infinite-scroll="loadMore"
@@ -39,8 +41,8 @@
       <scroll-to-top :duration="0.5">
         <font-awesome-icon icon="angle-up"/>
       </scroll-to-top>
-    </b-container>
-  </div>
+    </div>
+  </b-container>
 </template>
 
 <script>
@@ -153,7 +155,9 @@ export default {
 .btn_pagination {
   @include cant-select;
 }
-
+.container_full-heigt {
+  @include full-heigt;
+}
 .card_border {
   transition: all 0.1s ease-out 0.2s;
 }

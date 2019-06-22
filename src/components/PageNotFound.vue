@@ -1,7 +1,7 @@
 <template>
   <b-jumbotron>
     <template slot="header"><slot>找不到该图书</slot></template>
-    <template slot="lead">{{ countDown }} 秒后, 跳回首页</template>
+    <template slot="lead"><code> {{ countDown }} </code>秒后, 跳回首页</template>
     <b-button variant="primary" @click="justGo">立即返回</b-button>
   </b-jumbotron>
 </template>

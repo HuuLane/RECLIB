@@ -56,16 +56,19 @@
                 <!-- 简介 -->
                 <hr>
                 <b-card-title>无聊简介</b-card-title>
-                <intro-collapse :id="id" />
+                <intro-collapse :id="id"/>
               </b-card-body>
             </b-col>
           </b-row>
         </b-card>
         <!-- 评论 -->
-        <comment-board class="mt-5" :id="id" />
+        <comment-board class="mt-5" :id="id"/>
       </div>
       <!-- 404 错误显示 -->
-      <div v-else>
+      <div
+        v-else
+        class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt"
+      >
         <page-not-found></page-not-found>
       </div>
     </div>
