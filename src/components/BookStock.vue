@@ -44,7 +44,7 @@ export default {
   name: 'BookStock',
   created () {
     const vm = this
-    log('vm.id', vm.id)
+    // log('vm.id', vm.id)
     vm.getStock()
   },
   props: {
