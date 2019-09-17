@@ -77,7 +77,7 @@
 
 <script>
 // eslint-disable-next-line
-import { log, dir, setClock } from '@/utils.js'
+import { log, setClock } from '@/utils.js'
 
 export default {
   name: 'Subject',

@@ -47,7 +47,7 @@
 
 <script>
 // eslint-disable-next-line
-import { log, dir, setClock, objectIsEmpty } from '@/utils.js'
+import { log, setClock, objectIsEmpty } from '@/utils.js'
 import infiniteScroll from 'vue-infinite-scroll'
 
 export default {
