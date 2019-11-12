@@ -91,7 +91,7 @@ export default {
     }
     vm.axios({
       method: 'GET',
-      url: `${process.env.VUE_APP_PROFILE}`
+      url: '/profile'
     }).then(({ data: res }) => {
       // log('profile res', res)
       if (res.code === 1) {

@@ -55,14 +55,13 @@ export default {
   created () {
     const vm = this
     vm.queryParams = { ...vm.$route.query }
-    // 如果没有参数, 回到首页~
+    // No paramas
     if (objectIsEmpty(vm.queryParams)) {
-      vm.$router.push('/')
-      return
+      return vm.$router.push('/')
     }
     // 初始化
     vm.axios({
-      url: `${process.env.VUE_APP_BOOK}`,
+      url: '/book',
       method: 'GET',
       params: { count: 1, ...vm.queryParams }
     }).then(({ data }) => {
@@ -100,7 +99,7 @@ export default {
       await setClock()
       try {
         const { data } = await vm.axios({
-          url: `${process.env.VUE_APP_BOOK}`,
+          url: '/book',
           method: 'GET',
           params: { page: index, ...vm.queryParams }
         })

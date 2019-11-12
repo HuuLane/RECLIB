@@ -29,7 +29,7 @@
             @click="goToSearch"
           >{{book.brief.tags[index]}}</b-badge>
         </p>
-        <hr>
+        <hr />
         <!-- 图片 + info -->
         <b-card no-body class="overflow-hidden border-0" img-fluid>
           <b-row>
@@ -49,20 +49,20 @@
                     </tr>
                   </tbody>
                 </table>
-                <hr>
+                <hr />
                 <!-- 库存情况 -->
                 <b-card-title>库存信息</b-card-title>
-                <book-stock :id="id"/>
+                <book-stock :id="id" />
                 <!-- 简介 -->
-                <hr>
+                <hr />
                 <b-card-title>无聊简介</b-card-title>
-                <intro-collapse :id="id"/>
+                <intro-collapse :id="id" />
               </b-card-body>
             </b-col>
           </b-row>
         </b-card>
         <!-- 评论 -->
-        <comment-board class="mt-5" :id="id"/>
+        <comment-board class="mt-5" :id="id" />
       </div>
       <!-- 404 错误显示 -->
       <div
@@ -84,7 +84,7 @@ export default {
   data () {
     return {
       isBusy: true,
-      api: process.env.VUE_APP_BOOK,
+      api: '/book',
       img: process.env.VUE_APP_IMG,
       id: null,
       variants: ['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'dark'],
@@ -116,7 +116,7 @@ export default {
       const vm = this
       await setClock()
       return vm.axios({
-        url: `${process.env.VUE_APP_BOOK}`,
+        url: '/book',
         method: 'GET',
         params: { id: vm.id }
       })

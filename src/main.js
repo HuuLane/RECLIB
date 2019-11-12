@@ -12,8 +12,9 @@ import store from '@/store/'
 Vue.use(VueAxios, axios)
 
 if (process.env.VUE_APP_DEV === 'true') {
-  Vue.axios.defaults.withCredentials = true
   Vue.config.productionTip = true
+  Vue.axios.defaults.withCredentials = true
+  Vue.axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 }
 
 new Vue({
