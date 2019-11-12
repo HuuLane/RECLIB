@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-// eslint-disable-next-line
-const { log } = console
 export default new Vuex.Store({
   state: {
     userName: null,
@@ -31,27 +29,23 @@ export default new Vuex.Store({
     async readUserState ({ commit, state }) {
       const { data } = await Vue.axios({
         url: process.env.VUE_APP_LOGIN,
-        method: 'GET',
-        withCredentials: true
+        method: 'GET'
       })
       commit('readUserState', data)
     },
     async login ({ commit, state }, payload) {
-      // log('**login')
       const { data } = await Vue.axios({
         url: process.env.VUE_APP_LOGIN,
-        method: 'PUT',
-        withCredentials: process.env.WITH_COOKIE === 'true',
+        method: 'POST',
         data: payload
       })
       commit('checkResponse', data)
       return data
     },
     async logOut ({ commit, state }) {
-      // log('**louOut')
       const { data } = await Vue.axios({
         url: process.env.VUE_APP_LOGOUT,
-        method: 'GET'
+        method: 'delete'
       })
       if (data.code === 1) {
         state.userName = null

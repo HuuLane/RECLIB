@@ -9,9 +9,12 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from '@/store/'
 
-// 全局使用axios
 Vue.use(VueAxios, axios)
-Vue.config.productionTip = false
+
+if (process.env.VUE_APP_DEV === 'true') {
+  Vue.axios.defaults.withCredentials = true
+  Vue.config.productionTip = true
+}
 
 new Vue({
   router,
