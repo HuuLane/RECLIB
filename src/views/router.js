@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  mode: process.env.VUE_ROUTER_MODE,
+  mode: process.env.VUE_APP_ROUTER_MODE,
   linkActiveClass: 'active',
   routes: [
     {
