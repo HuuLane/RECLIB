@@ -9,7 +9,7 @@
         </li>
         <li>
           注册时间:
-          <code>{{userData.date}}</code>
+          <code>{{Date(userData.date)}}</code>
         </li>
       </ul>
       <div v-if="userData.activity">

@@ -45,7 +45,7 @@
       <b-modal ref="bv-modal-msg" centered hide-footer>
         <template slot="modal-title">RECLAB</template>
         <div class="d-block text-center">
-          <h3>{{resInfo.msg}}</h3>
+          <h3>{{res.msg}}</h3>
         </div>
         <b-button class="mt-3" block variant="outline-dark" @click="closeModal"> {{btnInnerText}} </b-button>
       </b-modal>
@@ -65,8 +65,7 @@ export default {
         email: vm.email,
         password: vm.password
       }).then(data => {
-        // log('data', data)
-        vm.resInfo = { ...data }
+        vm.res = { ...data }
         vm.$refs['bv-modal-msg'].show()
       }).catch(err => {
         console.error(err)
@@ -75,7 +74,7 @@ export default {
     closeModal () {
       const vm = this
       vm.$refs['bv-modal-msg'].hide()
-      const code = Number(vm.resInfo.code)
+      const code = Number(vm.res.code)
       if (code === 1) {
         vm.$router.push('/')
       } else if (code === 0) {
@@ -104,7 +103,7 @@ export default {
     },
     btnInnerText () {
       const vm = this
-      switch (vm.resInfo.code) {
+      switch (vm.res.code) {
         case 0:
           return '重试'
         case 1:
@@ -121,7 +120,7 @@ export default {
       email: '',
       password: '',
       name: '',
-      resInfo: {}
+      res: {}
     }
   },
   directives: {
