@@ -29,7 +29,7 @@
     </div>
     <!-- 展示板 -->
     <table class="table table-borderless my-3" v-if="hasComments">
-      <tbody v-if="res.code === 1">
+      <tbody v-if="res.comments.length">
         <tr v-for="(item, index) in res.comments" :key="index">
           <th scope="row">{{index}}L</th>
           <td>
@@ -44,7 +44,7 @@
         </tr>
       </tbody>
       <div v-else class="text-center my-5">
-        <b>{{res.msg}}</b>
+        <b>no comment yet</b>
       </div>
     </table>
 
@@ -81,7 +81,7 @@ export default {
     },
     async getComments () {
       const vm = this
-      const [err, { data }] = await vm.$t(vm.axios.get(`${vm.api}/${vm.id}`))
+      const [err, { data }] = await vm.$t(vm.axios.get(`${vm.api}?book=${vm.id}`))
       if (err) {
         // TODO retry
         vm.$log.info('fail to getComments', err)
