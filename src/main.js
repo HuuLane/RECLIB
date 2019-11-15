@@ -10,7 +10,12 @@ import VueAxios from 'vue-axios'
 import store from '@/store'
 import VueLogger from 'vuejs-logger'
 import to from 'await-to-js'
+import FlashMessage from '@smartweb/vue-flash-message'
 
+Vue.use(FlashMessage, {
+  time: 3000,
+  strategy: 'multiple'
+})
 Vue.use(VueAxios, axios)
 
 // Making await-to functions globally
@@ -45,7 +50,7 @@ Vue.axios.interceptors.response.use(
   err => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // default {}
-    Vue.$log.debug(err)
+    Vue.$log.error(err)
     return Promise.resolve({ data: {} })
   }
 )
