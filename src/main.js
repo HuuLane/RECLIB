@@ -9,8 +9,17 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from '@/store'
 import VueLogger from 'vuejs-logger'
+import to from 'await-to-js'
 
 Vue.use(VueAxios, axios)
+
+// Making await-to functions globally
+Vue.use({
+  install () {
+    Vue.t = to
+    Vue.prototype.$t = to
+  }
+})
 
 const loggerOptions = {
   isEnabled: true,
