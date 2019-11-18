@@ -2,12 +2,12 @@
   <b-container class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt">
     <b-form-group
       label-cols-lg="3"
-      label="请输入注册必要的信息"
+      label="输入必要的信息"
       label-size="lg"
       label-class="font-weight-bold pt-0"
       class="mb-0 div-border p-5"
     >
-      <!-- 输入邮箱 -->
+      <!-- Enter email -->
       <b-form-group label-cols-sm="3" label="Email:" label-align-sm="right" label-for="Email">
         <b-form-input
           v-focus
@@ -19,7 +19,7 @@
           placeholder="Email address"
         ></b-form-input>
       </b-form-group>
-      <!-- 输入密码 -->
+      <!-- enter password -->
       <b-form-group label-cols-sm="3" label="Password:" label-align-sm="right" label-for="Password">
         <b-form-input
           trim
@@ -30,7 +30,7 @@
           v-model="password"
         ></b-form-input>
       </b-form-group>
-      <!-- 密码再次验证 -->
+      <!-- Password verification again -->
       <b-form-group
         label-cols-sm="3"
         label="Again:"
@@ -44,10 +44,9 @@
           placeholder="Please enter your password again"
           id="PasswordAgain"
           v-model="passwordAgain"
-          ref="input-password-again"
         ></b-form-input>
       </b-form-group>
-      <!-- 用户名称 -->
+      <!-- user name -->
       <b-form-group label-cols-sm="3" label="Nickname:" label-align-sm="right" label-for="Nickname">
         <b-form-input
           trim
@@ -61,7 +60,7 @@
       <b-form-group label-cols-sm="3" label-align-sm="right" class="mb-0">
         <b-button
           class="btn-block"
-          :disabled="!canSignUp"
+          :disabled="!fulfill"
           @click="signUp"
           variant="outline-dark"
         >开始谈笑风生</b-button>
@@ -81,27 +80,14 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-import { log, objectIsEmpty } from '@/utils.js'
+import { objectIsEmpty } from '@/utils.js'
 export default {
   name: 'Signup',
-  created () {
-  },
-  mounted () {
-    const vm = this
-    // 试试看, store 有没有
-    const { convenientRecord } = vm.$store.state
-    if (!objectIsEmpty(convenientRecord)) {
-      vm.email = convenientRecord.email
-      vm.password = convenientRecord.password
-      vm.$refs['input-password-again'].focus()
-    }
-  },
   methods: {
     signUp () {
       const vm = this
       vm.axios({
-        url: '/signup',
+        url: '/user',
         method: 'POST',
         data: {
           email: vm.email,
@@ -147,7 +133,7 @@ export default {
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return re.test(this.email)
     },
-    canSignUp () {
+    fulfill () {
       const vm = this
       return vm.nameState && vm.passwordState && vm.passwordAgainState && vm.emailState
     }
@@ -163,7 +149,6 @@ export default {
   },
   directives: {
     focus: {
-    // 指令的定义
       inserted: function (el) {
         el.focus()
       }
