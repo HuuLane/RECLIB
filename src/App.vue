@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <Navbar/>
-    <FlashMessage :position="'right top'"></FlashMessage>
     <!-- <button @click="test">123</button> -->
     <keep-alive include="Admin">
       <router-view/>
     </keep-alive>
+    <FlashMessage id="flash" :position="'right top'"></FlashMessage>
   </div>
 </template>
 <script>
@@ -29,5 +29,8 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="css">
+#flash {
+  z-index: 3;
+}
 </style>
