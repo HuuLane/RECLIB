@@ -93,7 +93,7 @@ export default {
       const code = Number(d.code)
       if (code === 1) {
         vm.$store.dispatch('sessionLogin')
-        vm.$router.push('/')
+        vm.$router.go(-1)
         vm.flashMessage.success({
           title: 'Great!!',
           message: d.msg
