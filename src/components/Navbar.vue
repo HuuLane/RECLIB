@@ -44,7 +44,10 @@ export default {
     },
     goToProfile () {
       const vm = this
-      vm.$router.push('/profile')
+      vm.$log.info(vm.$route.path)
+      if (vm.$route.path !== '/profile') {
+        vm.$router.push('/profile')
+      }
     }
   },
   computed: {
