@@ -54,16 +54,10 @@ export default {
         password: vm.password
       })
       if (res.code === 1) {
-        vm.flashMessage.success({
-          title: 'Good',
-          message: res.msg
-        })
+        vm.$fm.success(`Good ${res.msg}`)
         vm.$router.go(-1)
       } else {
-        vm.flashMessage.error({
-          title: 'Fail to login',
-          message: res.msg
-        })
+        vm.$fm.error(`Fail to login: ${res.msg}`)
       }
     }
   },

@@ -94,14 +94,9 @@ export default {
       if (res.code === 1) {
         vm.content = null
         vm.getComments()
-        this.flashMessage.success({
-          title: 'Comment successfully',
-        })
+        this.$fm.success('Comment successfully')
       } else {
-        this.flashMessage.error({
-          title: 'Fail to comment',
-          message: res.msg
-        })
+        this.$fm.error('Fail to comment:' + res.msg)
       }
     }
   },

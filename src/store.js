@@ -20,6 +20,7 @@ export default new Vuex.Store({
       Vue.$log.info('sessionLogin', data)
       if (data.userName) {
         context.commit('setUserName', data.userName)
+        Vue.fm.success('Keep the last login status')
       }
     },
     async login (context, payload) {
