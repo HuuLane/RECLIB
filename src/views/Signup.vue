@@ -103,17 +103,30 @@ export default {
   computed: {
     nameState () {
       const l = this.name.length
+      if (l === 0) {
+        return null
+      }
       return l >= 2 && l <= 18
     },
     passwordState () {
       const l = this.password.length
+      if (l === 0) {
+        return null
+      }
       return l >= 6 && l <= 18
     },
     passwordAgainState () {
+      const l = this.password.length
+      if (l === 0) {
+        return null
+      }
       return this.passwordAgain.length >= 6 && this.passwordAgain === this.password
     },
     emailState () {
-      // eslint-disable-next-line
+      const l = this.email.length
+      if (l === 0) {
+        return null
+      }
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return re.test(this.email)
     },

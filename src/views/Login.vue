@@ -14,6 +14,7 @@
           trim
           type="email"
           id="Email"
+          spellcheck="false"
           :state="emailState"
           v-model="email"
           placeholder="Email address"
