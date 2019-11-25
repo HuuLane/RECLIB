@@ -40,29 +40,6 @@
             </tbody>
           </table>
         </div>
-        <div v-if="userData.activity.rentBook">
-          <h1>你借的:</h1>
-          <table class="table table-borderless">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">书名</th>
-                <th scope="col">归还日期</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in userData.activity.rentBook" :key="index">
-                <th scope="row">{{index}}</th>
-                <td>
-                  <a @click.prevent="goToSubject(item.bookID)">{{item.bookName}}</a>
-                </td>
-                <td>
-                  <code>{{timeConverter(item.date + (30 * 24 * 3600) * 1000)}}</code>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
       <div v-else>
         <b>快去多体验看看!</b>

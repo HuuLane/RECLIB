@@ -49,10 +49,6 @@
                     </tr>
                   </tbody>
                 </table>
-                <hr />
-                <!-- 库存情况 -->
-                <b-card-title>库存信息</b-card-title>
-                <book-stock :id="id" />
                 <!-- 简介 -->
                 <hr />
                 <b-card-title>无聊简介</b-card-title>
@@ -149,7 +145,6 @@ export default {
   components: {
     pageNotFound: () => import('@/components/PageNotFound.vue'),
     introCollapse: () => import('@/components/IntroCollapse.vue'),
-    bookStock: () => import('@/components/BookStock.vue'),
     commentBoard: () => import('@/components/Comment.vue')
   }
 }
