@@ -56,7 +56,7 @@ export default {
       })
       if (res.code === 1) {
         vm.$fm.success(`Good ${res.msg}`)
-        vm.$router.go(-1)
+        vm.$router.back()
       } else {
         vm.$fm.error(`Fail to login: ${res.msg}`)
       }

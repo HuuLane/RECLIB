@@ -93,7 +93,7 @@ export default {
       const code = Number(d.code)
       if (code === 1) {
         vm.$store.dispatch('sessionLogin')
-        vm.$router.go(-1)
+        vm.$router.back()
         vm.$fm.success(`Great! ${d.msg}`)
       } else {
         vm.$fm.error(`Fail to signup: ${d.msg}`)
