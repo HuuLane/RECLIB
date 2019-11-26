@@ -32,7 +32,7 @@ export default {
         n = -1
       }
       vm.$log.debug('goback number:', n)
-      vm.$router.replace(n)
+      // vm.$router.replace(n)
       vm.$router.back()
     }
   },
