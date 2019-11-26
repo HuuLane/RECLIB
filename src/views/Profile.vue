@@ -1,43 +1,22 @@
 <template>
   <b-container>
-    <div v-if="alreadyGetData">
-      <h1>{{userData.name}}</h1>
-      <ul>
-        <li>
-          本站第 <code>{{userData.index}}</code> 位会员
-        </li>
-        <li>
-          注册时间:
-          <code>{{Date(userData.date)}}</code>
-        </li>
-      </ul>
-      <div v-if="userData.activity">
+    <div v-if="already">
+      <div class="div-border div-primary">
+        <h1>{{userData.name}}</h1>
+        <p>本站第 <code>{{userData.index}}</code> 位会员</p>
+        <p>注册时间: <code>{{Date(userData.date)}}</code></p>
+      </div>
+      <div v-if="userData.activity" class="div-border">
         <div v-if="userData.activity.comments">
-          <h3>评论历史:</h3>
-          <table class="table table-borderless">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">书名</th>
-                <th scope="col">评论</th>
-                <th scope="col">日期</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in userData.activity.comments" :key="index">
-                <td scope="row">{{index + 1}}</td>
-                <td>
-                  <a @click.prevent="goToSubject(item.book._id)">{{item.book.title}}</a>
-                </td>
-                <td>
-                  {{item.content}}
-                </td>
-                <td>
-                  <code>{{timeConverter(item.date)}}</code>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <h1>Comments</h1>
+          <div v-for="(item, index) in userData.activity.comments" :key="index">
+            <p><b>Commented</b> on <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link></p>
+            <p>{{item.content}}</p>
+            <div class="text-secondary">
+              <p v-if="timeConverter(item.date)">{{timeConverter(item.date)}} days ago</p>
+              <p v-else>today</p>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else>
@@ -52,13 +31,14 @@
 </template>
 
 <script>
-import { objectIsEmpty, timeConverter } from '@/utils.js'
+import { objectIsEmpty, timeConverter, diffDays } from '@/utils.js'
 export default {
   name: 'Profile',
   created () {
     const vm = this
     if (!vm.userName) {
       vm.$router.push('/login')
+      vm.$fm.error('Please login first')
       return
     }
     vm.axios.get('/user').then(({ data: res }) => {
@@ -76,7 +56,7 @@ export default {
     }
   },
   methods: {
-    timeConverter: timeConverter,
+    timeConverter: diffDays,
     goToSubject (bookID) {
       const vm = this
       vm.$router.push(`/subject/${bookID}`)
@@ -87,7 +67,7 @@ export default {
       const vm = this
       return vm.$store.state.userName
     },
-    alreadyGetData () {
+    already () {
       const vm = this
       return !objectIsEmpty(vm.userData)
     }
@@ -110,5 +90,12 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
+}
+.div-border {
+  @include bold-outline;
+  padding: 3vh;
+}
+.div-primary {
+  margin-bottom: 7%;
 }
 </style>
