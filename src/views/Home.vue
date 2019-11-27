@@ -2,7 +2,7 @@
   <div
     class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt"
   >
-    <div class="div-border">
+    <div class="div-border home-title">
       <h1 class=" mb-5">矩形图书馆</h1>
       <search-bar class="mb-5"/>
     </div>
@@ -35,7 +35,6 @@ export default {
   @include bold-outline;
 }
 .div-border {
-  text-align: center;
   @include bold-outline;
   padding: 3vh;
 }
