@@ -9,9 +9,22 @@
       <div v-if="userData.activity" class="div-border">
         <div v-if="userData.activity.comments">
           <h1>Comments</h1>
-          <div v-for="(item, index) in userData.activity.comments" style="margin: 3rem 0;" :key="index">
+          <div v-for="(item, index) in userData.activity.comments" class="comment-entry" :key="index">
+            <b-dropdown variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none" no-caret>
+              <template v-slot:button-content>
+                <font-awesome-icon class="comment-entry-ellipsis-icon" icon="ellipsis-v" transform="shrink-2" />
+              </template>
+              <b-dropdown-item @click="editComment(item._id)">Edit</b-dropdown-item>
+              <b-dropdown-item @click="deleteComment(item._id)">Delete</b-dropdown-item>
+            </b-dropdown>
             <p><b>#{{index + 1}} Commented</b> on <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link></p>
-            <p>{{item.content}}</p>
+            <div>
+              <p v-if="editting !== item._id">{{item.content}}</p>
+              <!-- edit component -->
+              <template v-else>
+                <input type="text" class="text-input" placeholder="Edit the comment..." :value="item.content" />
+              </template>
+            </div>
             <p>
               <span class="text-secondary" v-b-tooltip.hover v-b-tooltip.top :title="timeConverter(item.date)">{{daysago(item.date)}}</span>
             </p>
@@ -51,7 +64,8 @@ export default {
   },
   data () {
     return {
-      userData: {}
+      userData: {},
+      editting: ''
     }
   },
   methods: {
@@ -63,6 +77,13 @@ export default {
       } else {
         return 'today'
       }
+    },
+    editComment(id) {
+      const vm = this
+      vm.editting = id
+    },
+    deleteComment() {
+
     }
   },
   computed: {
@@ -100,5 +121,41 @@ export default {
 }
 .div-primary {
   margin-bottom: 7%;
+}
+
+.comment-entry {
+  margin: 3rem 0;
+  position: relative;
+}
+
+.comment-entry:hover {
+  .comment-entry-ellipsis-icon {
+    opacity: 1;
+  }
+}
+
+.comment-entry-dropdown {
+  position: absolute;
+  left: 80%;
+  top: 4%;
+}
+
+.comment-entry-ellipsis-icon {
+  color: silver;
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+.comment-entry-ellipsis-icon:hover {
+  color: darkgray;
+}
+
+.text-input {
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: blue  
+}
+.text-input:focus {
+  border-color: green
 }
 </style>
