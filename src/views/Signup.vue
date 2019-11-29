@@ -14,6 +14,7 @@
           trim
           type="email"
           id="Email"
+          spellcheck="false"
           :state="emailState"
           v-model="email"
           placeholder="Email address"
@@ -52,6 +53,7 @@
           trim
           :state="nameState"
           id="Nickname"
+          spellcheck="false"
           v-model="name"
           placeholder="I wish you happy!"
         ></b-form-input>
