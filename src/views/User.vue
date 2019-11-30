@@ -1,12 +1,12 @@
 <template>
   <b-container>
     <div v-if="already">
-      <div class="div-border mb-5">
+      <div class="div-border">
         <h1>{{userData.name}}</h1>
         <p>本站第 <code>{{userData.index}}</code> 位会员</p>
         <p>注册时间: <code>{{Date(userData.date)}}</code></p>
       </div>
-      <div class="div-border">
+      <div class="div-border my-5">
         <h1>Comments</h1>
         <comment-board :id="userData._id" :profile="true" />
       </div>

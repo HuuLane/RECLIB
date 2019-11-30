@@ -72,7 +72,7 @@ export default {
       if (vm.intro.length) {
         return
       }
-      await setClock(1)
+      await setClock()
       const { data: res } = await vm.axios({
         method: 'GET',
         url: `${vm.api}?intro=${vm.id}`
