@@ -4,52 +4,49 @@
       <b-spinner class="absolute-center spinner_big"></b-spinner>
     </div>
     <div v-else>
-      <div v-if="book.brief">
-        <!-- 标题 -->
+      <div v-if="!objectIsEmpty(book)">
+        <!-- title -->
         <h1 class="row">
-          <span class="col-md-9">{{book.brief.title}}</span>
+          <span class="col-md-9">{{book.title}}</span>
           <b-badge
             id="score"
             class="d-none d-md-block"
-            :variant="isOkay.color"
-          >评分: {{book.brief.score}} {{isOkay.icon}}</b-badge>
+            :variant="estimate.color"
+          >评分: {{book.score}} {{estimate.icon}}</b-badge>
           <b-tooltip target="score" placement="right">
             评分人数:
-            <strong>{{book.brief.rating}}</strong>
+            <strong>{{book.rating}}</strong>
           </b-tooltip>
         </h1>
-        <!-- 标签 -->
+        <!-- tags -->
         <p>
           <b class="pr-2">标签:</b>
           <b-badge
-            v-for="(item, index) in book.brief.tags"
+            v-for="(item, index) in book.tags"
             :key="index"
             class="mr-2"
             :variant="variants[index]"
-            @click="goToSearch"
-          >{{book.brief.tags[index]}}</b-badge>
+            @click="search"
+          >{{item}}</b-badge>
         </p>
         <hr />
-        <!-- 图片 + info -->
         <b-card no-body class="overflow-hidden border-0" img-fluid>
           <b-row>
             <b-col md="6">
-              <b-card-img :src="imgSrc" class="rounded-0"></b-card-img>
+              <b-card-img :src="imgsrc" class="rounded-0"></b-card-img>
             </b-col>
             <b-col md="6">
               <b-card-body>
-                <!-- 信息cell -->
                 <b-card-title>图书信息</b-card-title>
                 <table class="table table-sm table-borderless">
                   <tbody>
-                    <tr v-for="(value, name, index) in book.brief.info" :key="index">
-                      <th scope="row">{{index}}</th>
+                    <tr v-for="(value, name, index) in book.info" :key="index">
+                      <th scope="row">{{index + 1}}</th>
                       <td>{{name}}</td>
                       <td>{{value}}</td>
                     </tr>
                   </tbody>
                 </table>
-                <!-- 简介 -->
                 <hr />
                 <b-card-title>无聊简介</b-card-title>
                 <intro-collapse :id="id" />
@@ -57,10 +54,8 @@
             </b-col>
           </b-row>
         </b-card>
-        <!-- 评论 -->
         <comment-board class="mt-5" :id="id" />
       </div>
-      <!-- 404 错误显示 -->
       <div
         v-else
         class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt"
@@ -72,59 +67,45 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-import { log, setClock } from '@/utils.js'
+import { setClock, objectIsEmpty } from '@/utils.js'
 
 export default {
   name: 'Subject',
   data () {
     return {
       isBusy: true,
-      api: '/book',
       img: process.env.VUE_APP_IMG,
       id: null,
       variants: ['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'dark'],
       book: {}
     }
   },
-  created () {
+  async created () {
     const vm = this
     vm.id = vm.$route.params.id
-    // 从服务器拉取
-    vm.fetchBook().then(({ data }) => {
+    await setClock()
+    vm.axios({
+      methods: 'GET',
+      url: '/book',
+      params: { id: vm.id }
+    }).then(({ data }) => {
       vm.isBusy = false
-      // 伺服器, 找不到数据
-      if (data === null) {
-        vm.init(null)
-        return
-      }
-      vm.init(data)
+      vm.book = data
+      vm.$log.info(data)
     }).catch(err => {
-      console.error(err)
+      vm.$log.error(err)
     })
   },
   methods: {
-    init (data) {
-      const vm = this
-      vm.$set(vm.book, 'brief', data)
-    },
-    async fetchBook () {
-      const vm = this
-      await setClock()
-      return vm.axios({
-        url: '/book',
-        method: 'GET',
-        params: { id: vm.id }
-      })
-    },
-    goToSearch (event) {
-      const content = event.target.innerHTML
+    objectIsEmpty: objectIsEmpty,
+    search (event) {
+      const content = event.target.innerText
       this.$router.push(`/search?tag=${content}`)
     }
   },
   computed: {
-    isOkay () {
-      const score = Number(this.book.brief.score)
+    estimate () {
+      const score = Number(this.book.score)
       const o = {}
       if (score > 9) {
         o.icon = '👍'
@@ -138,8 +119,8 @@ export default {
       }
       return o
     },
-    imgSrc () {
-      return `${this.img}/${this.book.brief.imgUrl}.jpg`
+    imgsrc () {
+      return `${this.img}/${this.book.imgUrl}.jpg`
     }
   },
   components: {
