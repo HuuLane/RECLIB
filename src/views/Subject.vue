@@ -4,58 +4,63 @@
       <b-spinner class="absolute-center spinner_big"></b-spinner>
     </div>
     <div v-else>
-      <div v-if="!objectIsEmpty(book)">
-        <!-- title -->
-        <h1 class="row">
-          <span class="col-md-9">{{book.title}}</span>
-          <b-badge
-            id="score"
-            class="d-none d-md-block"
-            :variant="estimate.color"
-          >评分: {{book.score}} {{estimate.icon}}</b-badge>
-          <b-tooltip target="score" placement="right">
-            评分人数:
-            <strong>{{book.rating}}</strong>
-          </b-tooltip>
-        </h1>
-        <!-- tags -->
-        <p>
-          <b class="pr-2">标签:</b>
-          <b-badge
-            v-for="(item, index) in book.tags"
-            :key="index"
-            class="mr-2"
-            :variant="variants[index]"
-            @click="search"
-          >{{item}}</b-badge>
-        </p>
-        <hr />
-        <b-card no-body class="overflow-hidden border-0" img-fluid>
-          <b-row>
-            <b-col md="6">
-              <b-card-img :src="imgsrc" class="rounded-0"></b-card-img>
-            </b-col>
-            <b-col md="6">
-              <b-card-body>
-                <b-card-title>图书信息</b-card-title>
-                <table class="table table-sm table-borderless">
-                  <tbody>
-                    <tr v-for="(value, name, index) in book.info" :key="index">
-                      <th scope="row">{{index + 1}}</th>
-                      <td>{{name}}</td>
-                      <td>{{value}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <hr />
-                <b-card-title>无聊简介</b-card-title>
-                <intro-collapse :id="id" />
-              </b-card-body>
-            </b-col>
-          </b-row>
-        </b-card>
-        <comment-board class="mt-5" :id="id" />
-      </div>
+      <template v-if="!objectIsEmpty(book)">
+        <div class="div-border">
+          <!-- title -->
+          <h1 class="row">
+            <span class="col-md-9">{{book.title}}</span>
+            <b-badge
+              id="score"
+              class="d-none d-md-block"
+              :variant="estimate.color"
+            >评分: {{book.score}} {{estimate.icon}}</b-badge>
+            <b-tooltip target="score" placement="right">
+              评分人数:
+              <strong>{{book.rating}}</strong>
+            </b-tooltip>
+          </h1>
+          <!-- tags -->
+          <p>
+            <b class="pr-2">标签:</b>
+            <b-badge
+              v-for="(item, index) in book.tags"
+              :key="index"
+              class="mr-2"
+              :variant="variants[index]"
+              @click="search"
+            >{{item}}</b-badge>
+          </p>
+          <hr />
+          <b-card no-body class="overflow-hidden border-0" img-fluid>
+            <b-row>
+              <b-col md="6">
+                <b-card-img :src="imgsrc" class="rounded-0"></b-card-img>
+              </b-col>
+              <b-col md="6">
+                <b-card-body>
+                  <b-card-title>图书信息</b-card-title>
+                  <table class="table table-sm table-borderless">
+                    <tbody>
+                      <tr v-for="(value, name, index) in book.info" :key="index">
+                        <th scope="row">{{index + 1}}</th>
+                        <td>{{name}}</td>
+                        <td>{{value}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr />
+                  <b-card-title>无聊简介</b-card-title>
+                  <intro-collapse :id="id" />
+                </b-card-body>
+              </b-col>
+            </b-row>
+          </b-card>
+        </div>
+        <div class="mt-5 div-border">
+          <h1>Comments</h1>
+          <comment-board :id="id" />
+        </div>
+      </template>
       <div
         v-else
         class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt"
@@ -143,6 +148,7 @@ export default {
 }
 .div-border {
   @include bold-outline;
+  padding: 3vh;
 }
 .spinner_big {
   width: 3rem;
