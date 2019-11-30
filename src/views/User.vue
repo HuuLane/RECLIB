@@ -6,34 +6,9 @@
         <p>本站第 <code>{{userData.index}}</code> 位会员</p>
         <p>注册时间: <code>{{Date(userData.date)}}</code></p>
       </div>
-      <div v-if="userData.comments" class="div-border">
+      <div class="div-border">
         <h1>Comments</h1>
-        <div v-for="(item, index) in userData.comments" class="comment-entry" :key="index">
-          <b-dropdown dropleft lazy variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none" no-caret>
-            <template v-slot:button-content>
-              <font-awesome-icon class="comment-entry-ellipsis-icon" icon="ellipsis-v" transform="shrink-2" />
-            </template>
-            <b-dropdown-item @click="editComment(item)">Edit</b-dropdown-item>
-            <b-dropdown-item @click="deleteComment(item._id)">Delete</b-dropdown-item>
-          </b-dropdown>
-          <p><b>#{{index + 1}} Commented</b> on <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link></p>
-          <div>
-            <p v-if="editting._id !== item._id">{{item.content}}</p>
-            <!-- edit component -->
-            <template v-else>
-              <input type="text" v-model="content" class="text-input" placeholder="Edit the comment..." />
-              <b-button size="sm" class="text-input-button" squared variant="outline-secondary" @click="cancelEdit">CANCEL</b-button>
-              <b-button size="sm" class="text-input-button" squared variant="primary" :disabled="!savable" @click="submitEdit">SAVE</b-button>
-            </template>
-          </div>
-          <p>
-            <span class="text-secondary" v-b-tooltip.hover v-b-tooltip.top :title="timeConverter(item.date)">{{daysago(item.date)}}</span>
-          </p>
-        </div>
-      </div>
-      <div v-else>
-        <b>快去多体验!</b>
-        <mark>撰写评论</mark>
+        <comment-board class="mt-5" :id="userData._id" :profile="true" />
       </div>
     </div>
     <div class="container_full-heigt" v-else>
@@ -43,7 +18,7 @@
 </template>
 
 <script>
-import { objectIsEmpty, timeConverter, diffDays } from '@/utils.js'
+import { objectIsEmpty } from '@/utils.js'
 export default {
   name: 'Profile',
   created () {
@@ -64,64 +39,16 @@ export default {
   data () {
     return {
       userData: {},
-      editting: {},
-      content: '',
-      originalContent: ''
-    }
-  },
-  methods: {
-    timeConverter: timeConverter,
-    daysago (date) {
-      const n = diffDays(date)
-      if (n) {
-        return `${n} days ago`
-      } else {
-        return 'today'
-      }
-    },
-    editComment(item) {
-      const vm = this
-      vm.editting = item
-      vm.content = item.content
-      vm.originalContent = item.content
-    },
-    cancelEdit() {
-      this.editting = {}
-    },
-    submitEdit() {
-      const vm = this
-      vm.axios({
-        method: 'PUT',
-        url: `/comment/${vm.editting._id}`,
-        data: {
-          content: vm.content
-        }
-      }).then(({ data: res }) => {
-        vm.$log.info(res)
-        if (res.code === 1) {
-          vm.$fm.success(res.msg)
-          vm.editting.content = vm.content
-          vm.cancelEdit()
-        } else {
-          vm.$fm.error(res.msg)
-        }
-      }).catch(err => {
-        vm.$log.error('err', err)
-      })
-    },
-    deleteComment() {
-
     }
   },
   computed: {
     already () {
       const vm = this
       return !objectIsEmpty(vm.userData)
-    },
-    savable () {
-      const vm = this
-      return vm.content !== vm.originalContent && vm.content.length !== 0
     }
+  },
+  components: {
+    commentBoard: () => import('@/components/Comment.vue')
   }
 }
 </script>
@@ -148,44 +75,5 @@ export default {
 }
 .div-primary {
   margin-bottom: 7%;
-}
-
-.comment-entry {
-  margin: 3rem 0;
-  position: relative;
-}
-
-.comment-entry:hover {
-  .comment-entry-ellipsis-icon {
-    opacity: 1;
-  }
-}
-
-.comment-entry-dropdown {
-  position: absolute;
-  left: 80%;
-  top: 8%;
-}
-
-.comment-entry-ellipsis-icon {
-  color: silver;
-  opacity: 0;
-  transition: opacity 0.2s ease-in;
-}
-
-.comment-entry-ellipsis-icon:hover {
-  color: darkgray;
-}
-
-.text-input {
-  outline: 0;
-  border-width: 0 0 2px;
-  border-color: blue  
-}
-.text-input:focus {
-  border-color: green
-}
-.text-input-button {
-  border: none;
 }
 </style>
