@@ -77,9 +77,9 @@ import { objectIsEmpty } from '@/utils.js'
 export default {
   name: 'Signup',
   methods: {
-     async signup () {
+     signup () {
       const vm = this
-      const [err, res] = await vm.$t(vm.axios({
+      vm.axios({
         url: '/user',
         method: 'POST',
         data: {
@@ -87,20 +87,19 @@ export default {
           password: vm.password,
           name: vm.name
         }
-      }))
-      if (err) {
+      }).then(({ data: d }) => {
+        const code = Number(d.code)
+        if (code === 1) {
+          vm.$store.dispatch('sessionLogin')
+          vm.$router.back()
+          vm.$fm.success(`Great! ${d.msg}`)
+        } else {
+          vm.$fm.error(`Fail to signup: ${d.msg}`)
+        }
+      }).catch(err => {
         // TODO retry
         vm.$log.error(err)
-      }
-      const d = res.data
-      const code = Number(d.code)
-      if (code === 1) {
-        vm.$store.dispatch('sessionLogin')
-        vm.$router.back()
-        vm.$fm.success(`Great! ${d.msg}`)
-      } else {
-        vm.$fm.error(`Fail to signup: ${d.msg}`)
-      }
+      })
     }
   },
   computed: {
