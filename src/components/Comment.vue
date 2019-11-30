@@ -39,10 +39,11 @@
           </template>
           <template v-else>
             <b>#{{index + 1}} </b>
-            <b-link :to="'/user/' + item.user.name">{{item.user.name}}</b-link>
+            <b-link :to="'/user/' + item.user.name">{{item.user.name}} </b-link>
           </template>
           <span class="text-secondary" v-b-tooltip.hover v-b-tooltip.top :title="timeConverter(item.date)">
-            {{daysago(item.date)}} {{commentEdited(item.edited)}}
+            <timeago :datetime="item.date" :auto-update="60" />
+            {{commentEdited(item.edited)}}
           </span>
         </p>
         <div>
@@ -60,7 +61,7 @@
 </template>
 
 <script>
-import { timeConverter, objectIsEmpty, setClock, diffDays } from '@/utils.js'
+import { timeConverter, objectIsEmpty, setClock } from '@/utils.js'
 export default {
   name: 'Comment',
   async created () {
@@ -99,14 +100,6 @@ export default {
         })
     },
     timeConverter: timeConverter,
-    daysago (date) {
-      const n = diffDays(date)
-      if (n) {
-        return `${n} days ago`
-      } else {
-        return 'today'
-      }
-    },
     async submitComment () {
       const vm = this
       if (!vm.newCommentInput) {
