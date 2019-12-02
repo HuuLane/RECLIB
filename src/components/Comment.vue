@@ -80,8 +80,9 @@ export default {
   },
   methods: {
     async fetchComments () {
-      await setClock()
       const vm = this
+      vm.isBusy = true
+      await setClock()
       let url = ''
       if (vm.profile) {
         url = `/comment?user=${vm.id}`
@@ -152,8 +153,22 @@ export default {
         vm.$log.error('err', err)
       })
     },
-    deleteComment() {
-      // TODO
+    deleteComment(id) {
+      const vm = this
+      vm.axios({
+        method: 'DELETE',
+        url: `/comment/${id}`,
+      }).then(({ data: res }) => {
+        vm.$log.info(res)
+        if (res.code === 1) {
+          vm.$fm.warning(res.msg)
+          vm.fetchComments()
+        } else {
+          vm.$fm.error(res.msg)
+        }
+      }).catch(err => {
+        vm.$log.error('err', err)
+      })
     },
     commentEdited(e) {
       if (e) {
