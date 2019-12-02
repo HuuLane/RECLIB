@@ -39,7 +39,7 @@
         <b-spinner variant="dark" v-show="!isEnd"></b-spinner>
       </div>
       <scroll-to-top :duration="0.5">
-        <font-awesome-icon icon="angle-up"/>
+        <b-icon-chevron-bar-up></b-icon-chevron-bar-up>
       </scroll-to-top>
     </div>
   </b-container>
@@ -140,6 +140,7 @@ export default {
   },
   directives: { infiniteScroll },
   components: {
+    BIconChevronBarUp: () => import('bootstrap-vue').then(m => m.BIconChevronBarUp),
     pageNotFound: () => import('@/components/PageNotFound.vue'),
     scrollToTop: () => import('@/components/ScrollToTop.vue')
   }

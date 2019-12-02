@@ -26,7 +26,7 @@
       <div v-for="(item, index) in comments" class="comment-entry" :key="index">
         <b-dropdown dropleft lazy variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none" no-caret>
           <template v-slot:button-content>
-            <font-awesome-icon class="comment-entry-ellipsis-icon" icon="ellipsis-v" transform="shrink-2" />
+            <b-icon-three-dots-vertical class="comment-entry-ellipsis-icon" />
           </template>
           <b-dropdown-item @click="editComment(item)">Edit</b-dropdown-item>
           <b-dropdown-item @click="deleteComment(item._id)">Delete</b-dropdown-item>
@@ -190,6 +190,9 @@ export default {
   props: {
     id: String,
     profile: Boolean
+  },
+  components: {
+    BIconThreeDotsVertical: () => import('bootstrap-vue').then(m => m.BIconThreeDotsVertical),
   }
 }
 </script>
