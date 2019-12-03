@@ -1,18 +1,26 @@
 <template>
   <b-container>
-    <div v-if="already">
-      <div class="div-border">
-        <h1>{{userData.name}}</h1>
-        <p>本站第 <code>{{userData.index}}</code> 位会员</p>
-        <p>注册时间: <code>{{Date(userData.date)}}</code></p>
+    <template v-if="!errOccur">
+      <div v-if="!isBusy">
+        <div class="div-border">
+          <h1>{{userData.name}}</h1>
+          <p>本站第 <code>{{userData.index}}</code> 位会员</p>
+          <p>注册时间: <code>{{Date(userData.date)}}</code></p>
+        </div>
+        <div class="div-border my-5">
+          <h1>Comments</h1>
+          <comment-board :id="userData._id" :profile="true" />
+        </div>
       </div>
-      <div class="div-border my-5">
-        <h1>Comments</h1>
-        <comment-board :id="userData._id" :profile="true" />
+      <div v-else class="container_full-heigt">
+        <b-spinner class="absolute-center spinner_big"/>
       </div>
-    </div>
-    <div class="container_full-heigt" v-else>
-      <b-spinner class="absolute-center spinner_big"/>
+    </template>
+    <div
+        v-else
+        class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt"
+      >
+        <page-not-found></page-not-found>
     </div>
   </b-container>
 </template>
@@ -27,9 +35,10 @@ export default {
     vm.axios.get(`/user/${name}`).then(({ data: res }) => {
       vm.$log.info(res)
       if (res.code === 1) {
-        vm.userData = { ...res.data }
+        vm.userData = res.data
+        vm.isBusy = false
       } else {
-        // TODO no the user
+        vm.errOccur = true
         vm.$fm.error(res.msg)
       }
     }).catch(err => {
@@ -39,15 +48,12 @@ export default {
   data () {
     return {
       userData: {},
-    }
-  },
-  computed: {
-    already () {
-      const vm = this
-      return !objectIsEmpty(vm.userData)
+      isBusy: true,
+      errOccur: false
     }
   },
   components: {
+    pageNotFound: () => import('@/components/PageNotFound.vue'),
     commentBoard: () => import('@/components/Comment.vue')
   }
 }
