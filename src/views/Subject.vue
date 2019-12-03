@@ -22,13 +22,7 @@
           <!-- tags -->
           <p>
             <b class="pr-2">标签:</b>
-            <b-badge
-              v-for="(item, index) in book.tags"
-              :key="index"
-              class="mr-2"
-              :variant="variants[index]"
-              @click="search"
-            >{{item}}</b-badge>
+            <badges :tags="book.tags" />
           </p>
           <hr />
           <b-card no-body class="overflow-hidden border-0" img-fluid>
@@ -81,7 +75,6 @@ export default {
       isBusy: true,
       img: process.env.VUE_APP_IMG,
       id: null,
-      variants: ['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'dark'],
       book: {}
     }
   },
@@ -103,10 +96,6 @@ export default {
   },
   methods: {
     objectIsEmpty: objectIsEmpty,
-    search (event) {
-      const content = event.target.innerText
-      this.$router.push(`/search?tag=${content}`)
-    }
   },
   computed: {
     estimate () {
@@ -131,6 +120,7 @@ export default {
   components: {
     pageNotFound: () => import('@/components/PageNotFound.vue'),
     introCollapse: () => import('@/components/IntroCollapse.vue'),
+    badges: () => import('@/components/Badges.vue'),
     commentBoard: () => import('@/components/Comment.vue')
   }
 }
