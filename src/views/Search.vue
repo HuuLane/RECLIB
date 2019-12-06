@@ -1,10 +1,10 @@
 <template>
   <b-container>
     <div v-if="!documentCount" class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt">
-      <page-not-found goback=2>
+      <page-not-found>
         没有搜寻结果
         <template v-slot:info>
-          <!-- TODO recommend -->
+          推荐: <badges />
         </template>
       </page-not-found>
     </div>
@@ -147,6 +147,7 @@ export default {
   components: {
     BIconChevronBarUp: () => import('bootstrap-vue').then(m => m.BIconChevronBarUp),
     pageNotFound: () => import('@/components/PageNotFound.vue'),
+    badges: () => import('@/components/Badges.vue'),
     scrollToTop: () => import('@/components/ScrollToTop.vue')
   }
 }

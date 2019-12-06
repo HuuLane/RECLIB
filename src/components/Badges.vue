@@ -17,7 +17,7 @@ export default {
     tags: {
       type: Array[String],
       default () {
-        return ['周杰伦']
+        return ['周杰伦', '计算机', '人生', '爱情', '小说']
       }
     },
   },
