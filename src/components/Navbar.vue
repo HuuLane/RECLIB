@@ -1,21 +1,13 @@
 <template>
   <b-navbar
     variant="faded"
-    toggleable="sm"
     type="light"
     class="bg-white mb-3 rounded navbar_cant-select"
   >
     <router-link tag="b-navbar-brand" to="/" class="font-weight-bold">RECLAB</router-link>
-    <!-- 小屏幕时出现 toggle -->
-    <b-navbar-toggle target="nav-collapse" class="border-0">
-      <span class="navbar-toggler-icon navbar-toggle-button_small"></span>
-    </b-navbar-toggle>
-    <!-- toggle 内容 -->
-    <b-collapse id="nav-collapse" is-nav>
-      <!-- Right aligned nav items -->
-      <!-- ml-auto 好神奇 -->
+    <b-collapse is-nav>
+      <!-- ml-auto for Right aligned -->
       <b-navbar-nav class="ml-auto">
-        <!-- 用户 -->
         <b-nav-item v-if="!userName">
           <router-link class="text-muted" to="/login">登录</router-link>
           <b>/</b>
@@ -64,11 +56,5 @@ export default {
 @import "@/styles/mixin.scss";
 .navbar_cant-select {
   @include cant-select;
-}
-.navbar_fixed-height {
-  height: 6vh;
-}
-.navbar-toggle-button_small {
-  font-size: 2vh;
 }
 </style>
