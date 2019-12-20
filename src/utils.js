@@ -1,5 +1,5 @@
 // console
-const { log, dir } = console
+const log = console.log.bind(console)
 
 const setClock = (timeout = 0.5) => {
   const time = Math.random() * timeout
@@ -25,4 +25,4 @@ const timeConverter = (timestamp) => {
   return time
 }
 
-export { log, dir, setClock, objectIsEmpty, timeConverter }
+export { log, setClock, objectIsEmpty, timeConverter }

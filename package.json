@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --dest /home/me/Project/RECLAB/RECLAB-BACKEND/public",
     "lint": "vue-cli-service lint",
     "huu": "vue-cli-service build --mode development",
     "start": "npm run serve"
