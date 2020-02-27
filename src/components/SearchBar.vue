@@ -3,9 +3,9 @@
      <!-- fa-1x -->
     <b-icon-search icon="search" @click="goToSearch" class="mx-3"/>
     <input
-      v-focus
       class="search-bar_clear search-bar--text"
       type="text"
+      trim
       :placeholder="placeholder"
       aria-label="Search"
       v-model="inputContent"
@@ -29,18 +29,12 @@ export default {
   methods: {
     goToSearch () {
       const vm = this
-      const queryStr = vm.inputContent.trim()
-      if (!queryStr) {
+      const c = vm.inputContent
+      if (!c) {
+        vm.$fm.info('Please enter content')
         return
       }
-      vm.$router.push(`/search?all=${queryStr}`)
-    }
-  },
-  directives: {
-    focus: {
-      inserted: function (el) {
-        el.focus()
-      }
+      vm.$router.push(`/search?all=${c}`)
     }
   },
   components: {
@@ -72,7 +66,7 @@ export default {
 }
 @include media-breakpoint-down(sm) {
   .search-bar--text {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 }
 </style>
