@@ -95,7 +95,6 @@ export default {
           vm.isBusy = false
         })
         .catch(err => {
-          // TODO retry
           vm.$log.info('fail to get comments', err)
         })
     },

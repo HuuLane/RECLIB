@@ -97,7 +97,6 @@ export default {
           vm.$fm.error(`Fail to signup: ${d.msg}`)
         }
       }).catch(err => {
-        // TODO retry
         vm.$log.error(err)
       })
     }

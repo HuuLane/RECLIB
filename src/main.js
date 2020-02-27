@@ -9,12 +9,15 @@ import VueAxios from 'vue-axios'
 import store from '@/store'
 import VueLogger from 'vuejs-logger'
 import VueTimeago from 'vue-timeago'
+import axiosRetry from 'axios-retry'
 
 Vue.use(VueTimeago, {
   name: 'Timeago',
   locale: 'en'
 })
 
+// Exponential back-off retry delay between requests
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay })
 Vue.use(VueAxios, axios)
 
 const loggerOptions = {
