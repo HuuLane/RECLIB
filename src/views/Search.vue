@@ -10,10 +10,12 @@
     </div>
     <div v-else>
       <h2>搜寻结果: 找到 <code>{{ documentCount }}</code> 本</h2>
+      <!-- BUG -->
       <div
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="isBusy"
         infinite-scroll-distance="3"
+        infinite-scroll-immediate-check="false"
       >
         <div v-for="(items, tensIndex) in pagesRawData" :key="tensIndex">
           <b-card
@@ -31,7 +33,6 @@
           </b-card>
         </div>
       </div>
-      <!-- 辅助组件 -->
       <div
         v-show="isBusy"
         class="d-flex flex-column flex-wrap justify-content-center align-content-center"
@@ -51,33 +52,17 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-import { log, setClock, objectIsEmpty } from '@/utils.js'
+import { setClock, objectIsEmpty } from '@/utils.js'
 import infiniteScroll from 'vue-infinite-scroll'
 
 export default {
   name: 'Search',
   created () {
-    const vm = this
-    vm.queryParams = { ...vm.$route.query }
-    // No paramas
-    if (objectIsEmpty(vm.queryParams)) {
-      return vm.$router.push('/')
-    }
-    // 初始化
-    vm.axios({
-      url: '/book',
-      method: 'GET',
-      params: { count: 1, ...vm.queryParams }
-    }).then(({ data }) => {
-      vm.documentCount = Number(data)
-    }).catch(err => {
-      console.error(err)
-    })
+    this.initCount()
+    this.loadMore()
   },
   data () {
     return {
-      api: process.env.VUE_APP_BOOK,
       documentCount: 'loading...',
       currentPage: 0,
       isBusy: false,
@@ -87,20 +72,29 @@ export default {
     }
   },
   methods: {
-    addPageData (pageIndex, data) {
+    storePageData (pageIndex, data) {
       const vm = this
       vm.$set(vm.pagesRawData, pageIndex - 1, data)
-      // 并且送入 store
-      // vm.$store.commit('saveRowDataIntoItems', data)
     },
-    async cachePageData (index) {
+    initCount () {
       const vm = this
-      // 如果已经缓存, 则返回
-      if (vm.pagesRawData[index - 1]) {
-        // log('has cache')
-        return true
+      vm.queryParams = { ...vm.$route.query }
+      if (objectIsEmpty(vm.queryParams)) {
+        return vm.$router.push('/')
       }
-      // 模拟延迟吧..
+      vm.axios({
+        url: '/book',
+        method: 'GET',
+        params: { count: 1, ...vm.queryParams }
+      }).then(({ data }) => {
+        vm.documentCount = Number(data)
+      }).catch(err => {
+        vm.$log.error(error)
+        vm.$fm.NETERR()
+      })
+    },
+    async fetchPageData (index) {
+      const vm = this
       await setClock()
       try {
         const { data } = await vm.axios({
@@ -108,30 +102,29 @@ export default {
           method: 'GET',
           params: { page: index, ...vm.queryParams }
         })
-        this.addPageData(index, data)
-        // log('save successfully')
+        vm.storePageData(index, data)
         return true
       } catch (error) {
-        console.error(error)
-        // log('unsave successfully')
+        vm.$log.error(error)
+        vm.$fm.NETERR()
         return false
       }
     },
-    loadMore () {
+    async loadMore () {
       const vm = this
+      vm.$log.info('loadMore')
       vm.isBusy = true
-      // !防止无限请求
+      await setClock(1)
       if (vm.documentCount === 0) {
         return
       }
-      // log('当前页码', this.currentPage)
-      if (vm.currentPage === vm.maxIndexOfPage) {
-        // log('最大页啦~')
+      vm.$log.info('pagination num:', vm.currentPage)
+      if (vm.currentPage === vm.maxPagination) {
         vm.isEnd = true
         return
       }
-      vm.cachePageData(++vm.currentPage).then((isSuccess) => {
-        vm.isBusy = !isSuccess
+      vm.fetchPageData(++vm.currentPage).then((success) => {
+        vm.isBusy = !success
       })
     },
     goToSubject (_id) {
@@ -139,8 +132,21 @@ export default {
     }
   },
   computed: {
-    maxIndexOfPage () {
+    maxPagination () {
       return Math.ceil(this.documentCount / 10)
+    }
+  },
+  watch: {
+    async '$route.query'() {
+      const vm = this
+      vm.$log.info('$route.query change',vm.$route.query)
+      vm.documentCount = 'loading...'
+      vm.currentPage = 0
+      vm.isBusy = false
+      vm.isEnd = false
+      vm.pagesRawData = []
+      await vm.initCount()
+      vm.loadMore()
     }
   },
   directives: { infiniteScroll },
@@ -157,9 +163,6 @@ export default {
 @import '@/styles/mixin.scss';
 @mixin cant-select {
   user-select: none;
-}
-.btn_pagination {
-  @include cant-select;
 }
 .container_full-heigt {
   @include full-heigt;
