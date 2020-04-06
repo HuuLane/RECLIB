@@ -41,6 +41,7 @@ export default new Vuex.Store({
       const { data } = await Vue.axios({
         url: process.env.VUE_APP_LOGIN,
         method: 'PUT',
+        withCredentials: process.env.WITH_COOKIE === 'true',
         data: payload
       })
       commit('checkResponse', data)
