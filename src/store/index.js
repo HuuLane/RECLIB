@@ -28,14 +28,14 @@ export default new Vuex.Store({
   actions: {
     async readUserState ({ commit, state }) {
       const { data } = await Vue.axios({
-        url: process.env.VUE_APP_LOGIN,
+        url: '/login',
         method: 'GET'
       })
       commit('readUserState', data)
     },
     async login ({ commit, state }, payload) {
       const { data } = await Vue.axios({
-        url: process.env.VUE_APP_LOGIN,
+        url: '/login',
         method: 'POST',
         data: payload
       })
@@ -44,7 +44,7 @@ export default new Vuex.Store({
     },
     async logOut ({ commit, state }) {
       const { data } = await Vue.axios({
-        url: process.env.VUE_APP_LOGOUT,
+        url: '/logout',
         method: 'delete'
       })
       if (data.code === 1) {

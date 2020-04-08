@@ -101,7 +101,7 @@ export default {
     signUp () {
       const vm = this
       vm.axios({
-        url: `${process.env.VUE_APP_SIGNUP}`,
+        url: '/signup',
         method: 'POST',
         data: {
           email: vm.email,

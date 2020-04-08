@@ -70,7 +70,7 @@ export default {
   },
   data () {
     return {
-      api: process.env.VUE_APP_COMMENT,
+      api: '/comment',
       commentContent: null,
       res: {},
       infoafterComment: {}

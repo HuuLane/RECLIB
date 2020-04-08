@@ -60,7 +60,7 @@ export default {
   },
   data () {
     return {
-      api: process.env.VUE_APP_BOOK,
+      api: '/book',
       isBusy: true,
       intro: [],
       activeBtn: ''

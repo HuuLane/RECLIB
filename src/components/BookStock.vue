@@ -52,7 +52,7 @@ export default {
   },
   data () {
     return {
-      api: process.env.VUE_APP_STOCK,
+      api: '/stock',
       data: {},
       info: {}
     }
