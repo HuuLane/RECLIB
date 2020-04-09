@@ -8,17 +8,8 @@ export default new Vuex.Store({
     convenientRecord: {}
   },
   mutations: {
-    checkResponse (state, payload) {
-      const code = Number(payload.code)
-      if (code === 1) {
-        // 登录成功
-        state.userName = payload.userName
-      }
-    },
-    readUserState (state, payload) {
-      if (payload) {
-        state.userName = payload
-      }
+    setUserName (state, userName) {
+      state.userName = userName
     },
     comfortUser (state, payload) {
       // log('payload', payload)
@@ -26,29 +17,33 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async readUserState ({ commit, state }) {
+    async sessionLogin (context) {
       const { data } = await Vue.axios({
         url: '/login',
         method: 'GET'
       })
-      commit('readUserState', data)
+      if (data.userName) {
+        context.commit('setUserName', data.userName)
+      }
     },
-    async login ({ commit, state }, payload) {
+    async login (context, payload) {
       const { data } = await Vue.axios({
         url: '/login',
         method: 'POST',
         data: payload
       })
-      commit('checkResponse', data)
+      if (data.userName) {
+        context.commit('setUserName', data.userName)
+      }
       return data
     },
-    async logOut ({ commit, state }) {
+    async logOut (context) {
       const { data } = await Vue.axios({
         url: '/logout',
         method: 'delete'
       })
       if (data.code === 1) {
-        state.userName = null
+        context.commit('setUserName', null)
       }
     }
   }

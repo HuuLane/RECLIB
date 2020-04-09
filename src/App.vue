@@ -15,7 +15,7 @@ export default {
   },
   created () {
     const vm = this
-    vm.$store.dispatch('readUserState')
+    vm.$store.dispatch('sessionLogin')
   }
 }
 </script>
