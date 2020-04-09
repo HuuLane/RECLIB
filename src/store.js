@@ -22,6 +22,7 @@ export default new Vuex.Store({
         url: '/login',
         method: 'GET'
       })
+      Vue.$log.info('sessionLogin', data)
       if (data.userName) {
         context.commit('setUserName', data.userName)
       }
