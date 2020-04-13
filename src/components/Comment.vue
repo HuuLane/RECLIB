@@ -10,7 +10,7 @@
           trim
           :disabled="!isLogin"
           placeholder="输入内容"
-          v-model="commentContent"
+          v-model="content"
           @keyup.enter="submitComment"
         />
         <!-- 按钮 -->
@@ -20,20 +20,20 @@
             block
             @click="submitComment"
             :disabled="!isLogin"
-          >搞个大新闻</b-button>
+          >submit</b-button>
         </b-input-group-append>
       </b-input-group>
       <b-tooltip v-if="!isLogin" target="btn-submit-comment" placement="top">
-        <strong>登录即可歌颂党国</strong>
+        <strong>please login first</strong>
       </b-tooltip>
     </div>
     <!-- 展示板 -->
-    <table class="table table-borderless my-3" v-if="getCommentsIsOkay">
+    <table class="table table-borderless my-3" v-if="hasComments">
       <tbody v-if="res.code === 1">
         <tr v-for="(item, index) in res.comments" :key="index">
           <th scope="row">{{index}}L</th>
           <td>
-            <code>{{item.name}}</code> 说:
+            <code>{{item.user.name}}</code> 说:
           </td>
           <td>
             <b>{{item.content}}</b>
@@ -60,8 +60,7 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-import { timeConverter, log, objectIsEmpty } from '@/utils.js'
+import { timeConverter, objectIsEmpty } from '@/utils.js'
 export default {
   name: 'Comment',
   created () {
@@ -71,7 +70,7 @@ export default {
   data () {
     return {
       api: '/comment',
-      commentContent: null,
+      content: null,
       res: {},
       infoafterComment: {}
     }
@@ -80,29 +79,27 @@ export default {
     transDate (timestamp) {
       return timeConverter(timestamp)
     },
-    getComments () {
+    async getComments () {
       const vm = this
-      vm.axios({
-        method: 'GET',
-        url: `${vm.api}/${vm.id}`
-      }).then(({ data }) => {
-        // log('data', data)
-        vm.res = { ...data }
-      }).catch(err => {
-        log('err', err)
-      })
+      const [err, { data }] = await vm.$t(vm.axios.get(`${vm.api}/${vm.id}`))
+      if (err) {
+        // TODO retry
+        vm.$log.info('fail to getComments', err)
+      }
+      vm.$log.info('data', data)
+      vm.res = { ...data }
     },
     async submitComment () {
       const vm = this
-      if (!vm.commentContent) {
+      if (!vm.content) {
         return
       }
       const { data } = await vm.axios({
-        method: 'PUT',
+        method: 'POST',
         url: vm.api,
         data: {
           id: vm.id,
-          content: vm.commentContent
+          content: vm.content
         }
       })
       // 写入 afterCommentInfo
@@ -115,21 +112,17 @@ export default {
     closeModal () {
       const vm = this
       if (vm.infoafterComment.code === 1) {
-        vm.commentContent = null
+        vm.content = null
       }
       vm.$refs['bv-modal-msg'].hide()
     }
   },
   computed: {
-    userName () {
-      const vm = this
-      return vm.$store.state.userName
-    },
-    getCommentsIsOkay () {
+    hasComments () {
       return !objectIsEmpty(this.res)
     },
     isLogin () {
-      return Boolean(this.userName)
+      return Boolean(this.$store.state.userName)
     }
   },
   props: {
