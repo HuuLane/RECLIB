@@ -61,21 +61,11 @@
         <b-button
           class="btn-block"
           :disabled="!fulfill"
-          @click="signUp"
+          @click="signup"
           variant="outline-dark"
         >开始谈笑风生</b-button>
       </b-form-group>
     </b-form-group>
-    <!-- 模块消息 -->
-    <div>
-      <b-modal ref="bv-modal-msg" centered hide-footer>
-        <template slot="modal-title">RECLAB</template>
-        <div class="d-block text-center">
-          <h3>{{res.msg}}</h3>
-        </div>
-        <b-button class="mt-3" block variant="outline-dark" @click="closeModal">Close Me</b-button>
-      </b-modal>
-    </div>
   </b-container>
 </template>
 
@@ -84,9 +74,9 @@ import { objectIsEmpty } from '@/utils.js'
 export default {
   name: 'Signup',
   methods: {
-    signUp () {
+     async signup () {
       const vm = this
-      vm.axios({
+      const [err, res] = await vm.$t(vm.axios({
         url: '/user',
         method: 'POST',
         data: {
@@ -94,25 +84,25 @@ export default {
           password: vm.password,
           name: vm.name
         }
-      }).then(({ data }) => {
-        // log('data', data)
-        vm.res = { ...data }
-        vm.$refs['bv-modal-msg'].show()
-      }).catch(err => {
-        console.error(err)
-      })
-    },
-    closeModal () {
-      const vm = this
-      vm.$refs['bv-modal-msg'].hide()
-      const code = Number(vm.res.code)
+      }))
+      if (err) {
+        // TODO retry
+        vm.$log.error(err)
+      }
+      const d = res.data
+      const code = Number(d.code)
       if (code === 1) {
         vm.$store.dispatch('sessionLogin')
         vm.$router.push('/')
-      } else if (code === 0) {
-        // 奇怪的错误, 请联系管理员
-      } else if (code === 2) {
-        // 用户名 || 邮箱已有人先
+        vm.flashMessage.success({
+          title: 'Great!!',
+          message: d.msg
+        })
+      } else {
+        vm.flashMessage.error({
+          title: 'Fail to login',
+          message: d.msg
+        })
       }
     }
   },
@@ -144,7 +134,6 @@ export default {
       password: '',
       name: '',
       passwordAgain: '',
-      res: {}
     }
   },
   directives: {
