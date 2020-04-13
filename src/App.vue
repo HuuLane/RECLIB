@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <Navbar/>
+    <FlashMessage :position="'right top'"></FlashMessage>
+    <!-- <button @click="test">123</button> -->
     <keep-alive include="Admin">
       <router-view/>
     </keep-alive>
@@ -16,6 +18,14 @@ export default {
   created () {
     const vm = this
     vm.$store.dispatch('sessionLogin')
+  },
+  methods: {
+    test () {
+      this.flashMessage.success({
+        title: 'Success Message Title',
+        message: 'Hoorah, it is my fist npm package and it works!'
+      })
+    }
   }
 }
 </script>
