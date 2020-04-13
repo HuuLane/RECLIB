@@ -7,7 +7,7 @@
       label-class="font-weight-bold pt-0"
       class="mb-0 div-border p-5"
     >
-      <!-- 输入邮箱 -->
+      <!-- Enter email -->
       <b-form-group label-cols-sm="4" label="Email:" label-align-sm="right" label-for="Email">
         <b-form-input
           v-focus
@@ -19,7 +19,7 @@
           placeholder="Email address"
         ></b-form-input>
       </b-form-group>
-      <!-- 输入密码 -->
+      <!-- enter password -->
       <b-form-group label-cols-sm="4" label="Password:" label-align-sm="right" label-for="Password">
         <b-form-input
           trim
@@ -34,93 +34,63 @@
       <b-form-group label-cols-sm="4" label-align-sm="right" class="mb-0">
         <b-button
           class="btn-block"
-          :disabled="!canLogin"
+          :disabled="!fulfill"
           @click="login"
           variant="outline-dark"
-        >登录</b-button>
+        >Log in</b-button>
       </b-form-group>
     </b-form-group>
-    <!-- 模块消息 -->
-    <div>
-      <b-modal ref="bv-modal-msg" centered hide-footer>
-        <template slot="modal-title">RECLAB</template>
-        <div class="d-block text-center">
-          <h3>{{res.msg}}</h3>
-        </div>
-        <b-button class="mt-3" block variant="outline-dark" @click="closeModal"> {{btnInnerText}} </b-button>
-      </b-modal>
-    </div>
   </b-container>
 </template>
 
 <script>
-// eslint-disable-next-line
-const { log } = console
 export default {
-  name: 'Signup',
+  name: 'Login',
   methods: {
-    login () {
+    async login () {
       const vm = this
-      vm.$store.dispatch('login', {
+      const res = await vm.$store.dispatch('login', {
         email: vm.email,
         password: vm.password
-      }).then(data => {
-        vm.res = { ...data }
-        vm.$refs['bv-modal-msg'].show()
-      }).catch(err => {
-        console.error(err)
       })
-    },
-    closeModal () {
-      const vm = this
-      vm.$refs['bv-modal-msg'].hide()
-      const code = Number(vm.res.code)
-      if (code === 1) {
+      if (res.code === 1) {
+        vm.flashMessage.success({
+          title: 'Good',
+          message: res.msg
+        })
         vm.$router.push('/')
-      } else if (code === 0) {
-        // 密码错误
-        vm.password = ''
-      } else if (code === 2) {
-        // 未注册
-        vm.$router.push('/signup')
-        vm.$store.commit('comfortUser', { email: vm.email, password: vm.password })
+      } else {
+        vm.flashMessage.error({
+          title: 'Fail to login',
+          message: res.msg
+        })
       }
     }
   },
   computed: {
     passwordState () {
       const l = this.password.length
+      if (l === 0) {
+        return null
+      }
       return l >= 6 && l <= 18
     },
     emailState () {
-      // eslint-disable-next-line
+      if (this.email.length === 0) {
+        return null
+      }
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return re.test(this.email)
     },
-    canLogin () {
+    fulfill () {
       const vm = this
       return vm.passwordState && vm.emailState
-    },
-    btnInnerText () {
-      const vm = this
-      switch (vm.res.code) {
-        case 0:
-          return '重试'
-        case 1:
-          return '前往首页'
-        case 2:
-          return '我要注册'
-        default:
-          return '关闭'
-      }
     }
   },
   data () {
     return {
-      email: '',
-      password: '',
-      name: '',
-      res: {}
+      email: 'test@typeof.fun',
+      password: 'test@typeof.fun'
     }
   },
   directives: {

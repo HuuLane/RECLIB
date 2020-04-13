@@ -4,16 +4,11 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-    userName: null,
-    convenientRecord: {}
+    userName: null
   },
   mutations: {
     setUserName (state, userName) {
       state.userName = userName
-    },
-    comfortUser (state, payload) {
-      // log('payload', payload)
-      state.convenientRecord = { ...payload }
     }
   },
   actions: {
