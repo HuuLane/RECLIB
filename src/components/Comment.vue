@@ -1,10 +1,9 @@
 <template>
   <div>
     <h3>评论板</h3>
-    <!-- 提交按钮 -->
     <div id="btn-submit-comment">
       <b-input-group size="lg" class="mr-sm-2">
-        <!-- 评论框 -->
+        <!-- Comment box -->
         <b-form-input
           type="text"
           trim
@@ -13,7 +12,7 @@
           v-model="content"
           @keyup.enter="submitComment"
         />
-        <!-- 按钮 -->
+        <!-- Button -->
         <b-input-group-append>
           <b-button
             variant="outline-dark"
@@ -27,7 +26,7 @@
         <strong>please login first</strong>
       </b-tooltip>
     </div>
-    <!-- 展示板 -->
+    <!-- Display board -->
     <table class="table table-borderless my-3" v-if="hasComments">
       <tbody v-if="res.comments.length">
         <tr v-for="(item, index) in res.comments" :key="index">
@@ -47,15 +46,6 @@
         <b>no comment yet</b>
       </div>
     </table>
-
-    <!-- 模块消息 -->
-    <b-modal ref="bv-modal-msg" centered hide-footer>
-      <template slot="modal-title">RECLAB</template>
-      <div class="d-block text-center">
-        <h3>{{infoafterComment.msg}}</h3>
-      </div>
-      <b-button class="mt-3" block variant="outline-dark" @click="closeModal">Close Me</b-button>
-    </b-modal>
   </div>
 </template>
 
@@ -71,8 +61,7 @@ export default {
     return {
       api: '/comment',
       content: null,
-      res: {},
-      infoafterComment: {}
+      res: {}
     }
   },
   methods: {
@@ -94,7 +83,7 @@ export default {
       if (!vm.content) {
         return
       }
-      const { data } = await vm.axios({
+      const { data:res } = await vm.axios({
         method: 'POST',
         url: vm.api,
         data: {
@@ -102,19 +91,18 @@ export default {
           content: vm.content
         }
       })
-      // 写入 afterCommentInfo
-      vm.infoafterComment = { ...data }
-      // 成功, 再次 get 库存
-      vm.getComments()
-      // 控制弹窗
-      vm.$refs['bv-modal-msg'].show()
-    },
-    closeModal () {
-      const vm = this
-      if (vm.infoafterComment.code === 1) {
+      if (res.code === 1) {
         vm.content = null
+        vm.getComments()
+        this.flashMessage.success({
+          title: 'Comment successfully',
+        })
+      } else {
+        this.flashMessage.error({
+          title: 'Fail to comment',
+          message: res.msg
+        })
       }
-      vm.$refs['bv-modal-msg'].hide()
     }
   },
   computed: {
