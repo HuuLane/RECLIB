@@ -28,13 +28,13 @@
               <tr v-for="(item, index) in userData.activity.comments" :key="index">
                 <th scope="row">{{index}}</th>
                 <td>
-                  <a @click.prevent="goToSubject(item.bookID)">{{item.bookName}}</a>
+                  <a @click.prevent="goToSubject(item.book._id)">{{item.book.title}}</a>
                 </td>
                 <td>
                   {{item.content}}
                 </td>
                 <td>
-                  <code>{{getReturnTime(item.date)}}</code>
+                  <code>{{timeConverter(item.date)}}</code>
                 </td>
               </tr>
             </tbody>
@@ -57,7 +57,7 @@
                   <a @click.prevent="goToSubject(item.bookID)">{{item.bookName}}</a>
                 </td>
                 <td>
-                  <code>{{getReturnTime(item.date + (30 * 24 * 3600) * 1000)}}</code>
+                  <code>{{timeConverter(item.date + (30 * 24 * 3600) * 1000)}}</code>
                 </td>
               </tr>
             </tbody>
@@ -77,28 +77,22 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-import { log, objectIsEmpty, timeConverter } from '@/utils.js'
+import { objectIsEmpty, timeConverter } from '@/utils.js'
 export default {
   name: 'Profile',
   created () {
     const vm = this
-    // log('进入 Profile')
-    // 防止未登录就过来啦
     if (!vm.userName) {
       vm.$router.push('/login')
       return
     }
-    vm.axios({
-      method: 'GET',
-      url: '/profile'
-    }).then(({ data: res }) => {
-      // log('profile res', res)
+    vm.axios.get('/user').then(({ data: res }) => {
+      vm.$log.info(res)
       if (res.code === 1) {
         vm.userData = { ...res.data }
       }
     }).catch(err => {
-      log('err', err)
+      vm.$log.error('err', err)
     })
   },
   data () {
@@ -107,10 +101,7 @@ export default {
     }
   },
   methods: {
-    getReturnTime (timestamp) {
-      const dateOfReturn = Number(timestamp)
-      return timeConverter(dateOfReturn)
-    },
+    timeConverter: timeConverter,
     goToSubject (bookID) {
       const vm = this
       vm.$router.push(`/subject/${bookID}`)
