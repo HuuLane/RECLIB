@@ -22,7 +22,7 @@ export default {
       }, 1000)
     },
     justGo () {
-      this.$router.push('/')
+      this.$router.go(-1)
     }
   },
   watch: {

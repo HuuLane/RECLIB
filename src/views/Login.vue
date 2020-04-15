@@ -58,7 +58,7 @@ export default {
           title: 'Good',
           message: res.msg
         })
-        vm.$router.push('/')
+        vm.$router.go(-1)
       } else {
         vm.flashMessage.error({
           title: 'Fail to login',
