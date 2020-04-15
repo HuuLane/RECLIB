@@ -26,7 +26,7 @@
           <!-- Using 'button-content' slot -->
           <template slot="button-content">{{userName}}</template>
           <b-dropdown-item @click="goToProfile">个人资料</b-dropdown-item>
-          <b-dropdown-item @click="logOut">退出</b-dropdown-item>
+          <b-dropdown-item @click="logout">退出</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -37,10 +37,9 @@
 export default {
   name: 'Navbar',
   methods: {
-    logOut () {
-      // 退出登录
+    logout () {
       const vm = this
-      vm.$store.dispatch('logOut')
+      vm.$store.dispatch('logout')
     },
     goToProfile () {
       const vm = this

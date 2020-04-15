@@ -14,7 +14,7 @@ export default new Vuex.Store({
   actions: {
     async sessionLogin (context) {
       const { data } = await Vue.axios({
-        url: '/login',
+        url: '/session',
         method: 'GET'
       })
       Vue.$log.info('sessionLogin', data)
@@ -24,7 +24,7 @@ export default new Vuex.Store({
     },
     async login (context, payload) {
       const { data } = await Vue.axios({
-        url: '/login',
+        url: '/session',
         method: 'POST',
         data: payload
       })
@@ -33,9 +33,9 @@ export default new Vuex.Store({
       }
       return data
     },
-    async logOut (context) {
+    async logout (context) {
       const { data } = await Vue.axios({
-        url: '/logout',
+        url: '/session',
         method: 'delete'
       })
       if (data.code === 1) {
