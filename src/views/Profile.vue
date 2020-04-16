@@ -1,11 +1,10 @@
 <template>
   <b-container>
     <div v-if="alreadyGetData">
-      <h1>{{userData.name}} 的个人详情</h1>
+      <h1>{{userData.name}}</h1>
       <ul>
         <li>
-          本站第:
-          <code>{{userData.index}}</code> 位会员
+          本站第 <code>{{userData.index}}</code> 位会员
         </li>
         <li>
           注册时间:
@@ -14,7 +13,7 @@
       </ul>
       <div v-if="userData.activity">
         <div v-if="userData.activity.comments">
-          <h1>你说的:</h1>
+          <h3>评论历史:</h3>
           <table class="table table-borderless">
             <thead>
               <tr>
@@ -26,7 +25,7 @@
             </thead>
             <tbody>
               <tr v-for="(item, index) in userData.activity.comments" :key="index">
-                <th scope="row">{{index}}</th>
+                <td scope="row">{{index + 1}}</td>
                 <td>
                   <a @click.prevent="goToSubject(item.book._id)">{{item.book.title}}</a>
                 </td>
@@ -42,9 +41,8 @@
         </div>
       </div>
       <div v-else>
-        <b>快去多体验看看!</b>
+        <b>快去多体验!</b>
         <mark>撰写评论</mark>
-        <mark>借书 etc.</mark>
       </div>
     </div>
     <div class="container_full-heigt" v-else>
