@@ -10,6 +10,7 @@
 import { setInterval } from 'timers'
 export default {
   name: 'PageNotFound',
+  props: ['goback'],
   data () {
     return {
       countDown: 5
@@ -22,7 +23,17 @@ export default {
       }, 1000)
     },
     justGo () {
-      this.$router.go(-1)
+      // BUG: 404 page
+      const vm = this
+      let n = Number(vm.goback)
+      if (!isNaN(n)) {
+        n *= -1
+      } else {
+        n = -1
+      }
+      vm.$log.debug('goback number:', n)
+      vm.$router.replace(n)
+      vm.$router.back()
     }
   },
   watch: {
