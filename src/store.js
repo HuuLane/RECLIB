@@ -21,6 +21,10 @@ export default new Vuex.Store({
       if (data.userName) {
         context.commit('setUserName', data.userName)
         Vue.fm.success('Keep the last login status')
+      } else {
+        Vue.fm.warning('点击前往登录, 即刻使用体验帐号', {
+          to: '/login'
+        })
       }
     },
     async login (context, payload) {

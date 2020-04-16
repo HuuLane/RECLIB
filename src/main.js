@@ -56,29 +56,28 @@ const vm = new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-const showToast = function (content, option) {
-  vm.$bvToast.toast(content, {
-    noCloseButton: true,
-    autoHideDelay: 3000,
-    solid: true,
-    ...option
-  })
-}
-
-const flashMessage = {
-  success (content, option = {}) {
-    showToast(content, {
-      variant: 'success',
-      ...option
-    })
-  },
-  error (content, option = {}) {
-    showToast(content, {
-      variant: 'danger',
-      ...option
-    })
+const flashMessage = new Proxy(
+  {},
+  {
+    get (target, key) {
+      if (key === 'error') {
+        key = 'danger'
+      }
+      if (!target.hasOwnProperty(key))
+        target[key] = function (content, option = {}) {
+          vm.$bvToast.toast(content, {
+            variant: key,
+            // default
+            noCloseButton: true,
+            autoHideDelay: 3000,
+            solid: true,
+            ...option
+          })
+        }
+      return target[key]
+    }
   }
-}
+)
 
 Vue.use({
   install () {
