@@ -9,13 +9,12 @@
       <div v-if="userData.activity" class="div-border">
         <div v-if="userData.activity.comments">
           <h1>Comments</h1>
-          <div v-for="(item, index) in userData.activity.comments" :key="index">
-            <p><b>Commented</b> on <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link></p>
+          <div v-for="(item, index) in userData.activity.comments" style="margin: 3rem 0;" :key="index">
+            <p><b>#{{index + 1}} Commented</b> on <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link></p>
             <p>{{item.content}}</p>
-            <div class="text-secondary">
-              <p v-if="timeConverter(item.date)">{{timeConverter(item.date)}} days ago</p>
-              <p v-else>today</p>
-            </div>
+            <p>
+              <span class="text-secondary" v-b-tooltip.hover v-b-tooltip.top :title="timeConverter(item.date)">{{daysago(item.date)}}</span>
+            </p>
           </div>
         </div>
       </div>
@@ -56,10 +55,14 @@ export default {
     }
   },
   methods: {
-    timeConverter: diffDays,
-    goToSubject (bookID) {
-      const vm = this
-      vm.$router.push(`/subject/${bookID}`)
+    timeConverter: timeConverter,
+    daysago (date) {
+      const n = diffDays(date)
+      if (n) {
+        return `${n} days ago`
+      } else {
+        return 'today'
+      }
     }
   },
   computed: {
