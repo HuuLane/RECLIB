@@ -94,15 +94,9 @@ export default {
       if (code === 1) {
         vm.$store.dispatch('sessionLogin')
         vm.$router.go(-1)
-        vm.flashMessage.success({
-          title: 'Great!!',
-          message: d.msg
-        })
+        vm.$fm.success(`Great! ${d.msg}`)
       } else {
-        vm.flashMessage.error({
-          title: 'Fail to login',
-          message: d.msg
-        })
+        vm.$fm.error(`Fail to signup: ${d.msg}`)
       }
     }
   },

@@ -5,7 +5,6 @@
     <keep-alive include="Admin">
       <router-view/>
     </keep-alive>
-    <FlashMessage id="flash" :position="'right top'"></FlashMessage>
   </div>
 </template>
 <script>
@@ -21,16 +20,10 @@ export default {
   },
   methods: {
     test () {
-      this.flashMessage.success({
-        title: 'Success Message Title',
-        message: 'Hoorah, it is my fist npm package and it works!'
-      })
+      this.$fm.error(123)
     }
   }
 }
 </script>
 <style lang="css">
-#flash {
-  z-index: 3;
-}
 </style>

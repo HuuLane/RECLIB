@@ -10,12 +10,7 @@ import VueAxios from 'vue-axios'
 import store from '@/store'
 import VueLogger from 'vuejs-logger'
 import to from 'await-to-js'
-import FlashMessage from '@smartweb/vue-flash-message'
 
-Vue.use(FlashMessage, {
-  time: 3000,
-  strategy: 'multiple'
-})
 Vue.use(VueAxios, axios)
 
 // Making await-to functions globally
@@ -55,8 +50,39 @@ Vue.axios.interceptors.response.use(
   }
 )
 
-new Vue({
+const vm = new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+const showToast = function (content, option) {
+  vm.$bvToast.toast(content, {
+    noCloseButton: true,
+    autoHideDelay: 3000,
+    solid: true,
+    ...option
+  })
+}
+
+const flashMessage = {
+  success (content, option = {}) {
+    showToast(content, {
+      variant: 'success',
+      ...option
+    })
+  },
+  error (content, option = {}) {
+    showToast(content, {
+      variant: 'danger',
+      ...option
+    })
+  }
+}
+
+Vue.use({
+  install () {
+    Vue.fm = flashMessage
+    Vue.prototype.$fm = flashMessage
+  }
+})
