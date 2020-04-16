@@ -25,4 +25,7 @@ const timeConverter = (timestamp) => {
   return time
 }
 
-export { log, setClock, objectIsEmpty, timeConverter }
+const diffDays = (date1, date2 = Date.now()) => 
+  parseInt((new Date(date2) - new Date(date1)) / (1000 * 60 * 60 * 24), 10)
+
+export { log, setClock, objectIsEmpty, timeConverter, diffDays }
