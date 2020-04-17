@@ -10,6 +10,12 @@ import VueAxios from 'vue-axios'
 import store from '@/store'
 import VueLogger from 'vuejs-logger'
 import to from 'await-to-js'
+import VueTimeago from 'vue-timeago'
+
+Vue.use(VueTimeago, {
+  name: 'Timeago',
+  locale: 'en'
+})
 
 Vue.use(VueAxios, axios)
 
