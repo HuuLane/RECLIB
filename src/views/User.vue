@@ -1,14 +1,14 @@
 <template>
   <b-container>
     <div v-if="already">
-      <div class="div-border div-primary">
+      <div class="div-border mb-5">
         <h1>{{userData.name}}</h1>
         <p>本站第 <code>{{userData.index}}</code> 位会员</p>
         <p>注册时间: <code>{{Date(userData.date)}}</code></p>
       </div>
       <div class="div-border">
         <h1>Comments</h1>
-        <comment-board class="mt-5" :id="userData._id" :profile="true" />
+        <comment-board :id="userData._id" :profile="true" />
       </div>
     </div>
     <div class="container_full-heigt" v-else>
@@ -72,8 +72,5 @@ export default {
 .div-border {
   @include bold-outline;
   padding: 3vh;
-}
-.div-primary {
-  margin-bottom: 7%;
 }
 </style>
