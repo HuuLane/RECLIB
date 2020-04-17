@@ -10,19 +10,21 @@
         <div v-if="userData.activity.comments">
           <h1>Comments</h1>
           <div v-for="(item, index) in userData.activity.comments" class="comment-entry" :key="index">
-            <b-dropdown variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none" no-caret>
+            <b-dropdown dropleft lazy variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none" no-caret>
               <template v-slot:button-content>
                 <font-awesome-icon class="comment-entry-ellipsis-icon" icon="ellipsis-v" transform="shrink-2" />
               </template>
-              <b-dropdown-item @click="editComment(item._id)">Edit</b-dropdown-item>
+              <b-dropdown-item @click="editComment(item)">Edit</b-dropdown-item>
               <b-dropdown-item @click="deleteComment(item._id)">Delete</b-dropdown-item>
             </b-dropdown>
             <p><b>#{{index + 1}} Commented</b> on <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link></p>
             <div>
-              <p v-if="editting !== item._id">{{item.content}}</p>
+              <p v-if="editting._id !== item._id">{{item.content}}</p>
               <!-- edit component -->
               <template v-else>
-                <input type="text" class="text-input" placeholder="Edit the comment..." :value="item.content" />
+                <input type="text" v-model="content" class="text-input" placeholder="Edit the comment..." />
+                <b-button size="sm" class="text-input-button" squared variant="outline-secondary" @click="cancelEdit">CANCEL</b-button>
+                <b-button size="sm" class="text-input-button" squared variant="primary" :disabled="!savable" @click="submitEdit">SAVE</b-button>
               </template>
             </div>
             <p>
@@ -65,7 +67,9 @@ export default {
   data () {
     return {
       userData: {},
-      editting: ''
+      editting: {},
+      content: '',
+      originalContent: ''
     }
   },
   methods: {
@@ -78,9 +82,35 @@ export default {
         return 'today'
       }
     },
-    editComment(id) {
+    editComment(item) {
       const vm = this
-      vm.editting = id
+      vm.editting = item
+      vm.content = item.content
+      vm.originalContent = item.content
+    },
+    cancelEdit() {
+      this.editting = {}
+    },
+    submitEdit() {
+      const vm = this
+      vm.axios({
+        method: 'PUT',
+        url: `/comment/${vm.editting._id}`,
+        data: {
+          content: vm.content
+        }
+      }).then(({ data: res }) => {
+        vm.$log.info(res)
+        if (res.code === 1) {
+          vm.$fm.success(res.msg)
+          vm.editting.content = vm.content
+          vm.cancelEdit()
+        } else {
+          vm.$fm.error(res.msg)
+        }
+      }).catch(err => {
+        vm.$log.error('err', err)
+      })
     },
     deleteComment() {
 
@@ -94,6 +124,10 @@ export default {
     already () {
       const vm = this
       return !objectIsEmpty(vm.userData)
+    },
+    savable () {
+      const vm = this
+      return vm.content !== vm.originalContent && vm.content.length !== 0
     }
   }
 }
@@ -137,7 +171,7 @@ export default {
 .comment-entry-dropdown {
   position: absolute;
   left: 80%;
-  top: 4%;
+  top: 8%;
 }
 
 .comment-entry-ellipsis-icon {
@@ -157,5 +191,8 @@ export default {
 }
 .text-input:focus {
   border-color: green
+}
+.text-input-button {
+  border: none;
 }
 </style>
