@@ -6,31 +6,29 @@
         <p>本站第 <code>{{userData.index}}</code> 位会员</p>
         <p>注册时间: <code>{{Date(userData.date)}}</code></p>
       </div>
-      <div v-if="userData.activity" class="div-border">
-        <div v-if="userData.activity.comments">
-          <h1>Comments</h1>
-          <div v-for="(item, index) in userData.activity.comments" class="comment-entry" :key="index">
-            <b-dropdown dropleft lazy variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none" no-caret>
-              <template v-slot:button-content>
-                <font-awesome-icon class="comment-entry-ellipsis-icon" icon="ellipsis-v" transform="shrink-2" />
-              </template>
-              <b-dropdown-item @click="editComment(item)">Edit</b-dropdown-item>
-              <b-dropdown-item @click="deleteComment(item._id)">Delete</b-dropdown-item>
-            </b-dropdown>
-            <p><b>#{{index + 1}} Commented</b> on <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link></p>
-            <div>
-              <p v-if="editting._id !== item._id">{{item.content}}</p>
-              <!-- edit component -->
-              <template v-else>
-                <input type="text" v-model="content" class="text-input" placeholder="Edit the comment..." />
-                <b-button size="sm" class="text-input-button" squared variant="outline-secondary" @click="cancelEdit">CANCEL</b-button>
-                <b-button size="sm" class="text-input-button" squared variant="primary" :disabled="!savable" @click="submitEdit">SAVE</b-button>
-              </template>
-            </div>
-            <p>
-              <span class="text-secondary" v-b-tooltip.hover v-b-tooltip.top :title="timeConverter(item.date)">{{daysago(item.date)}}</span>
-            </p>
+      <div v-if="userData.comments" class="div-border">
+        <h1>Comments</h1>
+        <div v-for="(item, index) in userData.comments" class="comment-entry" :key="index">
+          <b-dropdown dropleft lazy variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none" no-caret>
+            <template v-slot:button-content>
+              <font-awesome-icon class="comment-entry-ellipsis-icon" icon="ellipsis-v" transform="shrink-2" />
+            </template>
+            <b-dropdown-item @click="editComment(item)">Edit</b-dropdown-item>
+            <b-dropdown-item @click="deleteComment(item._id)">Delete</b-dropdown-item>
+          </b-dropdown>
+          <p><b>#{{index + 1}} Commented</b> on <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link></p>
+          <div>
+            <p v-if="editting._id !== item._id">{{item.content}}</p>
+            <!-- edit component -->
+            <template v-else>
+              <input type="text" v-model="content" class="text-input" placeholder="Edit the comment..." />
+              <b-button size="sm" class="text-input-button" squared variant="outline-secondary" @click="cancelEdit">CANCEL</b-button>
+              <b-button size="sm" class="text-input-button" squared variant="primary" :disabled="!savable" @click="submitEdit">SAVE</b-button>
+            </template>
           </div>
+          <p>
+            <span class="text-secondary" v-b-tooltip.hover v-b-tooltip.top :title="timeConverter(item.date)">{{daysago(item.date)}}</span>
+          </p>
         </div>
       </div>
       <div v-else>
@@ -50,15 +48,14 @@ export default {
   name: 'Profile',
   created () {
     const vm = this
-    if (!vm.userName) {
-      vm.$router.push('/login')
-      vm.$fm.error('Please login first')
-      return
-    }
-    vm.axios.get('/user').then(({ data: res }) => {
+    const name = vm.$route.params.name
+    vm.axios.get(`/user/${name}`).then(({ data: res }) => {
       vm.$log.info(res)
       if (res.code === 1) {
         vm.userData = { ...res.data }
+      } else {
+        // TODO no the user
+        vm.$fm.error(res.msg)
       }
     }).catch(err => {
       vm.$log.error('err', err)
@@ -117,10 +114,6 @@ export default {
     }
   },
   computed: {
-    userName () {
-      const vm = this
-      return vm.$store.state.userName
-    },
     already () {
       const vm = this
       return !objectIsEmpty(vm.userData)

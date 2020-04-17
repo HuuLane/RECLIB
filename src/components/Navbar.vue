@@ -21,7 +21,6 @@
           <b>/</b>
           <router-link class="text-muted" to="/signup">注册</router-link>
         </b-nav-item>
-        <!-- <router-link to="/login" is="b-nav-item" v-if="!userName">登录 <b> / </b> 注册</router-link> -->
         <b-nav-item-dropdown v-else right>
           <!-- Using 'button-content' slot -->
           <template slot="button-content">{{userName}}</template>
@@ -44,8 +43,8 @@ export default {
     goToProfile () {
       const vm = this
       vm.$log.info(vm.$route.path)
-      if (vm.$route.path !== '/profile') {
-        vm.$router.push('/profile')
+      if (vm.$route.path !== vm.profilePath) {
+        vm.$router.push(vm.profilePath)
       }
     }
   },
@@ -53,6 +52,9 @@ export default {
     userName () {
       const vm = this
       return vm.$store.state.userName
+    },
+    profilePath () {
+      return `/user/${this.userName}`
     }
   }
 }
