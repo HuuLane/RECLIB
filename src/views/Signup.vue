@@ -56,6 +56,7 @@
           spellcheck="false"
           v-model="name"
           placeholder="I wish you happy!"
+          @keyup.enter="signup"
         ></b-form-input>
       </b-form-group>
       <!-- submit btn -->

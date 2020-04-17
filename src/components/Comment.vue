@@ -1,33 +1,24 @@
 <template>
   <div>
     <div id="btn-submit-comment" v-if="!profile">
-      <b-input-group size="lg" class="mr-sm-2">
-        <!-- Comment box -->
-        <b-form-input
-          type="text"
-          trim
-          :disabled="!isLogin"
-          placeholder="Add a public comment..."
-          v-model="newCommentInput"
-          @keyup.enter="submitComment"
-        />
-        <!-- Button -->
-        <b-input-group-append>
-          <b-button
-            variant="outline-dark"
-            block
-            @click="submitComment"
-            :disabled="!isLogin"
-          >COMMENT</b-button>
-        </b-input-group-append>
-      </b-input-group>
+      <input
+        type="text"
+        trim
+        :disabled="!isLogin"
+        class="text-input make-comments-input"
+        placeholder="Add a public comment... stroke ↵ to send"
+        v-model="newCommentInput"
+        @keyup.enter="submitComment"
+      />
       <b-tooltip v-if="!isLogin" target="btn-submit-comment" placement="top">
         <strong>please login first</strong>
       </b-tooltip>
     </div>
     <!-- Display board -->
     <!-- TODO center it -->
-    <b-spinner variant="dark" class="text-center my-5" v-if="isBusy"></b-spinner>
+    <div v-if="isBusy" class="text-center">
+      <b-spinner variant="dark" class="my-5"></b-spinner>
+    </div>
     <template v-else>
       <div v-if="!comments.length" class="text-center my-5">
         <b>no comment yet</b>
@@ -74,8 +65,7 @@ export default {
   name: 'Comment',
   async created () {
     const vm = this
-    await setClock(1)
-    await vm.getComments()
+    await vm.fetchComments()
   },
   data () {
     return {
@@ -88,7 +78,8 @@ export default {
     }
   },
   methods: {
-    async getComments () {
+    async fetchComments () {
+      await setClock()
       const vm = this
       let url = ''
       if (vm.profile) {
@@ -104,7 +95,7 @@ export default {
         })
         .catch(err => {
           // TODO retry
-          vm.$log.info('fail to getComments', err)
+          vm.$log.info('fail to get comments', err)
         })
     },
     timeConverter: timeConverter,
@@ -119,6 +110,7 @@ export default {
     async submitComment () {
       const vm = this
       if (!vm.newCommentInput) {
+        vm.$fm.info('Please enter content')
         return
       }
       const { data:res } = await vm.axios({
@@ -131,10 +123,10 @@ export default {
       })
       if (res.code === 1) {
         vm.newCommentInput = null
-        vm.getComments()
-        this.$fm.success('Comment successfully')
+        vm.fetchComments()
+        vm.$fm.success('Comment successfully')
       } else {
-        this.$fm.error('Fail to comment:' + res.msg)
+        vm.$fm.error('Fail to comment:' + res.msg)
       }
     },
     editComment(item) {
@@ -195,7 +187,7 @@ export default {
 </script>
 <style lang="scss">
 .comment-entry {
-  margin: 3rem 0;
+  margin: 1rem 0;
   position: relative;
 }
 
@@ -218,18 +210,21 @@ export default {
 }
 
 .comment-entry-ellipsis-icon:hover {
-  color: darkgray;
+  color: rgb(78, 78, 78);
 }
 
 .text-input {
   outline: 0;
   border-width: 0 0 2px;
-  border-color: blue  
+  border-color: silver;  
 }
 .text-input:focus {
-  border-color: green
+  border-color: rgb(78, 78, 78);
 }
 .text-input-button {
   border: none;
+}
+.make-comments-input {
+  width: 100%;
 }
 </style>

@@ -56,7 +56,7 @@
             </b-row>
           </b-card>
         </div>
-        <div class="mt-5 div-border">
+        <div class="my-5 div-border">
           <h1>Comments</h1>
           <comment-board :id="id" />
         </div>
