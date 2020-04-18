@@ -1,7 +1,7 @@
 <template>
   <div>
      <!-- fa-1x -->
-    <font-awesome-icon icon="search" @click="goToSearch" class="mx-3"/>
+    <b-icon-search icon="search" @click="goToSearch" class="mx-3"/>
     <input
       v-focus
       class="search-bar_clear search-bar--text"
@@ -42,6 +42,9 @@ export default {
         el.focus()
       }
     }
+  },
+  components: {
+    BIconSearch: () => import('bootstrap-vue').then(m => m.BIconSearch),
   }
 }
 </script>

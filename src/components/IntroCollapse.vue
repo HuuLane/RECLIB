@@ -9,8 +9,8 @@
       variant="outline-dark"
       data-name="firstBtn"
     >
-      <font-awesome-icon icon="caret-right" v-if="!isActive('firstBtn')"/>
-      <font-awesome-icon icon="caret-down" v-else-if="isActive('firstBtn')"/>
+      <b-icon-caret-right v-if="!isActive('firstBtn')"/>
+      <b-icon-caret-down v-else-if="isActive('firstBtn')"/>
       内容简介
     </b-button>
     <b-collapse id="accordion-1" accordion="my-accordion" role="tabpanel">
@@ -32,8 +32,8 @@
       variant="outline-dark"
       data-name="secondBtn"
     >
-      <font-awesome-icon icon="caret-right" v-if="!isActive('secondBtn')"/>
-      <font-awesome-icon icon="caret-down" v-else-if="isActive('secondBtn')"/>
+      <b-icon-caret-right v-if="!isActive('secondBtn')"/>
+      <b-icon-caret-down v-else-if="isActive('secondBtn')"/>
       作者简介
     </b-button>
     <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
@@ -106,6 +106,10 @@ export default {
         return false
       }
     }
+  },
+  components: {
+    BIconCaretRight: () => import('bootstrap-vue').then(m => m.BIconCaretRight),
+    BIconCaretDown: () => import('bootstrap-vue').then(m => m.BIconCaretDown),
   }
 }
 </script>
