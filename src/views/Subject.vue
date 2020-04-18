@@ -4,7 +4,7 @@
       <b-spinner class="absolute-center spinner_big"></b-spinner>
     </div>
     <div v-else>
-      <template v-if="!objectIsEmpty(book)">
+      <template v-if="book">
         <div class="div-border">
           <!-- title -->
           <h1 class="row">
@@ -65,7 +65,7 @@
         v-else
         class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt"
       >
-        <page-not-found></page-not-found>
+        <page-not-found>没有该图书</page-not-found>
       </div>
     </div>
   </b-container>
@@ -94,9 +94,9 @@ export default {
       url: '/book',
       params: { id: vm.id }
     }).then(({ data }) => {
-      vm.isBusy = false
       vm.book = data
-      vm.$log.info(data)
+      vm.$log.info('book data', data)
+      vm.isBusy = false
     }).catch(err => {
       vm.$log.error(err)
     })

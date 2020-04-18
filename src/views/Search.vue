@@ -1,7 +1,12 @@
 <template>
   <b-container>
     <div v-if="!documentCount" class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt">
-      <page-not-found goback=2>没有搜寻结果</page-not-found>
+      <page-not-found goback=2>
+        没有搜寻结果
+        <template v-slot:info>
+          <!-- TODO recommend -->
+        </template>
+      </page-not-found>
     </div>
     <div v-else>
       <h2>搜寻结果: 找到 <code>{{ documentCount }}</code> 本</h2>

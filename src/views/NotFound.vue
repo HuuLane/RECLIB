@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt">
-    <page-not-found>
-      No such page, please see the wind and rain.
-    </page-not-found>
-  </div>
+  <b-container>
+    <div class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt">
+      <page-not-found />
+    </div>
+  </b-container>
 </template>
 
 <script>
