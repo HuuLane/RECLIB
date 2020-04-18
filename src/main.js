@@ -35,6 +35,8 @@ if (process.env.VUE_APP_DEV === 'true') {
   Vue.axios.defaults.withCredentials = true
   Vue.axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
   loggerOptions.logLevel = 'debug'
+} else {
+  loggerOptions.logLevel = 'error'
 }
 
 Vue.use(VueLogger, loggerOptions)
