@@ -24,7 +24,7 @@
         <b>no comment yet</b>
       </div>
       <div v-for="(item, index) in comments" class="comment-entry" :key="index">
-        <b-dropdown dropleft lazy variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none" no-caret>
+        <b-dropdown dropleft lazy  no-caret v-if="isCommenter(item)" variant="link" class="comment-entry-dropdown" toggle-class="text-decoration-none">
           <template v-slot:button-content>
             <b-icon-three-dots-vertical class="comment-entry-ellipsis-icon" />
           </template>
@@ -176,6 +176,15 @@ export default {
       } else {
         return ''
       }
+    },
+    isCommenter (comment) {
+      const vm = this
+      // is profile page
+      if (vm.profile) {
+        return vm.$route.params.name === vm.userName
+      } else {
+        return comment.user.name === vm.userName
+      }
     }
   },
   computed: {
@@ -185,7 +194,10 @@ export default {
     savable () {
       const vm = this
       return vm.editInput !== vm.originalContent && vm.editInput.length !== 0
-    }
+    },
+    userName () {
+      return this.$store.state.userName
+    },
   },
   props: {
     id: String,
