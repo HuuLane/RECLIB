@@ -36,15 +36,15 @@ if (process.env.VUE_APP_DEV === 'true') {
 
 Vue.use(VueLogger, loggerOptions)
 
-Vue.axios.interceptors.response.use(
-  res => res,
-  err => {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // default {}
-    Vue.$log.error(err)
-    return Promise.resolve({ data: {} })
-  }
-)
+// Vue.axios.interceptors.response.use(
+//   res => res,
+//   err => {
+//     // Any status codes that falls outside the range of 2xx cause this function to trigger
+//     // default {}
+//     Vue.$log.error(err)
+//     return Promise.resolve({ data: {} })
+//   }
+// )
 
 const vm = new Vue({
   router,
@@ -59,17 +59,30 @@ const flashMessage = new Proxy(
       if (key === 'error') {
         key = 'danger'
       }
-      if (!target.hasOwnProperty(key))
-        target[key] = function (content, option = {}) {
-          vm.$bvToast.toast(content, {
-            variant: key,
-            // default
-            noCloseButton: true,
-            autoHideDelay: 3000,
-            solid: true,
-            ...option
-          })
+      if (!target.hasOwnProperty(key)) {
+        // GLOBAL HACK
+        if (key === 'NETERR') {
+          target[key] = function () {
+            vm.$bvToast.toast('Fail to connect server', {
+              variant: 'danger',
+              noCloseButton: true,
+              autoHideDelay: 3000,
+              solid: true
+            })
+          }
+        } else {
+          target[key] = function (content, option = {}) {
+            vm.$bvToast.toast(content, {
+              variant: key,
+              // default
+              noCloseButton: true,
+              autoHideDelay: 3000,
+              solid: true,
+              ...option
+            })
+          }
         }
+      }
       return target[key]
     }
   }

@@ -68,13 +68,20 @@ export default {
         return
       }
       await setClock()
-      const { data: res } = await vm.axios.get(`/book?intro=${vm.id}`)
-      vm.isBusy = false
-      if (!res) {
-        vm.intro = ['没有内容', '没有内容']
-        return
+      try {
+        const { data: res } = await vm.axios.get(`/book?intro=${vm.id}`)
+        vm.isBusy = false
+        if (!res) {
+          vm.intro = ['没有内容', '没有内容']
+          return
+        }
+        vm.intro = res.intro
+      } catch (error) {
+        vm.isBusy = false
+        vm.$log.error(error)
+        vm.$fm.NETERR()
+        vm.intro = ['Network error', 'Network error']
       }
-      vm.intro = res.intro
     },
     async activate (event) {
       const vm = this

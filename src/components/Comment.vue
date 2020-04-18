@@ -15,7 +15,6 @@
       </b-tooltip>
     </div>
     <!-- Display board -->
-    <!-- TODO center it -->
     <div v-if="isBusy" class="text-center">
       <b-spinner variant="dark" class="my-5"></b-spinner>
     </div>
@@ -107,20 +106,25 @@ export default {
         vm.$fm.info('Please enter content')
         return
       }
-      const { data:res } = await vm.axios({
-        method: 'POST',
-        url: '/comment',
-        data: {
-          id: vm.id,
-          content: vm.newCommentInput
+      try {
+        const { data:res } = await vm.axios({
+          method: 'POST',
+          url: '/comment',
+          data: {
+            id: vm.id,
+            content: vm.newCommentInput
+          }
+        })
+        if (res.code === 1) {
+          vm.newCommentInput = null
+          vm.fetchComments()
+          vm.$fm.success('Comment successfully')
+        } else {
+          vm.$fm.error('Fail to comment:' + res.msg)
         }
-      })
-      if (res.code === 1) {
-        vm.newCommentInput = null
-        vm.fetchComments()
-        vm.$fm.success('Comment successfully')
-      } else {
-        vm.$fm.error('Fail to comment:' + res.msg)
+      } catch (error) {
+        vm.$log.error(error)
+        vm.$fm.NETERR()
       }
     },
     editComment(item) {
