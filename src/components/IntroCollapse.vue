@@ -1,7 +1,7 @@
 <template>
   <div role="tablist">
     <b-button
-      @click="cacheInfo(), activeMe()"
+      @click="activate"
       squared
       class="border-0"
       block
@@ -23,7 +23,7 @@
     </b-collapse>
 
     <b-button
-      @click="cacheInfo(), activeMe()"
+      @click="activate"
       squared
       class="border-0"
       block
@@ -48,11 +48,7 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-import { log, setClock } from '@/utils.js'
-const beautify = (str) => {
-  return str.split(' ------------------------------------------------------------------------------------------------ ').join('')
-}
+import { setClock } from '@/utils.js'
 export default {
   name: 'IntroCollapse',
   props: {
@@ -60,47 +56,40 @@ export default {
   },
   data () {
     return {
-      api: '/book',
       isBusy: true,
       intro: [],
-      activeBtn: ''
+      active: ''
     }
   },
   methods: {
-    async cacheInfo () {
+    async fetchIntro () {
       const vm = this
       if (vm.intro.length) {
         return
       }
       await setClock()
-      const { data: res } = await vm.axios({
-        method: 'GET',
-        url: `${vm.api}?intro=${vm.id}`
-      })
-      // log('res', res)
-      // 取消 busy状态
+      const { data: res } = await vm.axios.get(`/book?intro=${vm.id}`)
       vm.isBusy = false
       if (!res) {
-        vm.$set(vm.intro, 0, '没有内容')
-        vm.$set(vm.intro, 1, '没有内容')
+        vm.intro = ['没有内容', '没有内容']
         return
       }
-      vm.$set(vm.intro, 0, beautify(res.intro[0]))
-      vm.$set(vm.intro, 1, beautify(res.intro[1]))
+      vm.intro = res.intro
     },
-    activeMe (e) {
+    async activate (event) {
       const vm = this
       const { target } = event
+      await vm.fetchIntro()
       const name = target.dataset.name
-      if (vm.activeBtn === name) {
-        vm.activeBtn = ''
+      if (vm.active === name) {
+        vm.active = ''
       } else {
-        vm.activeBtn = name
+        vm.active = name
       }
     },
     isActive (name) {
       const vm = this
-      if (vm.activeBtn === name) {
+      if (vm.active === name) {
         return true
       } else {
         return false
