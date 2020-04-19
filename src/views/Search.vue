@@ -119,16 +119,6 @@ export default {
       return Math.ceil(this.documentCount / 10)
     }
   },
-  watch: {
-    async '$route.query'() {
-      const vm = this
-      vm.$log.info('$route.query change',vm.$route.query)
-      vm.documentCount = 'loading...'
-      vm.currentPage = 0
-      vm.pagesRawData = []
-      await vm.initCount()
-    }
-  },
   components: {
     BIconChevronBarUp: () => import('bootstrap-vue').then(m => m.BIconChevronBarUp),
     pageNotFound: () => import('@/components/PageNotFound.vue'),
