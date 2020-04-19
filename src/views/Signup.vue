@@ -48,14 +48,14 @@
         ></b-form-input>
       </b-form-group>
       <!-- user name -->
-      <b-form-group label-cols-sm="3" label="Nickname:" label-align-sm="right" label-for="Nickname">
+      <b-form-group label-cols-sm="3" label="Name:" label-align-sm="right" label-for="name">
         <b-form-input
           trim
           :state="nameState"
-          id="Nickname"
+          id="name"
           spellcheck="false"
           v-model="name"
-          placeholder="I wish you happy!"
+          placeholder="Only English letters are allowed"
           @keyup.enter="signup"
         ></b-form-input>
       </b-form-group>
@@ -74,6 +74,9 @@
 
 <script>
 import { objectIsEmpty } from '@/utils.js'
+import isEmail from 'validator/es/lib/isEmail'
+import isAlpha from 'validator/es/lib/isAlpha'
+
 export default {
   name: 'Signup',
   methods: {
@@ -107,7 +110,7 @@ export default {
       if (l === 0) {
         return null
       }
-      return l >= 2 && l <= 18
+      return l >= 2 && l <= 18 && isAlpha(this.name)
     },
     passwordState () {
       const l = this.password.length
@@ -128,8 +131,7 @@ export default {
       if (l === 0) {
         return null
       }
-      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return re.test(this.email)
+      return isEmail(this.email)
     },
     fulfill () {
       const vm = this

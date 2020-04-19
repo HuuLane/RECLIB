@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import isEmail from 'validator/es/lib/isEmail'
+
 export default {
   name: 'Login',
   methods: {
@@ -84,8 +86,7 @@ export default {
       if (this.email.length === 0) {
         return null
       }
-      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return re.test(this.email)
+      return isEmail(this.email)
     },
     fulfill () {
       const vm = this
