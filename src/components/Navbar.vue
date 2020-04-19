@@ -4,7 +4,7 @@
     type="light"
     class="bg-white mb-3 rounded navbar_cant-select"
   >
-    <router-link tag="b-navbar-brand" to="/" class="font-weight-bold">RECLAB</router-link>
+    <router-link tag="b-navbar-brand" to="/" class="font-weight-bold">RECLIB</router-link>
     <b-collapse is-nav>
       <!-- ml-auto for Right aligned -->
       <b-navbar-nav class="ml-auto">
