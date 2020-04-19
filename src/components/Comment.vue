@@ -34,7 +34,7 @@
           <template v-if="profile">
             <b>#{{index + 1}} Commented</b>
             <span> on </span>
-            <b-link :to="'/subject/' + item.book._id">{{item.book.title}}</b-link>
+            <b-link :to="'/subject/' + item.book._id">{{item.book.title}} </b-link>
           </template>
           <template v-else>
             <b>#{{index + 1}} </b>

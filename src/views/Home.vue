@@ -2,9 +2,9 @@
   <div
     class="d-flex flex-column flex-wrap justify-content-center align-content-center container_full-heigt"
   >
-    <div class="div-border home-title">
-      <h1 class=" mb-5">矩形图书馆</h1>
-      <search-bar class="mb-5"/>
+    <div class="div-border home-title mx-3">
+      <h1>矩形图书馆</h1>
+      <search-bar class="my-3 my-sm-5"/>
     </div>
   </div>
 </template>
@@ -37,5 +37,12 @@ export default {
 .div-border {
   @include bold-outline;
   padding: 3vh;
+}
+
+@include media-breakpoint-down(xs) {
+  .div-border {
+    @include bold-outline;
+    padding: 3vh;
+  }
 }
 </style>

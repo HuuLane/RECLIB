@@ -1,7 +1,7 @@
 <template>
   <div>
      <!-- fa-1x -->
-    <b-icon-search icon="search" @click="goToSearch" class="mx-3"/>
+    <b-icon-search icon="search" @click="goToSearch" class="mx-3-sm mx-1"/>
     <input
       class="search-bar_clear search-bar--text"
       type="text"
@@ -22,7 +22,7 @@ export default {
   },
   data () {
     return {
-      placeholder: '搜索书面, 作者, 标签 etc.',
+      placeholder: '搜索书名, 作者, 标签 etc.',
       inputContent: ''
     }
   },
@@ -45,10 +45,6 @@ export default {
 
 <style scoped lang="scss">
 @import "@/styles/mixin.scss";
-
-.div-border {
-  @include bold-outline;
-}
 
 .search-bar_clear {
   @include clear-input-text;
