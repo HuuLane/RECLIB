@@ -50,15 +50,25 @@ export default {
   methods: {
     async login () {
       const vm = this
-      const res = await vm.$store.dispatch('login', {
-        email: vm.email,
-        password: vm.password
-      })
-      if (res.code === 1) {
-        vm.$fm.success(`Good ${res.msg}`)
-        vm.$router.back()
-      } else {
-        vm.$fm.error(`Fail to login: ${res.msg}`)
+      try {
+        const { data: res } = await vm.axios({
+          url: '/session',
+          method: 'POST',
+          data: {
+            email: vm.email,
+            password: vm.password
+          }
+        })
+        if (res.code === 1) {
+          vm.$fm.success(`Good ${res.msg}`)
+          vm.$store.commit('setUserName', res.userName)
+          vm.$router.back()
+        } else {
+          vm.$fm.error(`Fail to login: ${res.msg}`)
+        }
+      } catch (error) {
+        vm.$log.error(error)
+        vm.$fm.NETERR()
       }
     }
   },

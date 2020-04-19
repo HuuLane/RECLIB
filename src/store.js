@@ -32,22 +32,6 @@ export default new Vuex.Store({
         Vue.fm.NETERR()
       }
     },
-    async login (context, payload) {
-      try {
-        const { data } = await Vue.axios({
-          url: '/session',
-          method: 'POST',
-          data: payload
-        })
-        if (data.userName) {
-          context.commit('setUserName', data.userName)
-        }
-        return data
-      } catch (error) {
-        Vue.$log.error(error)
-        Vue.fm.NETERR()
-      }
-    },
     async logout (context) {
       try {
         const { data } = await Vue.axios({

@@ -90,7 +90,7 @@ export default {
       }).then(({ data: d }) => {
         const code = Number(d.code)
         if (code === 1) {
-          vm.$store.dispatch('sessionLogin')
+          vm.$store.commit('setUserName', d.userName)
           vm.$router.back()
           vm.$fm.success(`Great! ${d.msg}`)
         } else {
