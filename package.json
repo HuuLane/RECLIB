@@ -37,7 +37,7 @@
     "node-sass": "4.13.1",
     "popper.js": "1.16.1",
     "portal-vue": "2.1.7",
-    "sass-loader": "7.3.1",
+    "sass-loader": "8.0.2",
     "vue-cli-plugin-bootstrap-vue": "0.6.0",
     "vue-cli-plugin-fontawesome": "0.2.0",
     "vue-template-compiler": "2.6.11"
