@@ -23,7 +23,7 @@ export default new Vuex.Store({
           context.commit('setUserName', data.userName)
           Vue.fm.success('Keep the last login status')
         } else {
-          Vue.fm.warning('点击前往登录, 即刻使用体验帐号', {
+          Vue.fm.warning('没有注册？前往使用体验帐号', {
             to: '/login'
           })
         }

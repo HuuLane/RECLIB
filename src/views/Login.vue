@@ -95,8 +95,8 @@ export default {
   },
   data () {
     return {
-      email: 'test@typeof.fun',
-      password: 'test@typeof.fun'
+      email: 'guest@typeof.fun',
+      password: 'guest@typeof.fun'
     }
   },
   directives: {
