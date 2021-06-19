@@ -11,7 +11,7 @@
             <span class="col-md-9">{{book.title}}</span>
             <b-badge
               id="score"
-              class="d-none d-md-block"
+              class="d-none col-md-3 d-md-block"
               :variant="estimate.color"
             >评分: {{book.score}} {{estimate.icon}}</b-badge>
             <b-tooltip target="score" placement="right">
@@ -43,7 +43,7 @@
                     </tbody>
                   </table>
                   <hr />
-                  <b-card-title>无聊简介</b-card-title>
+                  <b-card-title>简介</b-card-title>
                   <intro-collapse :id="id" />
                 </b-card-body>
               </b-col>
