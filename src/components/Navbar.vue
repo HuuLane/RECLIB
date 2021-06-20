@@ -16,6 +16,11 @@
         <b-nav-item-dropdown v-else right>
           <!-- Using 'button-content' slot -->
           <template slot="button-content">{{userName}}</template>
+          <b-dropdown-item v-if="userName==='admin'">
+            <router-link to="/admin">
+              管理后台
+            </router-link>
+            </b-dropdown-item>
           <b-dropdown-item @click="goToProfile">个人资料</b-dropdown-item>
           <b-dropdown-item @click="logout">退出</b-dropdown-item>
         </b-nav-item-dropdown>
