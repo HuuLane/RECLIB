@@ -2,7 +2,7 @@
   <b-container>
     <template v-if="userName == 'admin'">
       <div class="div-border">
-        <h1>RECLIB 后台</h1>
+        <h1>管理后台</h1>
         <hr />
         <div>
           <b-form-group
@@ -137,6 +137,35 @@
             </b-form-group>
           </b-form-group>
         </div>
+        <hr>
+        <div>
+          <b-form-group
+            label-cols-lg="3"
+            label="删除书籍"
+            label-size="lg"
+            label-class="font-weight-bold pt-0"
+            class="mb-0"
+          >
+            <!-- Enter ISBN，亦作为图书的 ID -->
+              <b-form-input
+                trim
+                type="number"
+                placeholder="仅可输入数字，例如：9787544280914"
+                id="ISBN_Del"
+                spellcheck="false"
+                v-model="ISBN_Del"
+              ></b-form-input>
+              <!-- submit btn -->
+            <b-form-group label-cols-sm="4" label-align-sm="right" class="mb-0">
+              <b-button
+                class="btn-block"
+                @click="deleteBook"
+                variant="outline-dark"
+                >提交</b-button
+              >
+            </b-form-group>
+          </b-form-group>
+        </div>
       </div>
     </template>
     <div
@@ -166,7 +195,8 @@ export default {
       title: '',
       tags: '',
       info: {},
-      intro: ['', '']
+      intro: ['', ''],
+      ISBN_Del: ''
     }
   },
   computed: {
@@ -203,6 +233,28 @@ export default {
           vm.$fm.success(`book created ${res.msg}`)
         } else {
           vm.$fm.error(`fail to create book: ${res.msg}`)
+        }
+      } catch (error) {
+        vm.$log.error(error)
+        vm.$fm.NETERR()
+      }
+    },
+    async deleteBook () {
+      const vm = this
+      const data = {
+          _id: String(vm.ISBN_Del),
+      }
+      console.log(JSON.stringify(data))
+      try {
+        const { data: res } = await vm.axios({
+          url: '/book',
+          method: 'DELETE',
+          data
+        })
+        if (res.code === 0) {
+          vm.$fm.success(`book delted ${res.msg}`)
+        } else {
+          vm.$fm.error(`fail to delete book: ${res.msg}`)
         }
       } catch (error) {
         vm.$log.error(error)
