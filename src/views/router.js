@@ -38,6 +38,11 @@ export default new Router({
       component: () => import('@/views/User.vue')
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/Admin.vue')
+    },
+    {
       path: '*',
       name: 'notFound',
       component: () => import('@/views/NotFound.vue')
